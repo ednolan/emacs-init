@@ -1,6 +1,3 @@
-;; load lisp files
-(add-to-list 'load-path "~/.emacs.d/lisp")
-
 ;; col numbers
 (setq column-number-mode t)
 
@@ -14,6 +11,12 @@
 
 ;; auto-save
 ;; (setq auto-save-default nil)
+;; auto-save directory
+(setq backup-directory-alist `(("." . "~/.emacs-autosave")))
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
 ;; annoying messages
 (setq inhibit-splash-screen t)
@@ -41,33 +44,12 @@
 ;; minibuffer autocomplete
 (icomplete-mode 99)
 
-;; thin gray line at 78 cols
-;; (require 'fill-column-indicator)
-;; (add-hook 'prog-mode-hook (lambda ()
-;;     (fci-mode 1)
-;;   ))
-;; ;; make library not turn truncate lines on
-;; (setq-default fci-handle-truncate-lines nil)
-
-;; no line wrap indicator char
-;(set-display-table-slot standard-display-table 'wrap ?\ )
-
 ;; i forget what this does
 (set-face-attribute 'vertical-border 
                     nil
                     :foreground "gray")
 
-;; mode line
-;; mode line hiding
-(autoload 'hide-mode-line "hide-mode-line" nil t)
-(hide-mode-line)
-;; mode line text
-;;(setq-default mode-line-buffer-identification
-;;             (cons
-;;             '(:eval (replace-regexp-in-string "^.*/\\(.*\\)/" "\\1/" default-directory))
-;;             mode-line-buffer-identification))
-
-;; package management
+;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list
