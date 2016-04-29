@@ -18,6 +18,20 @@
   kept-old-versions 2
   version-control t)
 
+;; trailing whitespace
+;; C
+(add-hook 'c-mode-hook
+                (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+;; C++
+(add-hook 'c++-mode-hook
+                (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+;; OCaml
+(add-hook 'tuareg-mode-hook
+                (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+;; Emacs Lisp
+(add-hook 'emacs-lisp-mode-hook
+                (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+
 ;; annoying messages
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-echo-area-message "eddie")
