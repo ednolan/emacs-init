@@ -9,14 +9,17 @@
 (setq-default tab-stop-list (number-sequence 2 200 2))
 (global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
-;; auto-save
-;; (setq auto-save-default nil)
-;; auto-save directory
-(setq backup-directory-alist `(("." . "~/.emacs-autosave")))
-(setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+;; numbered backups
+(setq backup-directory-alist `(("." . "~/emacs-backups")))
+(setq-default version-control t
+              kept-new-versions 10
+              kept-old-versions 0
+              delete-old-versions t
+              backup-by-copying t)
+(defun force-backup-of-buffer ()
+  (let ((buffer-backed-up nil))
+    (backup-buffer)))
+(add-hook 'before-save-hook 'force-backup-of-buffer)
 
 ;; trailing whitespace
 ;; C
@@ -59,7 +62,7 @@
 (icomplete-mode 99)
 
 ;; i forget what this does
-(set-face-attribute 'vertical-border 
+(set-face-attribute 'vertical-border
                     nil
                     :foreground "gray")
 
@@ -84,7 +87,7 @@
  ;; Change the path below to be wherever you've put your tuareg installation.
  (expand-file-name "~/.emacs.d/tuareg"))
 (require 'tuareg)
-(setq auto-mode-alist 
+(setq auto-mode-alist
       (append '(("\\.ml[ily]?$" . tuareg-mode))
           auto-mode-alist))
 
