@@ -9,17 +9,10 @@
 (setq-default tab-stop-list (number-sequence 2 200 2))
 (global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
-;; numbered backups
-(setq backup-directory-alist `(("." . "~/emacs-backups")))
-(setq-default version-control t
-              kept-new-versions 10
-              kept-old-versions 0
-              delete-old-versions t
-              backup-by-copying t)
-(defun force-backup-of-buffer ()
-  (let ((buffer-backed-up nil))
-    (backup-buffer)))
-(add-hook 'before-save-hook 'force-backup-of-buffer)
+;; file backups
+(add-to-list 'load-path "~/.emacs.d/elpa/backup-each-save-20130704.732/")
+(require 'backup-each-save)
+(add-hook 'after-save-hook 'backup-each-save)
 
 ;; trailing whitespace
 ;; C
