@@ -2,7 +2,7 @@
 (setq column-number-mode t)
 
 ;; tabs
-;;(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 (setq c-basic-offset 4)
 (setq js-indent-level 2)
 (setq-default tab-width 4)
@@ -75,10 +75,7 @@
 
 ;; -- Tuareg mode -----------------------------------------
 ;; Add Tuareg to your search path
-(add-to-list
- 'load-path
- ;; Change the path below to be wherever you've put your tuareg installation.
- (expand-file-name "~/.emacs.d/tuareg"))
+(load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
 (require 'tuareg)
 (setq auto-mode-alist
       (append '(("\\.ml[ily]?$" . tuareg-mode))
