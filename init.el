@@ -6,7 +6,7 @@
 (setq c-basic-offset 4)
 (setq js-indent-level 2)
 (setq-default tab-width 4)
-(setq-default tab-stop-list (number-sequence 2 200 2))
+(setq-default tab-stop-list (number-sequence 4 200 4))
 (global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
 ;; file backups
@@ -54,7 +54,7 @@
 ;; minibuffer autocomplete
 (icomplete-mode 99)
 
-;; i forget what this does
+;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
                     nil
                     :foreground "gray")
@@ -107,7 +107,52 @@
      ;; Use opam switch to lookup ocamlmerlin binary
      (setq merlin-command 'opam)
 
+;; C++
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+
+;; == irony-mode ==
+(use-package irony
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  :config
+  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;; irony-mode's buffers by irony-mode's function
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  )
+
+;; == company-mode ==
+(use-package company
+  :ensure t
+  :defer t
+  :init (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (use-package company-irony :ensure t :defer t)
+  (setq company-idle-delay              nil
+	company-minimum-prefix-length   2
+	company-show-numbers            t
+	company-tooltip-limit           20
+	company-dabbrev-downcase        nil
+	company-backends                '((company-irony company-gtags))
+	)
+  :bind ("C-;" . company-complete-common)
+  )
 
 ;; Custom
 
