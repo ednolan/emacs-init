@@ -3,10 +3,10 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq c-basic-offset 4)
+(setq c-basic-offset 2)
 (setq js-indent-level 2)
-(setq-default tab-width 4)
-(setq-default tab-stop-list (number-sequence 4 200 4))
+(setq-default tab-width 2)
+(setq-default tab-stop-list (number-sequence 2 200 2))
 (global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
 ;; file backups
@@ -14,19 +14,32 @@
 (require 'backup-each-save)
 (add-hook 'after-save-hook 'backup-each-save)
 
-;; trailing whitespace
+;; major mode hooks
+;; delete trailing whitespace; turn off electric indent
 ;; C
 (add-hook 'c-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'c-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'c-mode-hook
+          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
 ;; C++
 (add-hook 'c++-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'c++-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'c++-mode-hook
+          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
 ;; OCaml
 (add-hook 'tuareg-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'tuareg-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'tuareg-mode-hook
+          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'emacs-lisp-mode-hook
+          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
 
 ;; annoying messages
 (setq inhibit-splash-screen t)
@@ -48,9 +61,6 @@
 ;; delete selection mode
 (delete-selection-mode 1)
 
-;; don't auto-indent new lines
-(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
-
 ;; minibuffer autocomplete
 (icomplete-mode 99)
 
@@ -58,6 +68,8 @@
 (set-face-attribute 'vertical-border
                     nil
                     :foreground "gray")
+
+;; package management
 
 ;; melpa
 (when (>= emacs-major-version 24)
@@ -68,7 +80,40 @@
    t)
   (package-initialize))
 
+;; use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+;; cleaner mode lines
+(require 'diminish)
+
+;; helper for mode remappings
+(require 'bind-key)
+
 ;; programming languages
+
+;; both ocaml and c++
+;; == company-mode ==
+(use-package company
+  :ensure t
+  :defer t
+  :init (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (use-package company-irony :ensure t :defer t)
+  (setq company-idle-delay              nil
+	company-minimum-prefix-length   2
+	company-show-numbers            t
+	company-tooltip-limit           20
+	company-dabbrev-downcase        nil
+	company-backends                '((company-irony company-gtags))
+	)
+  :bind ("C-;" . company-complete-common)
+  )
+
 ;; ocaml
 ;; -- common-lisp compatibility if not added earlier in your .emacs
 (require 'cl)
@@ -106,16 +151,11 @@
      (setq merlin-use-auto-complete-mode 'easy)
      ;; Use opam switch to lookup ocamlmerlin binary
      (setq merlin-command 'opam)
+; Make company aware of merlin
+(with-eval-after-load 'company
+ (add-to-list 'company-backends 'merlin-company-backend))
 
 ;; C++
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
 
 ;; == irony-mode ==
 (use-package irony
@@ -135,23 +175,6 @@
       'irony-completion-at-point-async))
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  )
-
-;; == company-mode ==
-(use-package company
-  :ensure t
-  :defer t
-  :init (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (use-package company-irony :ensure t :defer t)
-  (setq company-idle-delay              nil
-	company-minimum-prefix-length   2
-	company-show-numbers            t
-	company-tooltip-limit           20
-	company-dabbrev-downcase        nil
-	company-backends                '((company-irony company-gtags))
-	)
-  :bind ("C-;" . company-complete-common)
   )
 
 ;; Custom
