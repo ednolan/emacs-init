@@ -1,3 +1,6 @@
+;; font size
+(set-face-attribute 'default (selected-frame) :height 80)
+
 ;; col numbers
 (setq column-number-mode t)
 
@@ -154,6 +157,9 @@
 ; Make company aware of merlin
 (with-eval-after-load 'company
  (add-to-list 'company-backends 'merlin-company-backend))
+
+; bind merlin-locate to C-c ;
+(add-hook 'merlin-mode-hook (lambda () (local-set-key (kbd "C-c ;") 'merlin-locate)))
 
 ;; C++
 
