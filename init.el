@@ -1,5 +1,6 @@
-;; font size
-(set-face-attribute 'default (selected-frame) :height 80)
+;; smaller font size on my laptop
+(when (string= system-name "ed-centos7-mbp")
+  (set-face-attribute 'default (selected-frame) :height 80))
 
 ;; col numbers
 (setq column-number-mode t)
