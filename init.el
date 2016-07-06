@@ -14,6 +14,10 @@
 (global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
 ;; file backups
+;; prevent emacs from making backups the usual way
+(setq backup-inhibited t)
+(setq auto-save-default nil)
+;; use backup-each-save
 (add-to-list 'load-path "~/.emacs.d/elpa/backup-each-save-20130704.732/")
 (require 'backup-each-save)
 (add-hook 'after-save-hook 'backup-each-save)
