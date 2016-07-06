@@ -18,6 +18,12 @@
 (require 'backup-each-save)
 (add-hook 'after-save-hook 'backup-each-save)
 
+;; meta-arrow to move between buffers
+(global-set-key [M-left] 'windmove-left)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-up] 'windmove-up)
+(global-set-key [M-down] 'windmove-down)
+
 ;; major mode hooks
 ;; delete trailing whitespace; turn off electric indent
 ;; C
