@@ -11,12 +11,12 @@
 (setq js-indent-level 2)
 (setq-default tab-width 2)
 (setq-default tab-stop-list (number-sequence 2 200 2))
-(global-set-key (kbd "TAB") 'tab-to-tab-stop)
 
 ;; file backups
 ;; prevent emacs from making backups the usual way
 (setq backup-inhibited t)
 (setq auto-save-default nil)
+(setq make-backup-files nil)
 ;; use backup-each-save
 (add-to-list 'load-path "~/.emacs.d/elpa/backup-each-save-20130704.732/")
 (require 'backup-each-save)
@@ -36,12 +36,14 @@
 (add-hook 'c-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'c-mode-hook
           (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
+(add-hook 'c-mode-hook (lambda () (local-set-key (kbd "TAB") 'tab-to-tab-stop)))
 ;; C++
 (add-hook 'c++-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 (add-hook 'c++-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'c++-mode-hook
           (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
+(add-hook 'c++-mode-hook (lambda () (local-set-key (kbd "TAB") 'tab-to-tab-stop)))
 ;; OCaml
 (add-hook 'tuareg-mode-hook
                 (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
@@ -54,6 +56,7 @@
 (add-hook 'emacs-lisp-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'emacs-lisp-mode-hook
           (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (local-set-key (kbd "TAB") 'tab-to-tab-stop)))
 
 ;; annoying messages
 (setq inhibit-splash-screen t)
@@ -171,6 +174,9 @@
 
 ; bind merlin-locate to C-c ;
 (add-hook 'merlin-mode-hook (lambda () (local-set-key (kbd "C-c ;") 'merlin-locate)))
+
+; use ocp-indent
+(require 'ocp-indent)
 
 ;; C++
 
