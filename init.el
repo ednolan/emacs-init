@@ -1,7 +1,3 @@
-;; smaller font size on my laptop
-(when (string= system-name "ed-centos7-mbp")
-  (set-face-attribute 'default (selected-frame) :height 80))
-
 ;; col numbers
 (setq column-number-mode t)
 
@@ -15,8 +11,6 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq c-basic-offset 2)
-(setq js-indent-level 2)
 (setq-default tab-width 2)
 (setq-default tab-stop-list (number-sequence 2 200 2))
 
@@ -46,38 +40,57 @@
                     nil
                     :foreground "gray")
 
+;; interpret files as utf-8 encoded by default
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+;; smaller frame size on my laptop
+(if (window-system)
+    (when (string= system-name "ed-centos7-mbp")
+      (set-face-attribute 'default (selected-frame) :height 80)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (select-frame frame)
+                  (set-face-attribute 'default (selected-frame) :height 80)))))
+
 ;; major mode hooks
-;; typically:
 ;; delete trailing whitespace
 ;; turn off electric indent
 ;; C-j for newline-and-indent
-;; tab key only inserts spaces to tab stop
+;; configure tabination
+
+;; all
+(defun setup-common ()
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (electric-indent-local-mode -1)
+  (local-set-key (kbd "C-j") #'newline-and-indent))
 ;; C
-(add-hook 'c-mode-hook
-          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-(add-hook 'c-mode-hook (lambda () (electric-indent-local-mode -1)))
-(add-hook 'c-mode-hook
-          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
-(add-hook 'c-mode-hook (lambda () (local-set-key (kbd "TAB") 'tab-to-tab-stop)))
+(defun setup-c-mode ()
+  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
+  (set (make-local-variable 'c-basic-offset) 2))
+(add-hook 'c-mode-hook 'setup-common)
+(add-hook 'c-mode-hook 'setup-c-mode)
 ;; C++
-(add-hook 'c++-mode-hook
-          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-(add-hook 'c++-mode-hook (lambda () (electric-indent-local-mode -1)))
-(add-hook 'c++-mode-hook
-          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
-(add-hook 'c++-mode-hook (lambda () (local-set-key (kbd "TAB") 'tab-to-tab-stop)))
+(defun setup-c++-mode ()
+  (local-set-key (kbd "TAB") 'tab-to-tab-stop))
+(add-hook 'c++-mode-hook 'setup-common)
+(add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; OCaml
-(add-hook 'tuareg-mode-hook
-          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-(add-hook 'tuareg-mode-hook (lambda () (electric-indent-local-mode -1)))
-(add-hook 'tuareg-mode-hook
-          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
+(add-hook 'tuareg-mode-hook 'setup-common)
 ;; Emacs Lisp
-(add-hook 'emacs-lisp-mode-hook
-          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-(add-hook 'emacs-lisp-mode-hook (lambda () (electric-indent-local-mode -1)))
-(add-hook 'emacs-lisp-mode-hook
-          (lambda () (local-set-key (kbd "C-j") #'newline-and-indent)))
+(add-hook 'emacs-lisp-mode-hook 'setup-common)
+;; JavaScript
+(defun setup-js-mode ()
+  (set (make-local-variable 'js-indent-level) 2))
+(add-hook 'js-mode-hook 'setup-common)
+(add-hook 'js-mode-hook 'setup-js-mode)
+;; HTML
+(defun setup-html-mode ()
+  (set (make-local-variable 'sgml-basic-offset) 2))
+(add-hook 'js-mode-hook 'setup-common)
+(add-hook 'js-mode-hook 'setup-html-mode)
 
 ;; package management
 ;; melpa
@@ -102,7 +115,7 @@
   (setq auto-save-default nil)
   (setq make-backup-files nil)
   (add-hook 'after-save-hook 'backup-each-save)
-  )
+)
 
 ;; cleaner mode lines
 (use-package diminish)
@@ -200,3 +213,9 @@
  '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
  '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
