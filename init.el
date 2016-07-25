@@ -89,8 +89,8 @@
 ;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 2))
-(add-hook 'js-mode-hook 'setup-common)
-(add-hook 'js-mode-hook 'setup-html-mode)
+(add-hook 'html-mode-hook 'setup-common)
+(add-hook 'html-mode-hook 'setup-html-mode)
 
 ;; package management
 ;; melpa
