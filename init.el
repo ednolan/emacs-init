@@ -11,8 +11,8 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
-(setq-default tab-stop-list (number-sequence 2 200 2))
+(setq-default tab-width 4)
+(setq-default tab-stop-list (number-sequence 4 200 4))
 
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
@@ -69,7 +69,7 @@
 ;; C
 (defun setup-c-mode ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)
-  (set (make-local-variable 'c-basic-offset) 2))
+  (set (make-local-variable 'c-basic-offset) 4))
 (add-hook 'c-mode-hook 'setup-common)
 (add-hook 'c-mode-hook 'setup-c-mode)
 ;; C++
@@ -83,12 +83,12 @@
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; JavaScript
 (defun setup-js-mode ()
-  (set (make-local-variable 'js-indent-level) 2))
+  (set (make-local-variable 'js-indent-level) 4))
 (add-hook 'js-mode-hook 'setup-common)
 (add-hook 'js-mode-hook 'setup-js-mode)
 ;; HTML
 (defun setup-html-mode ()
-  (set (make-local-variable 'sgml-basic-offset) 2))
+  (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
 
