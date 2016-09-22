@@ -48,7 +48,7 @@
 
 ;; smaller frame size on my laptop
 (if (window-system)
-    (when (string= system-name "ed-centos7-mbp")
+    (when (string= system-name "ed-centos7-mbp.home")
       (set-face-attribute 'default (selected-frame) :height 80)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
