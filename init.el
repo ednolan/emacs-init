@@ -48,12 +48,12 @@
 
 ;; smaller frame size on my laptop
 (if (window-system)
-    (when (string= system-name "ed-centos7-mbp")
-      (set-face-attribute 'default (selected-frame) :height 80)
+    (when (string= system-name "ed-ubuntu1610-mbp")
+      (set-face-attribute 'default (selected-frame) :height 160)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
                   (select-frame frame)
-                  (set-face-attribute 'default (selected-frame) :height 80)))))
+                  (set-face-attribute 'default (selected-frame) :height 160)))))
 
 ;; major mode hooks
 ;; delete trailing whitespace
