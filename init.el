@@ -11,8 +11,8 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default tab-stop-list (number-sequence 4 200 4))
+(setq-default tab-width 2)
+(setq-default tab-stop-list (number-sequence 2 200 2))
 
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
@@ -47,13 +47,13 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; smaller frame size on my laptop
-(if (window-system)
-    (when (string= system-name "ed-centos7-mbp")
-      (set-face-attribute 'default (selected-frame) :height 80)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (select-frame frame)
-                  (set-face-attribute 'default (selected-frame) :height 80)))))
+;;(if (window-system)
+;;    (when (string= system-name "ed-ubuntu1610-mbp")
+;;      (set-face-attribute 'default (selected-frame) :height 160)
+;;      (add-hook 'after-make-frame-functions
+;;                (lambda (frame)
+;;                  (select-frame frame)
+;;                  (set-face-attribute 'default (selected-frame) :height 160)))))
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -143,6 +143,16 @@
   :bind ("C-;" . company-complete-common)
   )
 
+;; CMake
+; Add cmake listfile names to the mode list.
+(setq auto-mode-alist
+	  (append
+	   '(("CMakeLists\\.txt\\'" . cmake-mode))
+	   '(("\\.cmake\\'" . cmake-mode))
+	   auto-mode-alist))
+
+(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+
 ;; ocaml
 ;; -- common-lisp compatibility if not added earlier in your .emacs
 (require 'cl)
@@ -210,6 +220,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
  '(tool-bar-mode nil))
@@ -218,4 +229,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 102 :width normal)))))
