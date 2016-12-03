@@ -11,8 +11,8 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default tab-stop-list (number-sequence 4 200 4))
+(setq-default tab-width 2)
+(setq-default tab-stop-list (number-sequence 2 200 2))
 
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
