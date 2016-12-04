@@ -47,13 +47,13 @@
 (set-keyboard-coding-system 'utf-8)
 
 ;; smaller frame size on my laptop
-;;(if (window-system)
-;;    (when (string= system-name "ed-ubuntu1610-mbp")
-;;      (set-face-attribute 'default (selected-frame) :height 160)
-;;      (add-hook 'after-make-frame-functions
-;;                (lambda (frame)
-;;                  (select-frame frame)
-;;                  (set-face-attribute 'default (selected-frame) :height 160)))))
+(if (window-system)
+    (when (string= system-name "ed-ubuntu1610-mbp")
+      (set-face-attribute 'default (selected-frame) :height 160)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (select-frame frame)
+                  (set-face-attribute 'default (selected-frame) :height 160)))))
 
 ;; major mode hooks
 ;; delete trailing whitespace
