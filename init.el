@@ -91,6 +91,8 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
+;; Rust
+(add-hook 'rust-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
@@ -125,35 +127,7 @@
 
 ;; programming languages
 
-;; both ocaml and c++
-;; == company-mode ==
-(use-package company
-  :ensure t
-  :defer t
-  :init (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  (use-package company-irony :ensure t :defer t)
-  (setq company-idle-delay              nil
-        company-minimum-prefix-length   2
-        company-show-numbers            t
-        company-tooltip-limit           20
-        company-dabbrev-downcase        nil
-        company-backends                '((company-irony company-gtags))
-        )
-  :bind ("C-;" . company-complete-common)
-  )
-
-;; CMake
-; Add cmake listfile names to the mode list.
-(setq auto-mode-alist
-	  (append
-	   '(("CMakeLists\\.txt\\'" . cmake-mode))
-	   '(("\\.cmake\\'" . cmake-mode))
-	   auto-mode-alist))
-
-(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
-
-;; ocaml
+;; OCaml
 ;; -- common-lisp compatibility if not added earlier in your .emacs
 (require 'cl)
 ;; Setup environment variables using opam
@@ -193,26 +167,24 @@
 (require 'ocp-indent)
 
 ;; C++
-;; == irony-mode ==
-(use-package irony
+;; CMake
+; Add cmake listfile names to the mode list.
+(setq auto-mode-alist
+	  (append
+	   '(("CMakeLists\\.txt\\'" . cmake-mode))
+	   '(("\\.cmake\\'" . cmake-mode))
+	   auto-mode-alist))
+
+(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+
+;; Rust
+(use-package rust-mode
   :ensure t
   :defer t
   :init
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  :config
-  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;; irony-mode's buffers by irony-mode's function
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  )
-
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
 ;; Custom
 
 (custom-set-variables
