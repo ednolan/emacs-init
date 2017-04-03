@@ -93,6 +93,8 @@
 (add-hook 'html-mode-hook 'setup-html-mode)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
+;; Golang
+(add-hook 'go-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
@@ -185,6 +187,17 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; Go
+(use-package go-mode
+  :ensure t
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+)
+
+
 ;; Custom
 
 (custom-set-variables
