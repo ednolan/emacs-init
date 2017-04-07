@@ -33,7 +33,8 @@
 (delete-selection-mode 1)
 
 ;; minibuffer autocomplete
-(icomplete-mode 99)
+;; broken for some reason?
+;; (icomplete-mode 1)
 
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
@@ -130,41 +131,16 @@
 ;; programming languages
 
 ;; OCaml
-;; -- common-lisp compatibility if not added earlier in your .emacs
-(require 'cl)
-;; Setup environment variables using opam
-(dolist
-    (var (car (read-from-string
-               (shell-command-to-string "opam config env --sexp"))))
-  (setenv (car var) (cadr var)))
-;; Update the emacs path
-(setq exec-path (split-string (getenv "PATH") path-separator))
-;; Update the emacs load path
-(push (concat (getenv "OCAML_TOPLEVEL_PATH")
-              "/../../share/emacs/site-lisp") load-path)
-;; Add opam emacs directory to the load-path
-(setq opam-share (substring (shell-command-to-string "opam config var
-   share 2> /dev/null") 0 -1))
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-;; Tuareg
-(require 'tuareg)
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode))
-              auto-mode-alist))
-;; Merlin
-(require 'merlin)
-;; Start merlin on ocaml files
-(add-hook 'tuareg-mode-hook 'merlin-mode t)
-(add-hook 'caml-mode-hook 'merlin-mode t)
-;; Enable auto-complete
-(setq merlin-use-auto-complete-mode 'easy)
-;; Use opam switch to lookup ocamlmerlin binary
-(setq merlin-command 'opam)
-;; Make company aware of merlin
-(with-eval-after-load 'company
-  (add-to-list 'company-backends 'merlin-company-backend))
-;; bind merlin-locate to C-c ;
-(add-hook 'merlin-mode-hook (lambda () (local-set-key (kbd "C-c ;") 'merlin-locate)))
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+  (when (and opam-share (file-directory-p opam-share))
+    ;; Register Merlin
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (autoload 'merlin-mode "merlin" nil t nil)
+    ;; Automatically start it in OCaml buffers
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    ;; Use opam switch to lookup ocamlmerlin binary
+    (setq merlin-command 'opam)))
 ;; use ocp-indent
 (require 'ocp-indent)
 
