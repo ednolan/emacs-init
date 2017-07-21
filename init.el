@@ -47,14 +47,9 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
-;; smaller frame size on my laptop
-(if (window-system)
-    (when (string= system-name "ed-ubuntu1610-mbp")
-      (set-face-attribute 'default (selected-frame) :height 160)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (select-frame frame)
-                  (set-face-attribute 'default (selected-frame) :height 160)))))
+;; custom theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'mac-classic)
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -95,6 +90,11 @@
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Golang
+(defun setup-go-mode ()
+  ; Call Gofmt before saving
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (set (make-local-variable 'tab-width) 8))
+(add-hook 'go-mode-hook 'setup-go-mode)
 (add-hook 'go-mode-hook 'setup-common)
 
 ;; package management
@@ -131,6 +131,9 @@
 ;; programming languages
 
 ;; OCaml
+;; tuareg
+(load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
+;; merlin
 (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
   (when (and opam-share (file-directory-p opam-share))
     ;; Register Merlin
@@ -182,6 +185,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(custom-safe-themes
+   (quote
+    ("68b7d8301bf8121abb8a92bbe7c247fbc3e64a0adfdda534daefd18f18c44a55" default)))
  '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
  '(tool-bar-mode nil))
@@ -190,4 +196,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 102 :width normal)))))
+ '(default ((t (:family "Consolas" :foundry "MS  " :slant normal :weight normal :height 120 :width normal)))))
