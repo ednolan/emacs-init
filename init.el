@@ -73,29 +73,31 @@
   (local-set-key (kbd "TAB") 'tab-to-tab-stop))
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
-;; OCaml
-(add-hook 'tuareg-mode-hook 'setup-common)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
-;; JavaScript
-(defun setup-js-mode ()
-  (set (make-local-variable 'js-indent-level) 4))
-(add-hook 'js-mode-hook 'setup-common)
-(add-hook 'js-mode-hook 'setup-js-mode)
-;; HTML
-(defun setup-html-mode ()
-  (set (make-local-variable 'sgml-basic-offset) 4))
-(add-hook 'html-mode-hook 'setup-common)
-(add-hook 'html-mode-hook 'setup-html-mode)
-;; Rust
-(add-hook 'rust-mode-hook 'setup-common)
 ;; Golang
 (defun setup-go-mode ()
   ; Call Gofmt before saving
   (add-hook 'before-save-hook 'gofmt-before-save)
   (set (make-local-variable 'tab-width) 8))
-(add-hook 'go-mode-hook 'setup-go-mode)
 (add-hook 'go-mode-hook 'setup-common)
+(add-hook 'go-mode-hook 'setup-go-mode)
+;; HTML
+(defun setup-html-mode ()
+  (set (make-local-variable 'sgml-basic-offset) 4))
+(add-hook 'html-mode-hook 'setup-common)
+(add-hook 'html-mode-hook 'setup-html-mode)
+;; JavaScript
+(defun setup-js-mode ()
+  (set (make-local-variable 'js-indent-level) 4))
+(add-hook 'js-mode-hook 'setup-common)
+(add-hook 'js-mode-hook 'setup-js-mode)
+;; LaTeX
+(add-hook 'latex-mode-hook 'setup-common)
+;; OCaml
+(add-hook 'tuareg-mode-hook 'setup-common)
+;; Rust
+(add-hook 'rust-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
@@ -130,6 +132,39 @@
 
 ;; programming languages
 
+;; C++
+;; CMake
+; Add cmake listfile names to the mode list.
+(setq auto-mode-alist
+	  (append
+	   '(("CMakeLists\\.txt\\'" . cmake-mode))
+	   '(("\\.cmake\\'" . cmake-mode))
+	   auto-mode-alist))
+
+(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+
+;; Go
+(use-package go-mode
+  :ensure t
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+)
+
+;; LaTeX
+(use-package tex-mode
+  :ensure auctex
+  :defer t
+)
+(use-package auctex-latexmk
+  :ensure t
+  :defer t
+  :init
+  (auctex-latexmk-setup)
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+)
+
 ;; OCaml
 ;; tuareg
 (load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
@@ -147,17 +182,6 @@
 ;; use ocp-indent
 (require 'ocp-indent)
 
-;; C++
-;; CMake
-; Add cmake listfile names to the mode list.
-(setq auto-mode-alist
-	  (append
-	   '(("CMakeLists\\.txt\\'" . cmake-mode))
-	   '(("\\.cmake\\'" . cmake-mode))
-	   auto-mode-alist))
-
-(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
-
 ;; Rust
 (use-package rust-mode
   :ensure t
@@ -166,16 +190,6 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
-
-;; Go
-(use-package go-mode
-  :ensure t
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-)
-
 
 ;; Custom
 
@@ -190,6 +204,9 @@
     ("68b7d8301bf8121abb8a92bbe7c247fbc3e64a0adfdda534daefd18f18c44a55" default)))
  '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
+ '(package-selected-packages
+   (quote
+    (autex-latexmk use-package rust-mode go-mode company-irony backup-each-save auctex-latexmk)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
