@@ -49,7 +49,7 @@
 
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'mac-classic)
+(load-theme 'mac-classic t)
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -165,8 +165,7 @@
           (lambda()
             (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
             (setq TeX-command-default "XeLaTeX")
-            (setq TeX-save-query nil)
-            (setq TeX-show-compilation t)))
+            (setq TeX-save-query nil)))
 
 ;; OCaml
 ;; tuareg
