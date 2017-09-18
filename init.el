@@ -99,7 +99,7 @@
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
-  (global-set-key (kbd "C-c <f1>") 'ff-find-other-file)
+  (global-set-key (kbd "C-c o") 'ff-find-other-file)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
