@@ -54,6 +54,36 @@
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
+;; revert all buffers function
+;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
+(defun revert-all-buffers ()
+  "Iterate through the list of buffers and revert them, e.g. after a
+    new branch has been checked out."
+  (interactive)
+  (when (yes-or-no-p
+         "Are you sure - any changes in open buffers will be lost! ")
+    (let ((frm1 (selected-frame)))
+      (make-frame)
+      (let ((frm2 (next-frame frm1)))
+        (select-frame frm2)
+        (make-frame-invisible)
+        (dolist (x (buffer-list))
+          (let ((test-buffer (buffer-name x)))
+            (when (not (string-match "\*" test-buffer))
+              (when (not (file-exists-p (buffer-file-name x)))
+                (select-frame frm1)
+                (when (yes-or-no-p
+                       (concat "File no longer exists ("
+                               (buffer-name x)
+                               "). Close buffer? "))
+                  (kill-buffer (buffer-name x)))
+                (select-frame frm2))
+              (when (file-exists-p (buffer-file-name x))
+                (switch-to-buffer (buffer-name x))
+                (revert-buffer t t t)))))
+        (select-frame frm1)
+        (delete-frame frm2)))))
+
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
@@ -65,7 +95,12 @@
 (defun setup-c++-mode ()
 ;;  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
   (local-set-key [C-tab] 'tab-to-tab-stop)
-  (set (make-local-variable 'c-basic-offset) 4))
+  (set (make-local-variable 'c-basic-offset) 4)
+  (defvar my-cpp-other-file-alist
+    '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
+  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  (global-set-key (kbd "C-c <f1>") 'ff-find-other-file)
+  )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
