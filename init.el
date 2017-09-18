@@ -47,6 +47,10 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'mac-classic t)
 
+;; home/end keys on mac
+(define-key global-map [home] 'beginning-of-line)
+(define-key global-map [end] 'end-of-line)
+
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
@@ -114,4 +118,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-)
+ )
