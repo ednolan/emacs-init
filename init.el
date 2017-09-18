@@ -64,6 +64,8 @@
   (set (make-local-variable 'c-basic-offset) 4))
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
+;; Emacs Lisp
+(add-hook 'emacs-lisp-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
