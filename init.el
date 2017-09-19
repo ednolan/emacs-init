@@ -49,7 +49,7 @@
 
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'mac-classic)
+(load-theme 'mac-classic t)
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -129,24 +129,6 @@
 (use-package bind-key)
 
 ;; programming languages
-
-;; OCaml
-;; tuareg
-(load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
-;; merlin
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)))
-;; use ocp-indent
-(require 'ocp-indent)
-
 ;; C++
 ;; CMake
 ; Add cmake listfile names to the mode list.
@@ -185,9 +167,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-safe-themes
-   (quote
-    ("68b7d8301bf8121abb8a92bbe7c247fbc3e64a0adfdda534daefd18f18c44a55" default)))
  '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
  '(tool-bar-mode nil))
