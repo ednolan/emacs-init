@@ -92,14 +92,46 @@
 (defun setup-common ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 ;; C++
+(defconst mana-cpp-style
+  '((c-hanging-braces-alist . ((brace-list-open)
+                               (brace-entry-open)
+                               (statement-cont)
+                               (substatement-open after)
+                               (block-close . c-snug-do-while)
+                               (extern-lang-open after)
+                               (namespace-open after)
+                               (defun-open (before after))
+                               (defun-close (before after))
+                               (class-open after)
+                               (class-close before)
+                               (inline-open (before after))
+                               (inline-close (before after))
+                               (func-decl-cont after)
+                               (member-init-intro before)
+                               (member-init-cont)
+                               (inher-intro)
+                               (inher-cont)
+                               (block-open)
+                               (block-close (before after))))
+    (c-cleanup-list . (brace-else-brace
+                       brace-elseif-brace
+                       brace-catch-brace
+                       empty-defun-braces
+                       defun-close-semi
+                       list-close-comma
+                       scope-operator))
+    (c-basic-offset . 4)
+    (c-offsets-alist . ((innamespace . 0)))
+  "MANA Tech LLC Style"))
 (defun setup-c++-mode ()
-;;  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
   (local-set-key [C-tab] 'tab-to-tab-stop)
-  (set (make-local-variable 'c-basic-offset) 4)
+  (local-set-key (kbd "C-c o") 'ff-find-other-file)
+  (set (make-local-variable 'c-max-one-liner-length) 80)
+  (c-add-style "mana" mana-cpp-style)
+  (c-set-style "mana")
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
-  (global-set-key (kbd "C-c o") 'ff-find-other-file)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -128,6 +160,14 @@
 (add-hook 'tuareg-mode-hook 'setup-common)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
+;; Smerge
+(defun setup-smerge-mode ()
+  (local-set-key (kbd "C-c {") 'smerge-next)
+  (local-set-key (kbd "C-c }") 'smerge-prev)
+  (local-set-key (kbd "C-c m") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c o") 'smerge-keep-other))
+(add-hook 'smerge-mode-hook 'setup-common)
+(add-hook 'smerge-mode-hool 'setup-smerge-mode)
 
 ;; package management
 ;; melpa
