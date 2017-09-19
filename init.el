@@ -105,6 +105,29 @@
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
+;; Golang
+(defun setup-go-mode ()
+  ; Call Gofmt before saving
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (set (make-local-variable 'tab-width) 8))
+(add-hook 'go-mode-hook 'setup-common)
+(add-hook 'go-mode-hook 'setup-go-mode)
+;; HTML
+(defun setup-html-mode ()
+  (set (make-local-variable 'sgml-basic-offset) 4))
+(add-hook 'html-mode-hook 'setup-common)
+(add-hook 'html-mode-hook 'setup-html-mode)
+;; JavaScript
+(defun setup-js-mode ()
+  (set (make-local-variable 'js-indent-level) 4))
+(add-hook 'js-mode-hook 'setup-common)
+(add-hook 'js-mode-hook 'setup-js-mode)
+;; LaTeX
+(add-hook 'latex-mode-hook 'setup-common)
+;; OCaml
+(add-hook 'tuareg-mode-hook 'setup-common)
+;; Rust
+(add-hook 'rust-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
