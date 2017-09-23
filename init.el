@@ -11,8 +11,8 @@
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 2)
-(setq-default tab-stop-list (number-sequence 2 200 2))
+(setq-default tab-width 4)
+(setq-default tab-stop-list (number-sequence 4 200 4))
 
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
@@ -32,10 +32,6 @@
 ;; delete selection mode
 (delete-selection-mode 1)
 
-;; minibuffer autocomplete
-;; broken for some reason?
-;; (icomplete-mode 1)
-
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
                     nil
@@ -51,17 +47,46 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'mac-classic t)
 
+;; scratch buffer to text mode
+(setq initial-major-mode 'text-mode)
+
+;; revert all buffers function
+;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
+(defun revert-all-buffers ()
+  "Iterate through the list of buffers and revert them, e.g. after a
+    new branch has been checked out."
+  (interactive)
+  (when (yes-or-no-p
+         "Are you sure - any changes in open buffers will be lost! ")
+    (let ((frm1 (selected-frame)))
+      (make-frame)
+      (let ((frm2 (next-frame frm1)))
+        (select-frame frm2)
+        (make-frame-invisible)
+        (dolist (x (buffer-list))
+          (let ((test-buffer (buffer-name x)))
+            (when (not (string-match "\*" test-buffer))
+              (when (not (file-exists-p (buffer-file-name x)))
+                (select-frame frm1)
+                (when (yes-or-no-p
+                       (concat "File no longer exists ("
+                               (buffer-name x)
+                               "). Close buffer? "))
+                  (kill-buffer (buffer-name x)))
+                (select-frame frm2))
+              (when (file-exists-p (buffer-file-name x))
+                (switch-to-buffer (buffer-name x))
+                (revert-buffer t t t)))))
+        (select-frame frm1)
+        (delete-frame frm2)))))
+
 ;; major mode hooks
 ;; delete trailing whitespace
-;; turn off electric indent
-;; C-j for newline-and-indent
 ;; configure tabination
 
 ;; all
 (defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
-  (electric-indent-local-mode -1)
-  (local-set-key (kbd "C-j") #'newline-and-indent))
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 ;; C
 (defun setup-c-mode ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)
@@ -69,8 +94,47 @@
 (add-hook 'c-mode-hook 'setup-common)
 (add-hook 'c-mode-hook 'setup-c-mode)
 ;; C++
+(defconst mana-cpp-style
+  '((c-hanging-braces-alist . ((brace-list-open)
+                               (brace-entry-open)
+                               (statement-cont)
+                               (substatement-open after)
+                               (block-close . c-snug-do-while)
+                               (extern-lang-open after)
+                               (namespace-open after)
+                               (defun-open (before after))
+                               (defun-close (before after))
+                               (class-open after)
+                               (class-close before)
+                               (inline-open (before after))
+                               (inline-close (before after))
+                               (func-decl-cont after)
+                               (member-init-intro before)
+                               (member-init-cont)
+                               (inher-intro)
+                               (inher-cont)
+                               (block-open)
+                               (block-close (before after))))
+    (c-cleanup-list . (brace-else-brace
+                       brace-elseif-brace
+                       brace-catch-brace
+                       empty-defun-braces
+                       defun-close-semi
+                       list-close-comma
+                       scope-operator))
+    (c-basic-offset . 4)
+    (c-offsets-alist . ((innamespace . 0))))
+  "MANA Tech LLC Style")
 (defun setup-c++-mode ()
-  (local-set-key (kbd "TAB") 'tab-to-tab-stop))
+  (local-set-key [C-tab] 'tab-to-tab-stop)
+  (local-set-key (kbd "C-c o") 'ff-find-other-file)
+  (set (make-local-variable 'c-max-one-liner-length) 80)
+  (c-add-style "mana" mana-cpp-style)
+  (c-set-style "mana")
+  (defvar my-cpp-other-file-alist
+    '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
+  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
@@ -98,6 +162,14 @@
 (add-hook 'tuareg-mode-hook 'setup-common)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
+;; Smerge
+(defun setup-smerge-mode ()
+  (local-set-key (kbd "C-c {") 'smerge-next)
+  (local-set-key (kbd "C-c }") 'smerge-prev)
+  (local-set-key (kbd "C-c m") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c o") 'smerge-keep-other))
+(add-hook 'smerge-mode-hook 'setup-common)
+(add-hook 'smerge-mode-hool 'setup-smerge-mode)
 
 ;; package management
 ;; melpa
@@ -184,15 +256,6 @@
 ;; use ocp-indent
 (require 'ocp-indent)
 
-;; Rust
-(use-package rust-mode
-  :ensure t
-  :defer t
-  :init
-  (require 'rust-mode)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-)
-
 ;; Custom
 
 (custom-set-variables
@@ -201,14 +264,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-safe-themes
-   (quote
-    ("68b7d8301bf8121abb8a92bbe7c247fbc3e64a0adfdda534daefd18f18c44a55" default)))
- '(fringe-mode 0 nil (fringe))
  '(linum-format (quote dynamic))
- '(package-selected-packages
-   (quote
-    (autex-latexmk use-package rust-mode go-mode company-irony backup-each-save auctex-latexmk)))
+ '(package-selected-packages (quote (use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
