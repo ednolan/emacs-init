@@ -121,8 +121,8 @@
                        list-close-comma
                        scope-operator))
     (c-basic-offset . 4)
-    (c-offsets-alist . ((innamespace . 0)))
-  "MANA Tech LLC Style"))
+    (c-offsets-alist . ((innamespace . 0))))
+  "MANA Tech LLC Style")
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
