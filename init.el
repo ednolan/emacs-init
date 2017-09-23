@@ -90,7 +90,8 @@
 
 ;; all
 (defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (local-set-key (kbd "C-c e") 'mark-whole-buffer))
 ;; C++
 (defconst mana-cpp-style
   '((c-hanging-braces-alist . ((brace-list-open)
@@ -121,7 +122,12 @@
                        list-close-comma
                        scope-operator))
     (c-basic-offset . 4)
-    (c-offsets-alist . ((innamespace . 0))))
+    (c-offsets-alist . ((innamespace . 0)
+                        (access-label . /)
+                        (topmost-intro . 0)
+                        (arglist-intro . ++)
+                        (arglist-cont-nonempty . c-lineup-arglist)
+                        (comment-intro . 0))))
   "MANA Tech LLC Style")
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
@@ -129,6 +135,7 @@
   (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
+  (c-toggle-auto-newline)
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
@@ -162,12 +169,12 @@
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
-  (local-set-key (kbd "C-c {") 'smerge-next)
-  (local-set-key (kbd "C-c }") 'smerge-prev)
+  (local-set-key (kbd "C-c {") 'smerge-prev)
+  (local-set-key (kbd "C-c }") 'smerge-next)
   (local-set-key (kbd "C-c m") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c o") 'smerge-keep-other))
+  (local-set-key (kbd "C-c u") 'smerge-keep-other))
 (add-hook 'smerge-mode-hook 'setup-common)
-(add-hook 'smerge-mode-hool 'setup-smerge-mode)
+(add-hook 'smerge-mode-hook 'setup-smerge-mode)
 
 ;; package management
 ;; melpa
