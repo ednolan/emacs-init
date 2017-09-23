@@ -256,6 +256,15 @@
 ;; use ocp-indent
 (require 'ocp-indent)
 
+;; Rust
+(use-package rust-mode
+  :ensure t
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
+
 ;; Custom
 
 (custom-set-variables
