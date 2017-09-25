@@ -123,7 +123,12 @@
                        list-close-comma
                        scope-operator))
     (c-basic-offset . 4)
-    (c-offsets-alist . ((innamespace . 0))))
+    (c-offsets-alist . ((innamespace . 0)
+                        (access-label . /)
+                        (topmost-intro . 0)
+                        (arglist-intro . ++)
+                        (arglist-cont-nonempty . c-lineup-arglist)
+                        (comment-intro . 0))))
   "MANA Tech LLC Style")
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
