@@ -86,7 +86,9 @@
 
 ;; all
 (defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (local-set-key (kbd "C-c e") 'mark-whole-buffer)
+  )
 ;; C
 (defun setup-c-mode ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)
@@ -169,12 +171,12 @@
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
-  (local-set-key (kbd "C-c {") 'smerge-next)
-  (local-set-key (kbd "C-c }") 'smerge-prev)
+  (local-set-key (kbd "C-c {") 'smerge-prev)
+  (local-set-key (kbd "C-c }") 'smerge-next)
   (local-set-key (kbd "C-c m") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c o") 'smerge-keep-other))
+  (local-set-key (kbd "C-c u") 'smerge-keep-other))
 (add-hook 'smerge-mode-hook 'setup-common)
-(add-hook 'smerge-mode-hool 'setup-smerge-mode)
+(add-hook 'smerge-mode-hook 'setup-smerge-mode)
 
 ;; package management
 ;; melpa
@@ -219,6 +221,24 @@
 	   auto-mode-alist))
 
 (autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+
+;; irony
+(use-package irony
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'irony-mode)
+  :config
+  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;; irony-mode's buffers by irony-mode's function
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  )
 
 ;; Go
 (use-package go-mode
@@ -279,7 +299,6 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(linum-format (quote dynamic))
- '(package-selected-packages (quote (use-package)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
