@@ -135,6 +135,8 @@
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
+  (local-set-key (kbd "<f6>") 'cmake-ide-compile)
+  (local-set-key (kbd "C-.") 'company-complete-common)
   (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
@@ -222,23 +224,49 @@
 
 (autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
 
-;; irony
-(use-package irony
+;; cmake-ide dependencies:
+;; rtags, flycheck, auto-complete-clang, company-clang, irony
+(use-package rtags
   :ensure t
   :defer t
   :init
-  (add-hook 'c++-mode-hook 'irony-mode)
+  (setq rtags-completions-enabled t)
+  (rtags-enable-standard-keybindings)
+  (setq rtags-path "~/.emacs.d/rtags/bin"))
+(use-package flycheck
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode))
+(use-package auto-complete-clang
+  :ensure t
+  :defer t)
+(use-package irony
+  :ensure t
+  :defer t)
+;  :init
+;  (add-hook 'c++-mode-hook 'irony-mode))
+(use-package company-irony
+  :ensure t
+  :defer t)
+(use-package company
+  :ensure t
+  :defer t
   :config
-  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;; irony-mode's buffers by irony-mode's function
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  )
+  (add-to-list 'company-backends 'company-irony)
+  :init
+  (add-hook 'c++-mode-hook 'company-mode))
+;; cmake-ide
+(use-package cmake-ide
+  :ensure t
+  :defer t
+  :init
+  (cmake-ide-setup)
+  (setq cmake-ide-flags-c++ (append '("-std=c++11"))))
+
+;; Set rtags to enable completions and use the standard keybindings.
+;; A list of the keybindings can be found at:
+;; http://syamajala.github.io/c-ide.html
 
 ;; Go
 (use-package go-mode
@@ -299,6 +327,9 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(linum-format (quote dynamic))
+ '(package-selected-packages
+   (quote
+    (cmake-ide company-clang auto-complete-clang flycheck rtags use-package rust-mode go-mode company-irony backup-each-save auctex)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
