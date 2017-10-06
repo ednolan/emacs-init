@@ -128,6 +128,8 @@
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
+  (local-set-key (kbd "<f6>") 'cmake-ide-compile)
+  (local-set-key (kbd "C-.") 'company-complete-common)
   (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
@@ -179,6 +181,51 @@
 
 ;; helper for mode remappings
 (use-package bind-key)
+
+;; C++
+;; cmake-ide dependencies:
+;; rtags, flycheck, auto-complete-clang, company-clang, irony
+(use-package rtags
+  :ensure t
+  :defer t
+  :init
+  (setq rtags-completions-enabled t)
+  (rtags-enable-standard-keybindings)
+  (setq rtags-path "~/.emacs.d/rtags/bin"))
+(use-package flycheck
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode))
+(use-package auto-complete-clang
+  :ensure t
+  :defer t)
+(use-package irony
+  :ensure t
+  :defer t)
+;  :init
+;  (add-hook 'c++-mode-hook 'irony-mode))
+(use-package company-irony
+  :ensure t
+  :defer t)
+(use-package company
+  :ensure t
+  :defer t
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  :init
+  (add-hook 'c++-mode-hook 'company-mode))
+;; cmake-ide
+(use-package cmake-ide
+  :ensure t
+  :defer t
+  :init
+  (cmake-ide-setup)
+  (setq cmake-ide-flags-c++ (append '("-std=c++11"))))
+
+;; Set rtags to enable completions and use the standard keybindings.
+;; A list of the keybindings can be found at:
+;; http://syamajala.github.io/c-ide.html
 
 ;; Custom
 
