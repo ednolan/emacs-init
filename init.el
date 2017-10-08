@@ -50,6 +50,10 @@
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
+;; save Customize settings in separate .el file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file :noerror)
+
 ;; revert all buffers function
 ;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
 (defun revert-all-buffers ()
@@ -80,15 +84,7 @@
         (select-frame frm1)
         (delete-frame frm2)))))
 
-;; major mode hooks
-;; delete trailing whitespace
-;; configure tabination
-
-;; all
-(defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
-  (local-set-key (kbd "C-c e") 'mark-whole-buffer))
-;; C++
+;; style config
 (defconst mana-cpp-style
   '((c-hanging-braces-alist . ((brace-list-open)
                                (brace-entry-open)
@@ -125,15 +121,25 @@
                         (arglist-cont-nonempty . c-lineup-arglist)
                         (comment-intro . 0))))
   "MANA Tech LLC Style")
+
+;; major mode hooks
+;; delete trailing whitespace
+;; configure tabination
+
+;; all
+(defun setup-common ()
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (local-set-key (kbd "C-c e") 'mark-whole-buffer)
+  )
+;; C++
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
   (local-set-key (kbd "<f6>") 'cmake-ide-compile)
-  (local-set-key (kbd "C-.") 'company-complete-common)
+  (local-set-key (kbd "C-.") 'company-complete)
   (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
-  (c-toggle-auto-newline)
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
@@ -142,6 +148,11 @@
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
+;; HTML
+(defun setup-html-mode ()
+  (set (make-local-variable 'sgml-basic-offset) 4))
+(add-hook 'html-mode-hook 'setup-common)
+(add-hook 'html-mode-hook 'setup-html-mode)
 ;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c {") 'smerge-prev)
@@ -182,14 +193,31 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; programming languages
+
+;; multiple
+;; company
+(use-package company
+  :ensure t
+  :defer t
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  )
+
 ;; C++
+
 ;; cmake-ide dependencies:
-;; rtags, flycheck, auto-complete-clang, company-clang, irony
+;; rtags, flycheck, auto-complete-clang, irony, company-irony
 (use-package rtags
   :ensure t
   :defer t
   :init
   (setq rtags-completions-enabled t)
+  ;; Set rtags to enable completions and use the standard keybindings.
+  ;; A list of the keybindings can be found at:
+  ;; http://syamajala.github.io/c-ide.html
   (rtags-enable-standard-keybindings)
   (setq rtags-path "~/.emacs.d/rtags/bin"))
 (use-package flycheck
@@ -203,18 +231,9 @@
 (use-package irony
   :ensure t
   :defer t)
-;  :init
-;  (add-hook 'c++-mode-hook 'irony-mode))
 (use-package company-irony
   :ensure t
   :defer t)
-(use-package company
-  :ensure t
-  :defer t
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  :init
-  (add-hook 'c++-mode-hook 'company-mode))
 ;; cmake-ide
 (use-package cmake-ide
   :ensure t
@@ -222,25 +241,3 @@
   :init
   (cmake-ide-setup)
   (setq cmake-ide-flags-c++ (append '("-std=c++11"))))
-
-;; Set rtags to enable completions and use the standard keybindings.
-;; A list of the keybindings can be found at:
-;; http://syamajala.github.io/c-ide.html
-
-;; Custom
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(linum-format (quote dynamic))
- '(package-selected-packages (quote (use-package)))
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
