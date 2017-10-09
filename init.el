@@ -23,6 +23,9 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
+;; toolbar off
+(tool-bar-mode -1)
+
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-echo-area-message "eddie")
@@ -53,6 +56,9 @@
 ;; save Customize settings in separate .el file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file :noerror)
+
+;; .h files are c++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; revert all buffers function
 ;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
@@ -141,8 +147,6 @@
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
-  (local-set-key (kbd "<f6>") 'cmake-ide-compile)
-  (local-set-key (kbd "C-.") 'company-complete)
   (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
@@ -174,18 +178,15 @@
 ;; LaTeX
 (add-hook 'latex-mode-hook 'setup-common)
 ;; OCaml
-(defun setup-tuareg-mode ()
-  (local-set-key (kbd "C-.") 'company-complete))
 (add-hook 'tuareg-mode-hook 'setup-common)
-(add-hook 'tuareg-mode-hook 'setup-tuareg-mode)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
-  (local-set-key (kbd "C-c {") 'smerge-prev)
-  (local-set-key (kbd "C-c }") 'smerge-next)
-  (local-set-key (kbd "C-c m") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c u") 'smerge-keep-other))
+  (local-set-key (kbd "C-c s p") 'smerge-prev)
+  (local-set-key (kbd "C-c s n") 'smerge-next)
+  (local-set-key (kbd "C-c s o") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c s t") 'smerge-keep-other))
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
 
@@ -213,6 +214,7 @@
   (setq make-backup-files nil)
   (add-hook 'after-save-hook 'backup-each-save)
 )
+(setq use-package-always-ensure t)
 
 ;; cleaner mode lines
 (use-package diminish)
@@ -225,14 +227,14 @@
 ;; multiple
 ;; company
 (use-package company
-  :ensure t
-  :defer t
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  (add-to-list 'company-backends 'merlin-company-backend)
+  :bind (("C-." . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'tuareg-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends 'merlin-company-backend)
+  (setq company-async-timeout 30)
   )
 
 ;; C++
@@ -246,43 +248,57 @@
 
 (autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
 
-;; cmake-ide dependencies:
-;; rtags, flycheck, auto-complete-clang, irony, company-irony
-(use-package rtags
-  :ensure t
-  :defer t
-  :init
-  (setq rtags-completions-enabled t)
-  ;; Set rtags to enable completions and use the standard keybindings.
-  ;; A list of the keybindings can be found at:
-  ;; http://syamajala.github.io/c-ide.html
-  (rtags-enable-standard-keybindings)
-  (setq rtags-path "~/.emacs.d/rtags/bin"))
-(use-package flycheck
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode))
-(use-package auto-complete-clang
-  :ensure t
-  :defer t)
+;; irony
 (use-package irony
-  :ensure t
-  :defer t)
-(use-package company-irony
-  :ensure t
-  :defer t)
-;; cmake-ide
-(use-package cmake-ide
-  :ensure t
   :defer t
   :init
-  (cmake-ide-setup)
-  (setq cmake-ide-flags-c++ (append '("-std=c++11"))))
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  )
+
+(use-package company-irony
+  :defer t
+  )
+
+;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  )
+
+(use-package flycheck-irony
+  :defer t
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
+  )
+
+;; ggtags
+(use-package ggtags
+  :init
+  (add-hook 'c++-mode-hook 'ggtags-mode)
+  )
+
+;; keybinding ref
+
+;; company
+;; Search through completions (C-s) (C-r)
+;; Complete one of the first 10 candidates (M-(digit))
+;; Initiate completion manually (C-.)
+;; See source of selected candidate (C-w)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; ggtags
+;; Find tag (M-.)
+;; Find reference (M-])
+;; Show definition (C-c M-?)
+;; Find file (C-c M-f)
 
 ;; Go
 (use-package go-mode
-  :ensure t
   :defer t
   :init
   (require 'go-mode)
@@ -323,7 +339,6 @@
 
 ;; Rust
 (use-package rust-mode
-  :ensure t
   :defer t
   :init
   (require 'rust-mode)
