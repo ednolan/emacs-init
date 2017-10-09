@@ -202,7 +202,7 @@
 
 ;; company
 (use-package company
-  :bind (("C-." company-complete))
+  :bind (("C-." . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
   :config
