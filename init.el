@@ -305,6 +305,9 @@
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 )
 
+;; JavaScript
+(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+
 ;; LaTeX
 (use-package tex-mode
   :ensure auctex
