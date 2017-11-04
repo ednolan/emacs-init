@@ -138,7 +138,8 @@
                         (comment-intro . 0)
                         (member-init-intro . 0)
                         (case-label . *)
-                        (statement-case-intro . *))))
+                        (statement-case-intro . *)
+                        (inline-open . 0))))
   "MANA Tech LLC Style")
 
 ;; major mode hooks
@@ -153,7 +154,6 @@
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
-  (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
@@ -169,6 +169,8 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
+;; Markdown
+(add-hook 'markdown-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c s p") 'smerge-prev)
@@ -256,6 +258,14 @@
   (add-hook 'c++-mode-hook 'ggtags-mode)
   )
 
+;; Markdown
+
+;; markdown-mode
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  )
+
 ;; keybinding ref
 
 ;; company
@@ -270,12 +280,27 @@
 
 ;; ggtags
 ;; Find tag (M-.)
+;; Abort search (M-,)
 ;; Find reference (M-])
 ;; Show definition (C-c M-?)
 ;; Find file (C-c M-f)
+;; Next match (M-n)
+;; Previous match (M-p)
+;; Next file (M-})
+;; Previous file (M-{)
+;; File where navigation session started (M-=)
+;; First match (M-<)
+;; Last match (M->)
+;; Exit navigation mode (RET)
 
 ;; smerge
 ;; Prev conflict (C-c s p)
 ;; Next conflict (C-c s n)
 ;; Keep ours (C-c s o)
 ;; Keep theirs (C-c s t)
+
+;; markdown
+;; Compile (C-c C-c m)
+;; Preview (C-c C-c p)
+;; Export (C-c C-c e)
+;; Live preview (C-c C-c l)
