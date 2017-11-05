@@ -23,9 +23,12 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
+;; toolbar off
+(tool-bar-mode -1)
+
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-(setq inhibit-startup-echo-area-message "edward")
+(setq inhibit-startup-echo-area-message "enolan")
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -53,6 +56,16 @@
 
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
+
+;; save Customize settings in separate .el file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file :noerror)
+
+;; .h files are c++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+;; C-c e to mark-whole-buffer
+(global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
 ;; revert all buffers function
 ;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
@@ -84,6 +97,54 @@
         (select-frame frm1)
         (delete-frame frm2)))))
 
+;; don't prompt that file changed on disk based solely on timestamp
+;; credit to Stack Overflow user doublep
+;; https://stackoverflow.com/a/29556894
+;; Ignore modification-time-only changes in files, i.e. ones that
+;; don't really change the contents.  This happens often with
+;; switching between different VC buffers.
+(defun update-buffer-modtime-if-byte-identical ()
+  (let* ((size      (buffer-size))
+         (byte-size (position-bytes size))
+         (filename  buffer-file-name))
+    (when (and byte-size (<= size 1000000))
+      (let* ((attributes (file-attributes filename))
+             (file-size  (nth 7 attributes)))
+        (when (and file-size
+                   (= file-size byte-size)
+                   (string= (buffer-substring-no-properties 1 (1+ size))
+                            (with-temp-buffer
+                              (insert-file-contents filename)
+                              (buffer-string))))
+          (set-visited-file-modtime (nth 5 attributes))
+          t)))))
+
+(defun verify-visited-file-modtime--ignore-byte-identical (original &optional buffer)
+  (or (funcall original buffer)
+      (with-current-buffer buffer
+        (update-buffer-modtime-if-byte-identical))))
+(advice-add 'verify-visited-file-modtime :around #'verify-visited-file-modtime--ignore-byte-identical)
+
+(defun ask-user-about-supersession-threat--ignore-byte-identical (original &rest arguments)
+  (unless (update-buffer-modtime-if-byte-identical)
+    (apply original arguments)))
+(advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
+
+;; style config
+(defconst mana-cpp-style
+  '((c-basic-offset . 4)
+    (c-offsets-alist . ((innamespace . 0)
+                        (access-label . /)
+                        (topmost-intro . 0)
+                        (arglist-intro . ++)
+                        (arglist-cont-nonempty . c-lineup-arglist)
+                        (comment-intro . 0)
+                        (member-init-intro . 0)
+                        (case-label . *)
+                        (statement-case-intro . *)
+                        (inline-open . 0))))
+  "MANA Tech LLC Style")
+
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
@@ -93,49 +154,11 @@
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)
   (local-set-key (kbd "C-c e") 'mark-whole-buffer))
 ;; C++
-(defconst mana-cpp-style
-  '((c-hanging-braces-alist . ((brace-list-open)
-                               (brace-entry-open)
-                               (statement-cont)
-                               (substatement-open after)
-                               (block-close . c-snug-do-while)
-                               (extern-lang-open after)
-                               (namespace-open after)
-                               (defun-open (before after))
-                               (defun-close (before after))
-                               (class-open after)
-                               (class-close before)
-                               (inline-open (before after))
-                               (inline-close (before after))
-                               (func-decl-cont after)
-                               (member-init-intro before)
-                               (member-init-cont)
-                               (inher-intro)
-                               (inher-cont)
-                               (block-open)
-                               (block-close (before after))))
-    (c-cleanup-list . (brace-else-brace
-                       brace-elseif-brace
-                       brace-catch-brace
-                       empty-defun-braces
-                       defun-close-semi
-                       list-close-comma
-                       scope-operator))
-    (c-basic-offset . 4)
-    (c-offsets-alist . ((innamespace . 0)
-                        (access-label . /)
-                        (topmost-intro . 0)
-                        (arglist-intro . ++)
-                        (arglist-cont-nonempty . c-lineup-arglist)
-                        (comment-intro . 0))))
-  "MANA Tech LLC Style")
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
-  (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
-  (c-toggle-auto-newline)
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
@@ -161,10 +184,8 @@
   (set (make-local-variable 'js-indent-level) 4))
 (add-hook 'js-mode-hook 'setup-common)
 (add-hook 'js-mode-hook 'setup-js-mode)
-;; LaTeX
-(add-hook 'latex-mode-hook 'setup-common)
-;; OCaml
-(add-hook 'tuareg-mode-hook 'setup-common)
+;; Markdown
+(add-hook 'markdown-mode-hook 'setup-common)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
@@ -191,6 +212,7 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
+(setq use-package-always-ensure t)
 
 ;; file backups
 (use-package backup-each-save
@@ -215,37 +237,121 @@
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
-;; irony
-(use-package irony
-  :ensure t
-  :defer t
+;; programming languages
+
+;; C++
+
+;; CMake
+; Add cmake listfile names to the mode list.
+(setq auto-mode-alist
+	  (append
+	   '(("CMakeLists\\.txt\\'" . cmake-mode))
+	   '(("\\.cmake\\'" . cmake-mode))
+	   auto-mode-alist))
+
+(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+
+;; company
+(use-package company
+  :bind (("C-." . company-complete))
   :init
-  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c++-mode-hook 'company-mode)
   :config
-  ;; replace the `completion-at-point' and `complete-symbol' bindings in
-  ;; irony-mode's buffers by irony-mode's function
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-to-list 'company-backends 'company-irony)
+  (setq company-async-timeout 30)
   )
 
-;; Custom
+;; irony
+(use-package irony
+  :defer t
+  :init
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  )
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(linum-format (quote dynamic))
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package company-irony
+  :defer t
+  )
+
+;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  )
+
+(use-package flycheck-irony
+  :defer t
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
+  )
+
+;; ggtags
+(use-package ggtags
+  :init
+  (add-hook 'c++-mode-hook 'ggtags-mode)
+  )
+
+;; Go
+(use-package go-mode
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+)
+
+;; JavaScript
+(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+
+;; Markdown
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  )
+
+;; Rust
+(use-package rust-mode
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
+
+;; keybinding ref
+
+;; company
+;; Search through completions (C-s) (C-r)
+;; Complete one of the first 10 candidates (M-(digit))
+;; Initiate completion manually (C-.)
+;; See source of selected candidate (C-w)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; ggtags
+;; Find tag (M-.)
+;; Abort search (M-,)
+;; Find reference (M-])
+;; Show definition (C-c M-?)
+;; Find file (C-c M-f)
+;; Next match (M-n)
+;; Previous match (M-p)
+;; Next file (M-})
+;; Previous file (M-{)
+;; File where navigation session started (M-=)
+;; First match (M-<)
+;; Last match (M->)
+;; Exit navigation mode (RET)
+
+;; smerge
+;; Prev conflict (C-c s p)
+;; Next conflict (C-c s n)
+;; Keep ours (C-c s o)
+;; Keep theirs (C-c s t)
+
+;; markdown
+;; Compile (C-c C-c m)
+;; Preview (C-c C-c p)
+;; Export (C-c C-c e)
+;; Live preview (C-c C-c l)
