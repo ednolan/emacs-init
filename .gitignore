@@ -17,3 +17,6 @@ custom.el
 
 # auto-save-list
 auto-save-list
+
+# saved desktop
+.emacs.desktop

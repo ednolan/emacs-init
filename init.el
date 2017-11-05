@@ -180,10 +180,10 @@
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
 ;; JavaScript
-(defun setup-js-mode ()
+(defun setup-js2-mode ()
   (set (make-local-variable 'js-indent-level) 4))
-(add-hook 'js-mode-hook 'setup-common)
-(add-hook 'js-mode-hook 'setup-js-mode)
+(add-hook 'js2-mode-hook 'setup-common)
+(add-hook 'js2-mode-hook 'setup-js2-mode)
 ;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; Rust
@@ -251,16 +251,6 @@
 
 (autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
 
-;; company
-(use-package company
-  :bind (("C-." . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  (setq company-async-timeout 30)
-  )
-
 ;; irony
 (use-package irony
   :defer t
@@ -271,13 +261,6 @@
 
 (use-package company-irony
   :defer t
-  )
-
-;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode)
   )
 
 (use-package flycheck-irony
@@ -301,7 +284,22 @@
 )
 
 ;; JavaScript
-(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+
+;; js2-mode
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+;; company-flow
+(use-package company-flow
+  :defer t)
+
+;; flycheck-flow
+(load-file "~/.emacs.d/emacs-flycheck-flow/flycheck-flow.el")
+
+;; flow-minor-mode
+(load-file "~/.emacs.d/flow-minor-mode/flow-minor-mode.el")
+(add-hook 'js2-mode-hook 'flow-minor-mode)
 
 ;; Markdown
 (use-package markdown-mode
@@ -316,6 +314,30 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; multiple
+
+;; company
+(use-package company
+  :bind (("C-." . company-complete))
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'js2-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends 'company-flow)
+  (setq company-async-timeout 30)
+  )
+
+;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'js2-mode-hook 'flycheck-mode)
+  :config
+  (flycheck-add-mode 'javascript-flow 'flow-minor-mode)
+  )
 
 ;; keybinding ref
 
