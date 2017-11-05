@@ -60,6 +60,9 @@
 ;; .h files are c++
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
+;; C-c e to mark-whole-buffer
+(global-set-key (kbd "C-c e") 'mark-whole-buffer)
+
 ;; revert all buffers function
 ;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
 (defun revert-all-buffers ()
@@ -90,42 +93,52 @@
         (select-frame frm1)
         (delete-frame frm2)))))
 
+;; don't prompt that file changed on disk based solely on timestamp
+;; credit to Stack Overflow user doublep
+;; https://stackoverflow.com/a/29556894
+;; Ignore modification-time-only changes in files, i.e. ones that
+;; don't really change the contents.  This happens often with
+;; switching between different VC buffers.
+(defun update-buffer-modtime-if-byte-identical ()
+  (let* ((size      (buffer-size))
+         (byte-size (position-bytes size))
+         (filename  buffer-file-name))
+    (when (and byte-size (<= size 1000000))
+      (let* ((attributes (file-attributes filename))
+             (file-size  (nth 7 attributes)))
+        (when (and file-size
+                   (= file-size byte-size)
+                   (string= (buffer-substring-no-properties 1 (1+ size))
+                            (with-temp-buffer
+                              (insert-file-contents filename)
+                              (buffer-string))))
+          (set-visited-file-modtime (nth 5 attributes))
+          t)))))
+
+(defun verify-visited-file-modtime--ignore-byte-identical (original &optional buffer)
+  (or (funcall original buffer)
+      (with-current-buffer buffer
+        (update-buffer-modtime-if-byte-identical))))
+(advice-add 'verify-visited-file-modtime :around #'verify-visited-file-modtime--ignore-byte-identical)
+
+(defun ask-user-about-supersession-threat--ignore-byte-identical (original &rest arguments)
+  (unless (update-buffer-modtime-if-byte-identical)
+    (apply original arguments)))
+(advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
+
 ;; style config
 (defconst mana-cpp-style
-  '((c-hanging-braces-alist . ((brace-list-open)
-                               (brace-entry-open)
-                               (statement-cont)
-                               (substatement-open after)
-                               (block-close . c-snug-do-while)
-                               (extern-lang-open after)
-                               (namespace-open after)
-                               (defun-open (before after))
-                               (defun-close (before after))
-                               (class-open after)
-                               (class-close before)
-                               (inline-open (before after))
-                               (inline-close (before after))
-                               (func-decl-cont after)
-                               (member-init-intro before)
-                               (member-init-cont)
-                               (inher-intro)
-                               (inher-cont)
-                               (block-open)
-                               (block-close (before after))))
-    (c-cleanup-list . (brace-else-brace
-                       brace-elseif-brace
-                       brace-catch-brace
-                       empty-defun-braces
-                       defun-close-semi
-                       list-close-comma
-                       scope-operator))
-    (c-basic-offset . 4)
+  '((c-basic-offset . 4)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . /)
                         (topmost-intro . 0)
                         (arglist-intro . ++)
                         (arglist-cont-nonempty . c-lineup-arglist)
-                        (comment-intro . 0))))
+                        (comment-intro . 0)
+                        (member-init-intro . 0)
+                        (case-label . *)
+                        (statement-case-intro . *)
+                        (inline-open . 0))))
   "MANA Tech LLC Style")
 
 ;; major mode hooks
@@ -147,7 +160,6 @@
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
   (local-set-key (kbd "C-c o") 'ff-find-other-file)
-  (set (make-local-variable 'c-max-one-liner-length) 80)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
@@ -177,6 +189,8 @@
 (add-hook 'js-mode-hook 'setup-js-mode)
 ;; LaTeX
 (add-hook 'latex-mode-hook 'setup-common)
+;; Markdown
+(add-hook 'markdown-mode-hook 'setup-common)
 ;; OCaml
 (add-hook 'tuareg-mode-hook 'setup-common)
 ;; Rust
@@ -205,6 +219,7 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
+(setq use-package-always-ensure t)
 
 ;; file backups
 (use-package backup-each-save
@@ -279,24 +294,6 @@
   (add-hook 'c++-mode-hook 'ggtags-mode)
   )
 
-;; keybinding ref
-
-;; company
-;; Search through completions (C-s) (C-r)
-;; Complete one of the first 10 candidates (M-(digit))
-;; Initiate completion manually (C-.)
-;; See source of selected candidate (C-w)
-
-;; flycheck
-;; Next error (M-g n)
-;; Previous error (M-g p)
-
-;; ggtags
-;; Find tag (M-.)
-;; Find reference (M-])
-;; Show definition (C-c M-?)
-;; Find file (C-c M-f)
-
 ;; Go
 (use-package go-mode
   :defer t
@@ -323,6 +320,12 @@
             (setq TeX-command-default "XeLaTeX")
             (setq TeX-save-query nil)))
 
+;; Markdown
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  )
+
 ;; OCaml
 ;; tuareg
 (load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
@@ -347,3 +350,42 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; keybinding ref
+
+;; company
+;; Search through completions (C-s) (C-r)
+;; Complete one of the first 10 candidates (M-(digit))
+;; Initiate completion manually (C-.)
+;; See source of selected candidate (C-w)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; ggtags
+;; Find tag (M-.)
+;; Abort search (M-,)
+;; Find reference (M-])
+;; Show definition (C-c M-?)
+;; Find file (C-c M-f)
+;; Next match (M-n)
+;; Previous match (M-p)
+;; Next file (M-})
+;; Previous file (M-{)
+;; File where navigation session started (M-=)
+;; First match (M-<)
+;; Last match (M->)
+;; Exit navigation mode (RET)
+
+;; smerge
+;; Prev conflict (C-c s p)
+;; Next conflict (C-c s n)
+;; Keep ours (C-c s o)
+;; Keep theirs (C-c s t)
+
+;; markdown
+;; Compile (C-c C-c m)
+;; Preview (C-c C-c p)
+;; Export (C-c C-c e)
+;; Live preview (C-c C-c l)
