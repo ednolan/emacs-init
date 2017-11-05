@@ -126,7 +126,6 @@
     (apply original arguments)))
 (advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
 
-
 ;; style config
 (defconst mana-cpp-style
   '((c-basic-offset . 4)
@@ -259,8 +258,6 @@
   )
 
 ;; Markdown
-
-;; markdown-mode
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
