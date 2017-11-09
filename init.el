@@ -63,6 +63,9 @@
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
+;; mac os maps <insert> to <help> ???
+(global-set-key (kbd "<help>") 'overwrite-mode)
+
 ;; revert all buffers function
 ;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
 (defun revert-all-buffers ()
@@ -206,6 +209,17 @@
   (add-hook 'after-save-hook 'backup-each-save)
 )
 
+;; thin gray line at 79 cols
+(use-package fill-column-indicator
+  :init
+  (setq-default fill-column 79)
+  (add-hook 'prog-mode-hook (lambda ()
+                              (fci-mode 1)
+                              ))
+  :config
+  (setq fci-handle-truncate-lines nil)
+  )
+
 ;; cleaner mode lines
 (use-package diminish)
 
@@ -224,6 +238,7 @@
   :config
   (add-to-list 'company-backends 'company-irony)
   (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
   )
 
 ;; irony
