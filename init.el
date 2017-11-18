@@ -63,36 +63,6 @@
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
-;; revert all buffers function
-;; credit to Chris Stuart https://www.emacswiki.org/emacs/RevertBuffer
-(defun revert-all-buffers ()
-  "Iterate through the list of buffers and revert them, e.g. after a
-    new branch has been checked out."
-  (interactive)
-  (when (yes-or-no-p
-         "Are you sure - any changes in open buffers will be lost! ")
-    (let ((frm1 (selected-frame)))
-      (make-frame)
-      (let ((frm2 (next-frame frm1)))
-        (select-frame frm2)
-        (make-frame-invisible)
-        (dolist (x (buffer-list))
-          (let ((test-buffer (buffer-name x)))
-            (when (not (string-match "\*" test-buffer))
-              (when (not (file-exists-p (buffer-file-name x)))
-                (select-frame frm1)
-                (when (yes-or-no-p
-                       (concat "File no longer exists ("
-                               (buffer-name x)
-                               "). Close buffer? "))
-                  (kill-buffer (buffer-name x)))
-                (select-frame frm2))
-              (when (file-exists-p (buffer-file-name x))
-                (switch-to-buffer (buffer-name x))
-                (revert-buffer t t t)))))
-        (select-frame frm1)
-        (delete-frame frm2)))))
-
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
 ;; https://stackoverflow.com/a/29556894
@@ -148,7 +118,6 @@
 ;; all
 (defun setup-common ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)
-  (local-set-key (kbd "C-c e") 'mark-whole-buffer)
   )
 ;; C
 (defun setup-c-mode ()
@@ -159,7 +128,14 @@
 ;; C++
 (defun setup-c++-mode ()
   (local-set-key [C-tab] 'tab-to-tab-stop)
-  (local-set-key (kbd "C-c o") 'ff-find-other-file)
+  (defun insert-four-spaces ()
+    (interactive)
+    (insert "    "))
+  (local-set-key (kbd "C-S-<iso-lefttab>") 'insert-four-spaces)
+  (defun ff-find-other-file-ignore-headers ()
+    (interactive)
+    (ff-find-other-file nil t))
+  (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
@@ -231,6 +207,17 @@
 )
 (setq use-package-always-ensure t)
 
+;; thin gray line at 90 cols
+(use-package fill-column-indicator
+  :init
+  (setq-default fill-column 90)
+  (add-hook 'prog-mode-hook (lambda ()
+                              (fci-mode 1)
+                              ))
+  :config
+  (setq fci-handle-truncate-lines nil)
+  )
+
 ;; cleaner mode lines
 (use-package diminish)
 
@@ -250,6 +237,7 @@
   (add-to-list 'company-backends 'company-irony)
   (add-to-list 'company-backends 'merlin-company-backend)
   (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
   )
 
 ;; C++
