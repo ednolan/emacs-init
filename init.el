@@ -63,8 +63,28 @@
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
+;; Nicer C-x C-b
+(global-set-key (kbd "C-x C-b") 'bs-show)
+
+;; C-` to set mark
+(global-set-key (kbd "C-`") 'set-mark-command)
+
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
+
+;; F5 to revert-buffer without confirmation
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
+(global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
+
+;; my macros
+
+;; newline at token before column 80
+(fset 'insert-newline-for-paragraph
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217831 tab 55 57 backspace backspace 56 48 return C-left return] 0 "%d")) arg)))
+
+(global-set-key (kbd "C-c n") 'insert-newline-for-paragraph)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -111,7 +131,8 @@
                         (member-init-intro . 0)
                         (case-label . *)
                         (statement-case-intro . *)
-                        (inline-open . 0))))
+                        (inline-open . 0)
+                        (substatement-open . 0))))
   "MANA Tech LLC Style")
 
 ;; major mode hooks
@@ -148,14 +169,15 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-;; Markdown
-(add-hook 'markdown-mode-hook 'setup-common)
+;; reStructuredText
+;; We don't want to strip trailing whitespace here
+;; (add-hook 'rst-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
-  (local-set-key (kbd "C-c s p") 'smerge-prev)
-  (local-set-key (kbd "C-c s n") 'smerge-next)
-  (local-set-key (kbd "C-c s o") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c s t") 'smerge-keep-other)
+  (local-set-key (kbd "C-c m p") 'smerge-prev)
+  (local-set-key (kbd "C-c m n") 'smerge-next)
+  (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c m t") 'smerge-keep-other)
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
@@ -243,18 +265,19 @@
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
   )
 
-;; ggtags
-(use-package ggtags
-  :init
-  (add-hook 'c++-mode-hook 'ggtags-mode)
+;; xcscope
+(use-package xcscope
+  :config
+  (cscope-setup)
   (setenv "GTAGSCONF" "/u/edward/emacsstuff/globalinstalldir/share/gtags/gtags.conf")
   (setenv "GTAGSLABEL" "pygments")
+  (setq cscope-program "gtags-cscope")
   )
 
 ;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
-  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
 ;; keybinding ref
