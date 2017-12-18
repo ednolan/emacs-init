@@ -159,6 +159,8 @@
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  ;; rtags
+  (rtags-start-process-maybe)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -229,28 +231,58 @@
 
 ;; C++
 
-;; company
-(use-package company
-  :bind (("C-." . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
+;; projectile
+(use-package projectile
   :config
-  (add-to-list 'company-backends 'company-irony)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
+  (add-hook 'c++-mode-hook 'projectile-mode)
   )
 
 ;; irony
 (use-package irony
   :defer t
   :init
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'c++-mode-hook 'irony-mode)
   )
 
+;; rtags
+(use-package rtags
+  :config
+  (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
+  (setq rtags-completions-enabled t)
+  (rtags-enable-standard-keybindings)
+  )
+
+;; company
+(use-package company
+  :bind (("C-." . company-complete))
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-rtags)
+  (add-to-list 'company-backends 'company-irony)
+  (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
+  )
+
+;; company-irony
 (use-package company-irony
   :defer t
+  :config
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (add-to-list 'company-backends 'company-irony)
   )
+
+;; company-rtags
+(use-package company-rtags
+  :defer t)
 
 ;; flycheck
 (use-package flycheck
@@ -259,19 +291,20 @@
   (add-hook 'c++-mode-hook 'flycheck-mode)
   )
 
+;; flycheck-irony
 (use-package flycheck-irony
   :defer t
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
   )
 
-;; xcscope
-(use-package xcscope
+;; flycheck-rtags
+(use-package flycheck-rtags
+  :defer t
   :config
-  (cscope-setup)
-  (setenv "GTAGSCONF" "/u/edward/emacsstuff/globalinstalldir/share/gtags/gtags.conf")
-  (setenv "GTAGSLABEL" "pygments")
-  (setq cscope-program "gtags-cscope")
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil)
   )
 
 ;; Markdown
