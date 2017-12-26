@@ -57,11 +57,15 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file :noerror)
 
-;; .h files are c++
+;; .h and .cc files are c++
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
+
+;; make windows split horizontally
+(setq split-height-threshold 1)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -173,10 +177,10 @@
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
-  (local-set-key (kbd "C-c s p") 'smerge-prev)
-  (local-set-key (kbd "C-c s n") 'smerge-next)
-  (local-set-key (kbd "C-c s o") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c s t") 'smerge-keep-other))
+  (local-set-key (kbd "C-c m p") 'smerge-prev)
+  (local-set-key (kbd "C-c m n") 'smerge-next)
+  (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c m t") 'smerge-keep-other))
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
 
@@ -226,30 +230,19 @@
 
 ;; programming languages
 
-;; multiple
-;; company
-(use-package company
-  :bind (("C-." . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'tuareg-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  (add-to-list 'company-backends 'merlin-company-backend)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
 ;; C++
-;; CMake
-; Add cmake listfile names to the mode list.
-(setq auto-mode-alist
-	  (append
-	   '(("CMakeLists\\.txt\\'" . cmake-mode))
-	   '(("\\.cmake\\'" . cmake-mode))
-	   auto-mode-alist))
 
-(autoload 'cmake-mode "~/.emacs.d/cmake-mode/cmake-mode.el" t)
+;; cmake
+; Add cmake listfile names to the mode list.
+(use-package cmake-mode
+  :defer t
+  :init
+  (setq auto-mode-alist
+        (append
+         '(("CMakeLists\\.txt\\'" . cmake-mode))
+         '(("\\.cmake\\'" . cmake-mode))
+         auto-mode-alist))
+  )
 
 ;; irony
 (use-package irony
@@ -259,8 +252,95 @@
   (add-hook 'c++-mode-hook 'irony-mode)
   )
 
+;; company-irony
 (use-package company-irony
   :defer t
+  )
+
+;; xcscope
+(use-package xcscope
+  :config
+  (cscope-setup)
+  (setenv "GTAGSCONF" "/home/eddie/emacsstuff/globalinstalldir/share/gtags/gtags.conf")
+  (setenv "GTAGSLABEL" "pygments")
+  (setq cscope-program "gtags-cscope")
+  )
+
+;; Go
+(use-package go-mode
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+  )
+
+;; JavaScript
+(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+
+;; LaTeX
+(use-package tex-mode
+  :ensure auctex
+  :defer t
+  :init
+  (setq-default TeX-engine 'xetex)
+  (setq-default TeX-PDF-mode t)
+  )
+;; set XeTeX mode in TeX/LaTeX
+(add-hook 'LaTeX-mode-hook
+          (lambda()
+            (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
+            (setq TeX-command-default "XeLaTeX")
+            (setq TeX-save-query nil)))
+
+;; Markdown
+(use-package markdown-mode
+  :defer t
+  :mode (("\\.md\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  )
+
+;; OCaml
+
+;; tuareg
+(load "/home/eddie/.opam/4.05.0/share/emacs/site-lisp/tuareg-site-file")
+
+;; merlin
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+  (when (and opam-share (file-directory-p opam-share))
+    ;; Register Merlin non-lazily
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (require 'merlin)
+    ;; Automatically start it in OCaml buffers
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    ;; Use opam switch to lookup ocamlmerlin binary
+    (setq merlin-command 'opam)))
+
+;; ocp-indent
+(require 'ocp-indent)
+
+;; Rust
+(use-package rust-mode
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
+
+;; Multiple
+
+;; company
+(use-package company
+  :defer t
+  :bind (("C-." . company-complete))
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'tuareg-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends 'merlin-company-backend)
+  (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
   )
 
 ;; flycheck
@@ -276,68 +356,6 @@
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
   )
 
-;; ggtags
-(use-package ggtags
-  :init
-  (add-hook 'c++-mode-hook 'ggtags-mode)
-  )
-
-;; Go
-(use-package go-mode
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-)
-
-;; JavaScript
-(load-file "~/.emacs.d/flow-for-emacs/flow.el")
-
-;; LaTeX
-(use-package tex-mode
-  :ensure auctex
-  :defer t
-  :init
-  (setq-default TeX-engine 'xetex)
-  (setq-default TeX-PDF-mode t)
-)
-;; set XeTeX mode in TeX/LaTeX
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-            (setq TeX-command-default "XeLaTeX")
-            (setq TeX-save-query nil)))
-
-;; Markdown
-(use-package markdown-mode
-  :mode (("\\.md\\'" . markdown-mode))
-  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
-  )
-
-;; OCaml
-;; tuareg
-(load "/home/eddie/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
-;; merlin
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)))
-;; use ocp-indent
-(require 'ocp-indent)
-
-;; Rust
-(use-package rust-mode
-  :defer t
-  :init
-  (require 'rust-mode)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-)
 
 ;; keybinding ref
 
