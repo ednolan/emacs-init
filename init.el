@@ -67,6 +67,29 @@
 ;; make windows split horizontally
 (setq split-height-threshold 1)
 
+;; Nicer C-x C-b
+(global-set-key (kbd "C-x C-b") 'bs-show)
+
+;; C-` to set mark
+(global-set-key (kbd "C-`") 'set-mark-command)
+
+;; mac os maps <insert> to <help> ???
+(global-set-key (kbd "<help>") 'overwrite-mode)
+
+;; F5 to revert-buffer without confirmation
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
+(global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
+
+;; my macros
+
+;; newline at token before column 80
+(fset 'insert-newline-for-paragraph
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217831 tab 55 57 backspace backspace 56 48 return C-left return] 0 "%d")) arg)))
+
+(global-set-key (kbd "C-c n") 'insert-newline-for-paragraph)
+
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
 ;; https://stackoverflow.com/a/29556894
@@ -112,7 +135,8 @@
                         (member-init-intro . 0)
                         (case-label . *)
                         (statement-case-intro . *)
-                        (inline-open . 0))))
+                        (inline-open . 0)
+                        (substatement-open . 0))))
   "MANA Tech LLC Style")
 
 ;; major mode hooks
@@ -145,6 +169,8 @@
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  ;; rtags
+  (rtags-start-process-maybe)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -173,6 +199,9 @@
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; OCaml
 (add-hook 'tuareg-mode-hook 'setup-common)
+;; reStructuredText
+;; We don't want to strip trailing whitespace here
+;; (add-hook 'rst-mode-hook 'setup-common)
 ;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
@@ -180,7 +209,8 @@
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
   (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c m t") 'smerge-keep-other))
+  (local-set-key (kbd "C-c m t") 'smerge-keep-other)
+  )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
 
@@ -228,6 +258,45 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; helm
+(use-package helm
+  :init
+  (add-hook 'c++-mode-hook 'helm-mode)
+  (progn
+    (use-package helm-projectile)
+    )
+  )
+
+;; projectile
+(use-package projectile
+  :init
+  (add-hook 'c++-mode-hook 'projectile-mode)
+  :config
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on)
+  )
+
+;; company
+(use-package company
+  :bind (("C-." . company-complete))
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'tuareg-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-rtags)
+  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends 'merlin-company-backend)
+  (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
+  )
+
+;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  )
+
 ;; programming languages
 
 ;; C++
@@ -248,22 +317,51 @@
 (use-package irony
   :defer t
   :init
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'c++-mode-hook 'irony-mode)
+  )
+
+;; rtags
+(use-package rtags
+  :config
+  (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
+  (setq rtags-completions-enabled t)
+  (rtags-enable-standard-keybindings)
   )
 
 ;; company-irony
 (use-package company-irony
   :defer t
+  :config
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (add-to-list 'company-backends 'company-irony)
   )
 
-;; xcscope
-(use-package xcscope
+;; company-rtags
+(use-package company-rtags
+  :defer t)
+
+;; flycheck-irony
+(use-package flycheck-irony
+  :defer t
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
+  )
+
+;; flycheck-rtags
+(use-package flycheck-rtags
+  :defer t
   :config
-  (cscope-setup)
-  (setenv "GTAGSCONF" "/home/eddie/emacsstuff/globalinstalldir/share/gtags/gtags.conf")
-  (setenv "GTAGSLABEL" "pygments")
-  (setq cscope-program "gtags-cscope")
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil)
   )
 
 ;; Go
@@ -296,7 +394,7 @@
 (use-package markdown-mode
   :defer t
   :mode (("\\.md\\'" . markdown-mode))
-  :init (setq markdown-command "pandoc --from commonmark -t html5 -s")
+  :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
 ;; OCaml
@@ -326,72 +424,3 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
-
-;; Multiple
-
-;; company
-(use-package company
-  :defer t
-  :bind (("C-." . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'tuareg-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  (add-to-list 'company-backends 'merlin-company-backend)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
-;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  )
-
-(use-package flycheck-irony
-  :defer t
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
-  )
-
-
-;; keybinding ref
-
-;; company
-;; Search through completions (C-s) (C-r)
-;; Complete one of the first 10 candidates (M-(digit))
-;; Initiate completion manually (C-.)
-;; See source of selected candidate (C-w)
-
-;; flycheck
-;; Next error (M-g n)
-;; Previous error (M-g p)
-
-;; ggtags
-;; Find tag (M-.)
-;; Abort search (M-,)
-;; Find reference (M-])
-;; Show definition (C-c M-?)
-;; Find file (C-c M-f)
-;; Next match (M-n)
-;; Previous match (M-p)
-;; Next file (M-})
-;; Previous file (M-{)
-;; File where navigation session started (M-=)
-;; First match (M-<)
-;; Last match (M->)
-;; Exit navigation mode (RET)
-
-;; smerge
-;; Prev conflict (C-c s p)
-;; Next conflict (C-c s n)
-;; Keep ours (C-c s o)
-;; Keep theirs (C-c s t)
-
-;; markdown
-;; Compile (C-c C-c m)
-;; Preview (C-c C-c p)
-;; Export (C-c C-c e)
-;; Live preview (C-c C-c l)
