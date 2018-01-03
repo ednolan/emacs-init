@@ -1,0 +1,19 @@
+# Installed emacs packages
+elpa/
+irony/
+
+# Installed and downloaded software
+global-*
+globalinstalldir
+
+# Saved session files
+session.*
+
+# Tramp files
+tramp
+
+# Custom file
+custom.el
+
+# auto-save-list
+auto-save-list

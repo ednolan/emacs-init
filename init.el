@@ -63,6 +63,9 @@
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
+;; make windows split horizontally
+(setq split-height-threshold 1)
+
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
@@ -227,10 +230,6 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
-;; programming languages
-
-;; C++
-
 ;; helm
 (use-package helm
   :init
@@ -248,6 +247,29 @@
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
   )
+
+;; company
+(use-package company
+  :bind (("C-." . company-complete))
+  :init
+  (add-hook 'c++-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-rtags)
+  (add-to-list 'company-backends 'company-irony)
+  (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
+  )
+
+;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  )
+
+;; programming languages
+
+;; C++
 
 ;; irony
 (use-package irony
@@ -271,18 +293,6 @@
   (rtags-enable-standard-keybindings)
   )
 
-;; company
-(use-package company
-  :bind (("C-." . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-rtags)
-  (add-to-list 'company-backends 'company-irony)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
 ;; company-irony
 (use-package company-irony
   :defer t
@@ -295,13 +305,6 @@
 ;; company-rtags
 (use-package company-rtags
   :defer t)
-
-;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  )
 
 ;; flycheck-irony
 (use-package flycheck-irony
@@ -324,42 +327,3 @@
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
-
-;; keybinding ref
-
-;; company
-;; Search through completions (C-s) (C-r)
-;; Complete one of the first 10 candidates (M-(digit))
-;; Initiate completion manually (C-.)
-;; See source of selected candidate (C-w)
-
-;; flycheck
-;; Next error (M-g n)
-;; Previous error (M-g p)
-
-;; ggtags
-;; Find tag (M-.)
-;; Abort search (M-,)
-;; Find reference (M-])
-;; Show definition (C-c M-?)
-;; Find file (C-c M-f)
-;; Next match (M-n)
-;; Previous match (M-p)
-;; Next file (M-})
-;; Previous file (M-{)
-;; File where navigation session started (M-=)
-;; First match (M-<)
-;; Last match (M->)
-;; Exit navigation mode (RET)
-
-;; smerge
-;; Prev conflict (C-c s p)
-;; Next conflict (C-c s n)
-;; Keep ours (C-c s o)
-;; Keep theirs (C-c s t)
-
-;; markdown
-;; Compile (C-c C-c m)
-;; Preview (C-c C-c p)
-;; Export (C-c C-c e)
-;; Live preview (C-c C-c l)
