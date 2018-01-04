@@ -1,3 +1,22 @@
+;; keybinding ref
+
+;; smerge
+;; Prev conflict (C-c m p)
+;; Next conflict (C-c m n)
+;; Keep ours (C-c m o)
+;; Keep theirs (C-c m t)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; rtags
+;; Find symbol at point (C-c r .)
+;; Find all references at point (C-c r /)
+;; Reparse file (C-c r e)
+;; Print class hierarchy (C-c r h)
+;; Find functions called by this function (C-c r A)
+
 ;; col numbers
 (setq column-number-mode t)
 
