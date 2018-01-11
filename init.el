@@ -1,5 +1,8 @@
 ;; keybinding ref
 
+;; macros
+;; Insert newline at word before 79 chars (C-c n)
+
 ;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
@@ -193,6 +196,11 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
+;; Python
+(defun setup-python-mode ()
+  (setq tab-width 4))
+(add-hook 'python-mode-hook 'setup-common)
+(add-hook 'python-mode-hook 'setup-python-mode)
 ;; reStructuredText
 ;; We don't want to strip trailing whitespace here
 ;; (add-hook 'rst-mode-hook 'setup-common)
@@ -345,4 +353,10 @@
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
+  )
+
+;; Python
+(use-package py-yapf
+  :init
+  (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
   )
