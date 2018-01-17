@@ -45,8 +45,8 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
-;; toolbar off
-(tool-bar-mode -1)
+;; ;; toolbar off
+;; (tool-bar-mode -1)
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
@@ -56,6 +56,9 @@
 
 ;; delete selection mode
 (delete-selection-mode 1)
+
+;; mouse support in terminal mode
+(setq xterm-mouse-mode t)
 
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
