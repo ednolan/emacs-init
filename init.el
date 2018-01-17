@@ -58,7 +58,7 @@
 (delete-selection-mode 1)
 
 ;; mouse support in terminal mode
-(setq xterm-mouse-mode t)
+(xterm-mouse-mode t)
 
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
