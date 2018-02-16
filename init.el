@@ -1,8 +1,5 @@
 ;; keybinding ref
 
-;; macros
-;; Insert newline at word before 79 chars (C-c n)
-
 ;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
@@ -89,7 +86,7 @@
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
 ;; make windows split horizontally
-(setq split-height-threshold 1)
+;; (setq split-height-threshold 1)
 
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
@@ -106,13 +103,9 @@
   (interactive) (revert-buffer t t))
 (global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
 
-;; my macros
-
-;; newline at token before column 80
-(fset 'insert-newline-for-paragraph
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217831 tab 55 57 backspace backspace 56 48 return C-left return] 0 "%d")) arg)))
-
-(global-set-key (kbd "C-c n") 'insert-newline-for-paragraph)
+;; Mouse scroll in terminal mode
+(global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+(global-set-key (kbd "<mouse-5>") 'scroll-up-line)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -157,8 +150,8 @@
                         (arglist-cont-nonempty . c-lineup-arglist)
                         (comment-intro . 0)
                         (member-init-intro . 0)
-                        (case-label . *)
-                        (statement-case-intro . *)
+                        (case-label . 0)
+                        (statement-case-intro . +)
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
@@ -173,11 +166,11 @@
   )
 ;; C++
 (defun setup-c++-mode ()
-  (local-set-key [C-tab] 'tab-to-tab-stop)
+  (global-set-key (kbd "C-M-i") 'tab-to-tab-stop)
   (defun insert-four-spaces ()
     (interactive)
     (insert "    "))
-  (local-set-key (kbd "C-S-<iso-lefttab>") 'insert-four-spaces)
+  (local-set-key (kbd "C-M-y") 'insert-four-spaces)
   (defun ff-find-other-file-ignore-headers ()
     (interactive)
     (ff-find-other-file nil t))
@@ -212,7 +205,7 @@
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
   (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c m t") 'smerge-keep-other)
+  (local-set-key (kbd "C-c m t") 'smerge-keep-lower)
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
@@ -243,10 +236,10 @@
   (add-hook 'after-save-hook 'backup-each-save)
 )
 
-;; thin gray line at 79 cols
+;; thin gray line at 90 cols
 (use-package fill-column-indicator
   :init
-  (setq-default fill-column 79)
+  (setq-default fill-column 90)
   (add-hook 'prog-mode-hook (lambda ()
                               (fci-mode 1)
                               ))
@@ -301,16 +294,22 @@
 
 ;; C++
 
+;; cmake
+; Add cmake listfile names to the mode list.
+(use-package cmake-mode
+  :defer t
+  :init
+  (setq auto-mode-alist
+        (append
+         '(("CMakeLists\\.txt\\'" . cmake-mode))
+         '(("\\.cmake\\'" . cmake-mode))
+         auto-mode-alist))
+  )
+
 ;; irony
 (use-package irony
   :defer t
   :init
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'c++-mode-hook 'irony-mode)
   )
