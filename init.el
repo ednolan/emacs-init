@@ -278,7 +278,6 @@
   (add-hook 'c++-mode-hook 'company-mode)
   :config
   (add-to-list 'company-backends 'company-rtags)
-  (add-to-list 'company-backends 'company-irony)
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
   )
@@ -306,14 +305,6 @@
          auto-mode-alist))
   )
 
-;; irony
-(use-package irony
-  :defer t
-  :init
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'c++-mode-hook 'irony-mode)
-  )
-
 ;; rtags
 (use-package rtags
   :config
@@ -322,25 +313,9 @@
   (rtags-enable-standard-keybindings)
   )
 
-;; company-irony
-(use-package company-irony
-  :defer t
-  :config
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (add-to-list 'company-backends 'company-irony)
-  )
-
 ;; company-rtags
 (use-package company-rtags
   :defer t)
-
-;; flycheck-irony
-(use-package flycheck-irony
-  :defer t
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
-  )
 
 ;; flycheck-rtags
 (use-package flycheck-rtags
