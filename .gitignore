@@ -20,3 +20,13 @@ auto-save-list
 
 # saved desktop
 .emacs.desktop
+
+# bookmarks
+bookmarks
+
+# projectile
+projectile-bookmarks.eld
+projectile.cache
+
+# recentf mode
+recentf

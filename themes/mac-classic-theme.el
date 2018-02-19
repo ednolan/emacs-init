@@ -3,7 +3,7 @@
 
 (custom-theme-set-faces
  'mac-classic
- '(default ((t (:background "white" :foreground "black"))))
+ '(default ((t (:background "#FFFFFF" :foreground "#000000"))))
  ;; Font lock faces
  '(font-lock-builtin-face            ((t (:foreground "#0000CD" :bold t))))
  '(font-lock-constant-face           ((t (:foreground "#C5060B" :bold t))))
