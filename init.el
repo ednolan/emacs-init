@@ -278,7 +278,6 @@
   (setq make-backup-files nil)
   (add-hook 'after-save-hook 'backup-each-save)
 )
-(setq use-package-always-ensure t)
 
 ;; thin gray line at 90 cols
 (use-package fill-column-indicator
