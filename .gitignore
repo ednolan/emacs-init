@@ -17,3 +17,13 @@ custom.el
 
 # auto-save-list
 auto-save-list
+
+# bookmarks
+bookmarks
+
+# projectile
+projectile-bookmarks.eld
+projectile.cache
+
+# recentf mode
+recentf

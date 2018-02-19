@@ -1,3 +1,22 @@
+;; keybinding ref
+
+;; smerge
+;; Prev conflict (C-c m p)
+;; Next conflict (C-c m n)
+;; Keep ours (C-c m o)
+;; Keep theirs (C-c m t)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; rtags
+;; Find symbol at point (C-c r .)
+;; Find all references at point (C-c r /)
+;; Reparse file (C-c r e)
+;; Print class hierarchy (C-c r h)
+;; Find functions called by this function (C-c r A)
+
 ;; col numbers
 (setq column-number-mode t)
 
@@ -23,8 +42,8 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
-;; toolbar off
-(tool-bar-mode -1)
+;; ;; toolbar off
+;; (tool-bar-mode -1)
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
@@ -34,6 +53,12 @@
 
 ;; delete selection mode
 (delete-selection-mode 1)
+
+;; yes/no -> y/n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; mouse support in terminal mode
+(xterm-mouse-mode t)
 
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
@@ -65,7 +90,7 @@
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
 ;; make windows split horizontally
-(setq split-height-threshold 1)
+;; (setq split-height-threshold 1)
 
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
@@ -82,13 +107,22 @@
   (interactive) (revert-buffer t t))
 (global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
 
-;; my macros
+;; Mouse scroll in terminal mode
+(global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+(global-set-key (kbd "<mouse-5>") 'scroll-up-line)
 
-;; newline at token before column 80
-(fset 'insert-newline-for-paragraph
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217831 tab 55 57 backspace backspace 56 48 return C-left return] 0 "%d")) arg)))
+;; Shift + up/down to scroll buffer without moving cursor
+(defun gcm-scroll-down ()
+      (interactive)
+      (scroll-up 1))
+    (defun gcm-scroll-up ()
+      (interactive)
+      (scroll-down 1))
+(global-set-key [(shift down)] 'gcm-scroll-down)
+(global-set-key [(shift up)]   'gcm-scroll-up)
 
-(global-set-key (kbd "C-c n") 'insert-newline-for-paragraph)
+;; TAGS file annoyance
+(setq tags-revert-without-query 1)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -133,8 +167,8 @@
                         (arglist-cont-nonempty . c-lineup-arglist)
                         (comment-intro . 0)
                         (member-init-intro . 0)
-                        (case-label . *)
-                        (statement-case-intro . *)
+                        (case-label . 0)
+                        (statement-case-intro . +)
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
@@ -155,11 +189,11 @@
 (add-hook 'c-mode-hook 'setup-c-mode)
 ;; C++
 (defun setup-c++-mode ()
-  (local-set-key [C-tab] 'tab-to-tab-stop)
+  (global-set-key (kbd "C-M-i") 'tab-to-tab-stop)
   (defun insert-four-spaces ()
     (interactive)
     (insert "    "))
-  (local-set-key (kbd "C-S-<iso-lefttab>") 'insert-four-spaces)
+  (local-set-key (kbd "C-M-y") 'insert-four-spaces)
   (defun ff-find-other-file-ignore-headers ()
     (interactive)
     (ff-find-other-file nil t))
@@ -199,6 +233,11 @@
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; OCaml
 (add-hook 'tuareg-mode-hook 'setup-common)
+;; Python
+(defun setup-python-mode ()
+  (setq tab-width 4))
+(add-hook 'python-mode-hook 'setup-common)
+(add-hook 'python-mode-hook 'setup-python-mode)
 ;; reStructuredText
 ;; We don't want to strip trailing whitespace here
 ;; (add-hook 'rst-mode-hook 'setup-common)
@@ -208,8 +247,8 @@
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
-  (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
-  (local-set-key (kbd "C-c m t") 'smerge-keep-other)
+  (local-set-key (kbd "C-c m o") 'smerge-keep-upper)
+  (local-set-key (kbd "C-c m t") 'smerge-keep-lower)
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
@@ -283,7 +322,6 @@
   (add-hook 'tuareg-mode-hook 'company-mode)
   :config
   (add-to-list 'company-backends 'company-rtags)
-  (add-to-list 'company-backends 'company-irony)
   (add-to-list 'company-backends 'merlin-company-backend)
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
@@ -312,20 +350,6 @@
          auto-mode-alist))
   )
 
-;; irony
-(use-package irony
-  :defer t
-  :init
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'c++-mode-hook 'irony-mode)
-  )
-
 ;; rtags
 (use-package rtags
   :config
@@ -334,25 +358,9 @@
   (rtags-enable-standard-keybindings)
   )
 
-;; company-irony
-(use-package company-irony
-  :defer t
-  :config
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (add-to-list 'company-backends 'company-irony)
-  )
-
 ;; company-rtags
 (use-package company-rtags
   :defer t)
-
-;; flycheck-irony
-(use-package flycheck-irony
-  :defer t
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
-  )
 
 ;; flycheck-rtags
 (use-package flycheck-rtags
@@ -415,6 +423,12 @@
 
 ;; ocp-indent
 (require 'ocp-indent)
+
+;; Python
+(use-package py-yapf
+  :init
+  (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
+  )
 
 ;; Rust
 (use-package rust-mode
