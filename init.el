@@ -260,8 +260,8 @@
 
 ;; helm
 (use-package helm
-  :init
-  (add-hook 'c++-mode-hook 'helm-mode)
+  :config
+  (helm-mode 1)
   (progn
     (use-package helm-projectile)
     )
@@ -269,9 +269,8 @@
 
 ;; projectile
 (use-package projectile
-  :init
-  (add-hook 'c++-mode-hook 'projectile-mode)
   :config
+  (projectile-mode)
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
   )
