@@ -208,6 +208,8 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
+;; Markdown
+(add-hook 'markdown-mode-hook 'setup-common)
 ;; Python
 (defun setup-python-mode ()
   (setq tab-width 4))
@@ -271,8 +273,8 @@
 
 ;; helm
 (use-package helm
-  :init
-  (add-hook 'c++-mode-hook 'helm-mode)
+  :config
+  (helm-mode 1)
   (progn
     (use-package helm-projectile)
     )
@@ -280,9 +282,8 @@
 
 ;; projectile
 (use-package projectile
-  :init
-  (add-hook 'c++-mode-hook 'projectile-mode)
   :config
+  (projectile-mode)
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
   )
