@@ -1,6 +1,3 @@
 [submodule "flow-minor-mode"]
 	path = flow-minor-mode
 	url = https://github.com/an-sh/flow-minor-mode.git
-[submodule "emacs-flycheck-flow"]
-	path = emacs-flycheck-flow
-	url = https://github.com/lbolla/emacs-flycheck-flow.git

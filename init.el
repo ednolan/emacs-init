@@ -353,8 +353,7 @@
   :init
   (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'js2-mode-hook 'flycheck-mode)
-  :config
-  (flycheck-add-mode 'javascript-flow 'flow-minor-mode)
+  (add-hook 'swift-mode-hook 'flycheck-mode)
   )
 
 ;; fix mac os path issue
@@ -422,7 +421,7 @@
   :defer t)
 
 ;; flycheck-flow
-(load-file "~/.emacs.d/emacs-flycheck-flow/flycheck-flow.el")
+(use-package flycheck-flow)
 
 ;; flow-minor-mode
 (load-file "~/.emacs.d/flow-minor-mode/flow-minor-mode.el")
@@ -447,3 +446,11 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; Swift
+(use-package swift-mode)
+
+(use-package flycheck-swift)
+(eval-after-load 'flycheck '(flycheck-swift-setup))
+(setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk")
+(setq flycheck-swift-target "arm64-apple-ios11")
