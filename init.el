@@ -54,6 +54,9 @@
 ;; delete selection mode
 (delete-selection-mode 1)
 
+;; yes/no -> y/n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; mouse support in terminal mode
 (xterm-mouse-mode t)
 
@@ -106,6 +109,19 @@
 ;; Mouse scroll in terminal mode
 (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
 (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
+
+;; Shift + up/down to scroll buffer without moving cursor
+(defun gcm-scroll-down ()
+      (interactive)
+      (scroll-up 1))
+    (defun gcm-scroll-up ()
+      (interactive)
+      (scroll-down 1))
+(global-set-key [(shift down)] 'gcm-scroll-down)
+(global-set-key [(shift up)]   'gcm-scroll-up)
+
+;; TAGS file annoyance
+(setq tags-revert-without-query 1)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -204,7 +220,7 @@
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
-  (local-set-key (kbd "C-c m o") 'smerge-keep-mine)
+  (local-set-key (kbd "C-c m o") 'smerge-keep-upper)
   (local-set-key (kbd "C-c m t") 'smerge-keep-lower)
   )
 (add-hook 'smerge-mode-hook 'setup-common)
