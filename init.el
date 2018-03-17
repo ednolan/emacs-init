@@ -100,6 +100,9 @@
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
+;; F2 to switch frames
+(global-set-key (kbd "<f2>") 'other-frame)
+
 ;; F5 to revert-buffer without confirmation
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
@@ -122,6 +125,9 @@
 
 ;; TAGS file annoyance
 (setq tags-revert-without-query 1)
+
+;; Recognize Makefile.foo
+(add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -277,6 +283,9 @@
   (helm-mode 1)
   (progn
     (use-package helm-projectile)
+    (use-package helm-git-grep
+      :bind (("C-c g" . helm-git-grep))
+      )
     )
   )
 
