@@ -66,7 +66,7 @@
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
+(set-keyboard-coding-system nil)
 
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -101,6 +101,9 @@
 
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
+
+;; ctrl/cmd on mac
+(setq mac-command-modifier 'control)
 
 ;; F5 to revert-buffer without confirmation
 (defun revert-buffer-no-confirm ()
@@ -311,6 +314,15 @@
   (setq fci-handle-truncate-lines nil)
   )
 
+;; fix for company/fci mode conflict
+(defun on-off-fci-before-company(command)
+  (when (string= "show" command)
+    (turn-off-fci-mode))
+  (when (string= "hide" command)
+    (turn-on-fci-mode)))
+
+(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+
 ;; cleaner mode lines
 (use-package diminish)
 
@@ -336,13 +348,15 @@
 
 ;; company
 (use-package company
-  :bind (("C-." . company-complete))
+  :bind (("M-/" . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
   (add-hook 'js2-mode-hook 'company-mode)
+  (add-hook 'swift-mode-hook 'company-mode)
   :config
   (add-to-list 'company-backends 'company-rtags)
   (add-to-list 'company-backends 'company-flow)
+  (add-to-list 'company-backends 'company-sourcekit)
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
   )
@@ -454,3 +468,5 @@
 (eval-after-load 'flycheck '(flycheck-swift-setup))
 (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk")
 (setq flycheck-swift-target "arm64-apple-ios11")
+
+(use-package company-sourcekit)
