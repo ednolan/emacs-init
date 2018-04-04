@@ -17,6 +17,9 @@
 ;; Print class hierarchy (C-c r h)
 ;; Find functions called by this function (C-c r A)
 
+;; company
+;; Complete (M-/)
+
 ;; col numbers
 (setq column-number-mode t)
 
@@ -271,6 +274,15 @@
   (setq fci-handle-truncate-lines nil)
   )
 
+;; hack to fix fci-mode with company
+(defun on-off-fci-before-company(command)
+  (when (string= "show" command)
+    (turn-off-fci-mode))
+  (when (string= "hide" command)
+    (turn-on-fci-mode)))
+
+(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+
 ;; cleaner mode lines
 (use-package diminish)
 
@@ -299,7 +311,7 @@
 
 ;; company
 (use-package company
-  :bind (("C-." . company-complete))
+  :bind (("M-/" . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
   :config
