@@ -18,7 +18,7 @@
 ;; Find functions called by this function (C-c r A)
 
 ;; company
-;; Complete (M-/)
+;; Complete (C-v)
 
 ;; col numbers
 (setq column-number-mode t)
@@ -205,8 +205,6 @@
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
-  ;; rtags
-  (rtags-start-process-maybe)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -305,13 +303,14 @@
 (use-package projectile
   :config
   (projectile-mode)
+  (setq projectile-enable-caching t)
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
   )
 
 ;; company
 (use-package company
-  :bind (("M-/" . company-complete))
+  :bind (("C-v" . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
   :config
