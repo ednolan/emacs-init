@@ -103,6 +103,9 @@
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
+;; Don't use F1 for help menu
+(global-unset-key (kbd "<f1>"))
+
 ;; F2 to switch frames
 (global-set-key (kbd "<f2>") 'other-frame)
 
@@ -205,6 +208,8 @@
   (defvar my-cpp-other-file-alist
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  ;; rtags
+  (add-hook 'after-save-hook 'rtags-reparse-file)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -344,10 +349,20 @@
 
 ;; rtags
 (use-package rtags
+  :bind (("C-c r g" . rtags-bury-or-delete)
+         ("C-c C-t" . rtags-symbol-type)
+         ("C-c t" . rtags-symbol-type)
+         ("C-c r n" . rtags-next-match)
+         ("C-c r p" . rtags-previous-match))
   :config
   (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
+  ;; Just kill window and buffer, don't break stack position.
+  (setq rtags-bury-buffer-function 'delete-current-buffer-and-window)
+  ;; Split window force at below.
+  (setq rtags-split-window-function 'split-window-below)
+  (setq rtags-use-helm t)
   )
 
 ;; company-rtags
