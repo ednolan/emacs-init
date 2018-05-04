@@ -358,6 +358,8 @@
   (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
+  ;; fix overridden rtags-previous-match keybinding
+  (define-key c-mode-base-map (kbd "C-c r p") 'rtags-previous-match)
   ;; Just kill window and buffer, don't break stack position.
   (setq rtags-bury-buffer-function 'delete-current-buffer-and-window)
   ;; Split window force at below.
