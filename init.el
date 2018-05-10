@@ -172,7 +172,7 @@
 (defconst mana-cpp-style
   '((c-basic-offset . 4)
     (c-offsets-alist . ((innamespace . 0)
-                        (access-label . /)
+                        (access-label . -)
                         (topmost-intro . 0)
                         (arglist-intro . ++)
                         (arglist-cont-nonempty . c-lineup-arglist)
