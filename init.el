@@ -296,6 +296,12 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; xclip to copy to system clipboard
+(use-package xclip
+  :config
+  (xclip-mode 1)
+  )
+
 ;; helm
 (use-package helm
   :config
@@ -403,6 +409,9 @@
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
+;; Meson
+(use-package meson-mode)
+
 ;; OCaml
 
 ;; tuareg
@@ -436,3 +445,11 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; Swift
+(use-package swift-mode)
+
+(use-package flycheck-swift
+  :config
+  (flycheck-swift-setup)
+  )
