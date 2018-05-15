@@ -406,7 +406,7 @@
 ;; OCaml
 
 ;; tuareg
-(load "/home/eddie/.opam/4.05.0/share/emacs/site-lisp/tuareg-site-file")
+(load "/home/eddie/.opam/4.06.1/share/emacs/site-lisp/tuareg-site-file")
 
 ;; merlin
 (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
