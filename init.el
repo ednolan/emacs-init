@@ -337,6 +337,7 @@
   :defer t
   :init
   (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'flow-minor-mode-hook 'flycheck-mode)
   )
 
 ;; programming languages
@@ -385,7 +386,27 @@
   )
 
 ;; JavaScript
-(load-file "~/.emacs.d/flow-for-emacs/flow.el")
+
+;; js2-mode
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+;; company-flow
+(use-package company-flow
+  :defer t)
+
+;; flycheck-flow
+(use-package flycheck-flow
+  :config
+  (flycheck-add-mode 'javascript-flow 'flow-minor-mode)
+  (flycheck-add-mode 'javascript-eslint 'flow-minor-mode)
+  (flycheck-add-next-checker 'javascript-flow 'javascript-eslint)
+  )
+
+;; flow-minor-mode
+(use-package flow-minor-mode)
+(add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
 
 ;; LaTeX
 (use-package tex-mode
