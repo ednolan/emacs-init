@@ -78,6 +78,9 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'mac-classic t)
 
+;; better highlight color
+(set-face-attribute 'region nil :background "#a9d1ff")
+
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
@@ -177,12 +180,30 @@
                         (arglist-intro . ++)
                         (arglist-cont-nonempty . c-lineup-arglist)
                         (comment-intro . 0)
-                        (member-init-intro . 0)
+                        (member-init-intro . +)
                         (case-label . 0)
                         (statement-case-intro . +)
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
+
+;; slob mode
+(defvar slob-font-lock-defaults
+      '((
+         ("\\<\\(fixme\\|FIXME\\|TODO\\):" . font-lock-prepend-warning-face)
+         ("\\<\\(add_order\\|delete_order\\|modify_order\\|exec_order\\|BEGIN\\|END\\)\\>" . font-lock-builtin-face)
+         ("\\<~\\|!\\>" . font-lock-negation-char-face)
+         ("$\\([-/_a-zA-Z0-9\\.]+\\)\\>" . font-lock-constant-face)
+         )))
+(defvar slob-tab-width 4 "Width of a tab for slob mode")
+(define-derived-mode slob-mode fundamental-mode "slob"
+  "slob mode"
+  (setq mode-name "slob")
+  (setq font-lock-defaults slob-font-lock-defaults)
+  (when slob-tab-width
+    (setq tab-width slob-tab-width)))
+(add-to-list 'auto-mode-alist '("\\.slob\\'" . slob-mode))
+(add-hook 'slob-mode-hook (lambda () (setq indent-line-function 'insert-tab)))
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -209,7 +230,12 @@
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
-  (add-hook 'after-save-hook 'rtags-reparse-file)
+  ;; (add-hook 'after-save-hook 'rtags-reparse-file)
+  (flycheck-select-checker 'rtags)
+  (define-key c++-mode-map (kbd "M-g n") 'rtags-next-diag)
+  (define-key c++-mode-map (kbd "M-g p") 'rtags-prev-diag)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -359,7 +385,7 @@
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
-  (define-key c-mode-base-map (kbd "C-c r p") 'rtags-previous-match)
+  (define-key c++-mode-map (kbd "C-c r p") 'rtags-previous-match)
   ;; Just kill window and buffer, don't break stack position.
   (setq rtags-bury-buffer-function 'delete-current-buffer-and-window)
   ;; Split window force at below.
@@ -372,13 +398,7 @@
   :defer t)
 
 ;; flycheck-rtags
-(use-package flycheck-rtags
-  :defer t
-  :config
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil)
-  )
+(use-package flycheck-rtags)
 
 ;; Markdown
 (use-package markdown-mode
