@@ -36,6 +36,13 @@
 (setq-default tab-width 4)
 (setq-default tab-stop-list (number-sequence 4 200 4))
 
+;; fix tabs in text mode
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (setq indent-line-function (quote insert-tab))
+             )
+          )
+
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
 (global-set-key [M-right] 'windmove-right)
@@ -102,6 +109,7 @@
 
 ;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
+(global-set-key (kbd "C-x `") 'rectangle-mark-mode)
 
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
@@ -137,6 +145,20 @@
 
 ;; Recognize Makefile.foo
 (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
+
+;; fill/unfill paragraph toggle with M-q
+(defun endless/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command 'endless/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
+
+(global-set-key [remap fill-paragraph]
+                #'endless/fill-or-unfill)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
