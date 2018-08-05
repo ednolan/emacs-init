@@ -101,6 +101,12 @@
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
+;; Don't use F1 for help menu
+(global-unset-key (kbd "<f1>"))
+
+;; F2 to switch frames
+(global-set-key (kbd "<f2>") 'other-frame)
+
 ;; F5 to revert-buffer without confirmation
 (defun revert-buffer-no-confirm ()
   "Revert buffer without confirmation."
@@ -308,6 +314,9 @@
   (helm-mode 1)
   (progn
     (use-package helm-projectile)
+    (use-package helm-git-grep
+      :bind (("C-c g" . helm-git-grep))
+      )
     )
   )
 
