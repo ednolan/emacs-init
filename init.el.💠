@@ -17,6 +17,9 @@
 ;; Print class hierarchy (C-c r h)
 ;; Find functions called by this function (C-c r A)
 
+;; company
+;; Complete (C-v)
+
 ;; col numbers
 (setq column-number-mode t)
 
@@ -33,6 +36,13 @@
 (setq-default tab-width 4)
 (setq-default tab-stop-list (number-sequence 4 200 4))
 
+;; fix tabs in text mode
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (setq indent-line-function (quote insert-tab))
+             )
+          )
+
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
 (global-set-key [M-right] 'windmove-right)
@@ -42,12 +52,9 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
-;; ;; toolbar off
-;; (tool-bar-mode -1)
-
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-(setq inhibit-startup-echo-area-message "eddie")
+(setq inhibit-startup-echo-area-message "edward")
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -78,6 +85,9 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'mac-classic t)
 
+;; better highlight color
+(set-face-attribute 'region nil :background "#a9d1ff")
+
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
@@ -92,17 +102,12 @@
 ;; C-c e to mark-whole-buffer
 (global-set-key (kbd "C-c e") 'mark-whole-buffer)
 
-;; make windows split horizontally
-;; (setq split-height-threshold 1)
-
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
 ;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
-
-;; mac os maps <insert> to <help> ???
-(global-set-key (kbd "<help>") 'overwrite-mode)
+(global-set-key (kbd "C-x `") 'rectangle-mark-mode)
 
 ;; Don't use F1 for help menu
 (global-unset-key (kbd "<f1>"))
@@ -132,6 +137,26 @@
 
 ;; TAGS file annoyance
 (setq tags-revert-without-query 1)
+
+;; Recognize Makefile.foo
+(add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
+
+;; mac os maps <insert> to <help> ???
+(global-set-key (kbd "<help>") 'overwrite-mode)
+
+;; fill/unfill paragraph toggle with M-q
+(defun endless/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command 'endless/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
+
+(global-set-key [remap fill-paragraph]
+                #'endless/fill-or-unfill)
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -170,17 +195,35 @@
 (defconst mana-cpp-style
   '((c-basic-offset . 4)
     (c-offsets-alist . ((innamespace . 0)
-                        (access-label . /)
+                        (access-label . -)
                         (topmost-intro . 0)
                         (arglist-intro . ++)
                         (arglist-cont-nonempty . c-lineup-arglist)
                         (comment-intro . 0)
-                        (member-init-intro . 0)
+                        (member-init-intro . +)
                         (case-label . 0)
                         (statement-case-intro . +)
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
+
+;; slob mode
+(defvar slob-font-lock-defaults
+      '((
+         ("\\<\\(fixme\\|FIXME\\|TODO\\):" . font-lock-prepend-warning-face)
+         ("\\<\\(add_order\\|delete_order\\|modify_order\\|exec_order\\|BEGIN\\|END\\)\\>" . font-lock-builtin-face)
+         ("\\<~\\|!\\>" . font-lock-negation-char-face)
+         ("$\\([-/_a-zA-Z0-9\\.]+\\)\\>" . font-lock-constant-face)
+         )))
+(defvar slob-tab-width 4 "Width of a tab for slob mode")
+(define-derived-mode slob-mode fundamental-mode "slob"
+  "slob mode"
+  (setq mode-name "slob")
+  (setq font-lock-defaults slob-font-lock-defaults)
+  (when slob-tab-width
+    (setq tab-width slob-tab-width)))
+(add-to-list 'auto-mode-alist '("\\.slob\\'" . slob-mode))
+(add-hook 'slob-mode-hook (lambda () (setq indent-line-function 'insert-tab)))
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -213,35 +256,26 @@
     '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
-  (rtags-start-process-maybe)
+  ;; (add-hook 'after-save-hook 'rtags-reparse-file)
+  (flycheck-select-checker 'rtags)
+  (define-key c++-mode-map (kbd "M-g n") 'rtags-next-diag)
+  (define-key c++-mode-map (kbd "M-g p") 'rtags-prev-diag)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil)
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
-;; Golang
-(defun setup-go-mode ()
-  ; Call Gofmt before saving
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (set (make-local-variable 'tab-width) 8))
-(add-hook 'go-mode-hook 'setup-common)
-(add-hook 'go-mode-hook 'setup-go-mode)
 ;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-;; JavaScript
-(defun setup-js-mode ()
-  (set (make-local-variable 'js-indent-level) 4))
-(add-hook 'js-mode-hook 'setup-common)
-(add-hook 'js-mode-hook 'setup-js-mode)
 ;; LaTeX
 (add-hook 'latex-mode-hook 'setup-common)
 ;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
-;; OCaml
-(add-hook 'tuareg-mode-hook 'setup-common)
 ;; Python
 (defun setup-python-mode ()
   (setq tab-width 4))
@@ -250,8 +284,6 @@
 ;; reStructuredText
 ;; We don't want to strip trailing whitespace here
 ;; (add-hook 'rst-mode-hook 'setup-common)
-;; Rust
-(add-hook 'rust-mode-hook 'setup-common)
 ;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
@@ -261,9 +293,6 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
-;; Swift
-(add-hook 'swift-mode-hook 'setup-common)
-
 ;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
@@ -301,17 +330,14 @@
   (setq fci-handle-truncate-lines nil)
   )
 
+;; hide menu bar
+(menu-bar-mode -1)
+
 ;; cleaner mode lines
 (use-package diminish)
 
 ;; helper for mode remappings
 (use-package bind-key)
-
-;; xclip to copy to system clipboard
-(use-package xclip
-  :config
-  (xclip-mode 1)
-  )
 
 ;; helm
 (use-package helm
@@ -329,19 +355,18 @@
 (use-package projectile
   :config
   (projectile-mode)
+  (setq projectile-enable-caching t)
   (setq projectile-completion-system 'helm)
   (helm-projectile-on)
   )
 
 ;; company
 (use-package company
-  :bind (("C-." . company-complete))
+  :bind (("C-v" . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'tuareg-mode-hook 'company-mode)
   :config
   (add-to-list 'company-backends 'company-rtags)
-  (add-to-list 'company-backends 'merlin-company-backend)
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
   )
@@ -371,10 +396,22 @@
 
 ;; rtags
 (use-package rtags
+  :bind (("C-c r g" . rtags-bury-or-delete)
+         ("C-c C-t" . rtags-symbol-type)
+         ("C-c t" . rtags-symbol-type)
+         ("C-c r n" . rtags-next-match)
+         ("C-c r p" . rtags-previous-match))
   :config
   (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
+  ;; fix overridden rtags-previous-match keybinding
+  (define-key c++-mode-map (kbd "C-c r p") 'rtags-previous-match)
+  ;; Just kill window and buffer, don't break stack position.
+  (setq rtags-bury-buffer-function 'delete-current-buffer-and-window)
+  ;; Split window force at below.
+  (setq rtags-split-window-function 'split-window-below)
+  (setq rtags-use-helm t)
   )
 
 ;; company-rtags
@@ -382,73 +419,13 @@
   :defer t)
 
 ;; flycheck-rtags
-(use-package flycheck-rtags
-  :defer t
-  :config
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil)
-  )
-
-;; Go
-(use-package go-mode
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-  )
-
-;; JavaScript
-
-;; js2-mode
-(use-package js2-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-
-;; LaTeX
-(use-package tex-mode
-  :ensure auctex
-  :defer t
-  :init
-  (setq-default TeX-engine 'xetex)
-  (setq-default TeX-PDF-mode t)
-  )
-;; set XeTeX mode in TeX/LaTeX
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-            (setq TeX-command-default "XeLaTeX")
-            (setq TeX-save-query nil)))
+(use-package flycheck-rtags)
 
 ;; Markdown
 (use-package markdown-mode
-  :defer t
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
-
-;; Meson
-(use-package meson-mode)
-
-;; OCaml
-
-;; tuareg
-(load "/home/eddie/.opam/4.06.1/share/emacs/site-lisp/tuareg-site-file")
-
-;; merlin
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin non-lazily
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (require 'merlin)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)))
-
-;; ocp-indent
-(require 'ocp-indent)
 
 ;; Python
 (use-package py-yapf
@@ -456,13 +433,3 @@
   (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
   )
 
-;; Rust
-(use-package rust-mode
-  :defer t
-  :init
-  (require 'rust-mode)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-)
-
-;; Swift
-(use-package swift-mode)
