@@ -51,6 +51,9 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
+;; hide menu bar
+(menu-bar-mode -1)
+
 ;; delete selection mode
 (delete-selection-mode 1)
 
@@ -258,6 +261,8 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
+;; Swift
+(add-hook 'swift-mode-hook 'setup-common)
 
 ;; package management
 ;; melpa
@@ -461,8 +466,3 @@
 
 ;; Swift
 (use-package swift-mode)
-
-(use-package flycheck-swift
-  :config
-  (flycheck-swift-setup)
-  )
