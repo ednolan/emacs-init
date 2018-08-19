@@ -358,16 +358,7 @@
   (setq fci-handle-truncate-lines nil)
   )
 
-☣💠;; hack to fix fci-mode with company
-(defun on-off-fci-before-company(command)
-  (when (string= "show" command)
-    (turn-off-fci-mode))
-  (when (string= "hide" command)
-    (turn-on-fci-mode)))
-
-(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-
-*️⃣;; cleaner mode lines
+;; cleaner mode lines
 (use-package diminish)
 
 ;; helper for mode remappings
@@ -394,6 +385,14 @@
   (helm-projectile-on)
   )
 
+🍎;; fix mac os path issue
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (push "HISTFILE" exec-path-from-shell-variables)
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize))
+
 ☣💠;; company
 (use-package company
   :bind (("C-v" . company-complete))
@@ -415,6 +414,15 @@
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
   )
+
+☣🍎💠;; hack to fix fci-mode with company
+(defun on-off-fci-before-company(command)
+  (when (string= "show" command)
+    (turn-off-fci-mode))
+  (when (string= "hide" command)
+    (turn-on-fci-mode)))
+
+(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 
 ☣💠;; flycheck
 (use-package flycheck
