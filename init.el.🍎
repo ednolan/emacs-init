@@ -289,9 +289,6 @@
   (setq fci-handle-truncate-lines nil)
   )
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; cleaner mode lines
 (use-package diminish)
 

@@ -331,9 +331,6 @@
 
 (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; cleaner mode lines
 (use-package diminish)
 
