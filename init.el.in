@@ -405,12 +405,30 @@
   (setq company-idle-delay nil)
   )
 
-;; flycheck
+🍎;; company
+(use-package company
+  :bind (("C-v" . company-complete))
+  :init
+  (add-hook 'swift-mode-hook 'company-mode)
+  :config
+  (add-to-list 'company-backends 'company-sourcekit)
+  (setq company-async-timeout 30)
+  (setq company-idle-delay nil)
+  )
+
+☣💠;; flycheck
 (use-package flycheck
   :defer t
   :init
   (add-hook 'c++-mode-hook 'flycheck-mode)
-  )
+ )
+
+🍎;; flycheck
+(use-package flycheck
+  :defer t
+  :init
+  (add-hook 'swift-mode-hook 'flycheck-mode)
+ )
 
 *️⃣;; programming languages
 
@@ -530,3 +548,13 @@
 
 🐿🍎;; Swift
 (use-package swift-mode)
+
+🍎;; flycheck-swift
+(use-package flycheck-swift
+  :config
+  (flycheck-swift-setup)
+  (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk")
+  (setq flycheck-swift-target "arm64-apple-ios11")
+  )
+
+(use-package company-sourcekit)
