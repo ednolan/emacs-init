@@ -358,7 +358,7 @@
   (setq fci-handle-truncate-lines nil)
   )
 
-☣;; hack to fix fci-mode with company
+☣💠;; hack to fix fci-mode with company
 (defun on-off-fci-before-company(command)
   (when (string= "show" command)
     (turn-off-fci-mode))
