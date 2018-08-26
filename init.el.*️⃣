@@ -44,7 +44,6 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-(setq inhibit-startup-echo-area-message "eddie")
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -225,9 +224,6 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
-;; Swift
-(add-hook 'swift-mode-hook 'setup-common)
-
 ;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
@@ -305,7 +301,4 @@
   :init
   (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
   )
-
-;; Swift
-(use-package swift-mode)
 
