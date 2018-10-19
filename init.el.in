@@ -390,6 +390,8 @@
 
 ;; projectile
 (use-package projectile
+  ;; https://www.reddit.com/r/emacs/comments/6vhxim/projectile_key_bindings_are_not_activated_until_a/dm0e1x3
+  :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
   (setq projectile-enable-caching t)
