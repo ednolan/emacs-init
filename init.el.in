@@ -1,5 +1,9 @@
 ;; keybinding ref
 
+;; string-inflection
+;; to snake case (C-c C-s)
+;; to camel case (C-c C-u)
+
 ;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
@@ -364,6 +368,14 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; string-inflection
+(use-package string-inflection
+  :init
+  (bind-keys*
+   ("C-c C-s" . string-inflection-underscore)
+   ("C-c C-u" . string-inflection-camelcase))
+  )
+
 ;; helm
 (use-package helm
   :config
@@ -462,7 +474,7 @@
          ("C-c r n" . rtags-next-match)
          ("C-c r p" . rtags-previous-match))
   :config
-  (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
+  (setq rtags-path "/u/edward/rtagsstuff/rtags/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
