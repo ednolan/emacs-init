@@ -3,6 +3,7 @@
 ;; string-inflection
 ;; to snake case (C-c C-s)
 ;; to camel case (C-c C-u)
+;; to lowercase camel case (C-c C-l)
 
 ;; smerge
 ;; Prev conflict (C-c m p)
@@ -140,6 +141,9 @@
       (scroll-down 1))
 (global-set-key [(shift down)] 'gcm-scroll-down)
 (global-set-key [(shift up)]   'gcm-scroll-up)
+
+;; Fundamental mode keybinding
+(global-set-key (kbd "C-c f") 'fundamental-mode)
 
 ;; TAGS file annoyance
 (setq tags-revert-without-query 1)
@@ -373,7 +377,8 @@
   :init
   (bind-keys*
    ("C-c C-s" . string-inflection-underscore)
-   ("C-c C-u" . string-inflection-camelcase))
+   ("C-c C-u" . string-inflection-camelcase)
+   ("C-c C-l" . string-inflection-lower-camelcase))
   )
 
 ;; helm
