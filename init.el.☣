@@ -1,5 +1,10 @@
 ;; keybinding ref
 
+;; string-inflection
+;; to snake case (C-c C-s)
+;; to camel case (C-c C-u)
+;; to lowercase camel case (C-c C-l)
+
 ;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
@@ -134,6 +139,9 @@
       (scroll-down 1))
 (global-set-key [(shift down)] 'gcm-scroll-down)
 (global-set-key [(shift up)]   'gcm-scroll-up)
+
+;; Fundamental mode keybinding
+(global-set-key (kbd "C-c f") 'fundamental-mode)
 
 ;; TAGS file annoyance
 (setq tags-revert-without-query 1)
@@ -328,6 +336,15 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; string-inflection
+(use-package string-inflection
+  :init
+  (bind-keys*
+   ("C-c C-s" . string-inflection-underscore)
+   ("C-c C-u" . string-inflection-camelcase)
+   ("C-c C-l" . string-inflection-lower-camelcase))
+  )
+
 ;; helm
 (use-package helm
   :config
@@ -342,6 +359,8 @@
 
 ;; projectile
 (use-package projectile
+  ;; https://www.reddit.com/r/emacs/comments/6vhxim/projectile_key_bindings_are_not_activated_until_a/dm0e1x3
+  :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
   (setq projectile-enable-caching t)
@@ -400,7 +419,7 @@
          ("C-c r n" . rtags-next-match)
          ("C-c r p" . rtags-previous-match))
   :config
-  (setq rtags-path "/u/edward/emacsstuff/rtags/bin")
+  (setq rtags-path "/u/edward/rtagsstuff/rtags/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
