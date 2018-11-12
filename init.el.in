@@ -457,6 +457,11 @@
   (add-hook 'swift-mode-hook 'flycheck-mode)
  )
 
+*️⃣;; magit
+(use-package magit
+  :bind (("C-x g" . magit-status))
+  )
+
 *️⃣;; programming languages
 
 ☣💠;; C++
