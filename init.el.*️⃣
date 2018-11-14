@@ -307,6 +307,11 @@
   (helm-projectile-on)
   )
 
+;; magit
+(use-package magit
+  :bind (("C-x g" . magit-status))
+  )
+
 ;; programming languages
 
 ;; Markdown
