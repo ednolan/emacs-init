@@ -424,7 +424,7 @@
          ("C-c r n" . rtags-next-match)
          ("C-c r p" . rtags-previous-match))
   :config
-  (setq rtags-path "/home/eddie/rtagsstuff/rtags/bin")
+  (setq rtags-path "/home/eddie/rtagsstuff/bin")
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
@@ -515,4 +515,3 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
-
