@@ -480,6 +480,9 @@
   :bind (("C-x g" . magit-status))
   )
 
+;; org
+(use-package org)
+
 *️⃣;; programming languages
 
 ☣💠;; C++
