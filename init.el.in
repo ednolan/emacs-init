@@ -586,12 +586,6 @@
 ;; ocp-indent
 (require 'ocp-indent)
 
-*️⃣;; Python
-(use-package py-yapf
-  :init
-  (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
-  )
-
 ☣;; Rust
 (use-package rust-mode
   :defer t
