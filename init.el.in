@@ -163,7 +163,7 @@
 
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
-☣💠(setq x-select-enable-clipboard t)
+☣(setq x-select-enable-clipboard t)
 (defun xsel-cut-function (text &optional push)
   (with-temp-buffer
     (insert text)
