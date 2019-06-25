@@ -303,6 +303,9 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
+;; Swift
+(add-hook 'swift-mode-hook 'setup-common)
+
 ;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
@@ -524,4 +527,7 @@
   (require 'rust-mode)
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
+
+;; Swift
+(use-package swift-mode)
 

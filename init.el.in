@@ -59,7 +59,7 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-🐿☣(setq inhibit-startup-echo-area-message "eddie")
+☣(setq inhibit-startup-echo-area-message "eddie")
 🍎(setq inhibit-startup-echo-area-message "enolan")
 💠(setq inhibit-startup-echo-area-message "edward")
 *️⃣(setq inhibit-startup-message t)
@@ -160,7 +160,7 @@
 
 *️⃣;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
-☣🐿💠(setq x-select-enable-clipboard t)
+☣💠(setq x-select-enable-clipboard t)
 (defun xsel-cut-function (text &optional push)
   (with-temp-buffer
     (insert text)
@@ -344,7 +344,7 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
-🐿🍎;; Swift
+☣🍎;; Swift
 (add-hook 'swift-mode-hook 'setup-common)
 
 *️⃣;; package management
@@ -596,7 +596,7 @@
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 )
 
-🐿🍎;; Swift
+☣🍎;; Swift
 (use-package swift-mode)
 
 🍎;; flycheck-swift
