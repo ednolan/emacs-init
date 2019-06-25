@@ -149,6 +149,9 @@
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
+;; ensure files end with newlines
+(setq-default require-final-newline 'visit)
+
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
 (setq x-select-enable-clipboard t)
@@ -251,6 +254,8 @@
 (defun setup-common ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)
   )
+;; bash
+(add-hook 'sh-mode-hook 'setup-common)
 ;; C
 (defun setup-c-mode ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)

@@ -146,6 +146,9 @@
 ;; ctrl/cmd on mac
 (setq mac-command-modifier 'control)
 
+;; ensure files end with newlines
+(setq-default require-final-newline 'visit)
+
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
 (unless window-system
@@ -227,6 +230,8 @@
 (defun setup-common ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)
   )
+;; bash
+(add-hook 'sh-mode-hook 'setup-common)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; Golang

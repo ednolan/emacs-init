@@ -135,6 +135,9 @@
 ;; Recognize Makefile.foo
 (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
 
+;; ensure files end with newlines
+(setq-default require-final-newline 'visit)
+
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
 ;; fill/unfill paragraph toggle with M-q
@@ -208,6 +211,8 @@
 (defun setup-common ()
   (add-to-list 'write-file-functions 'delete-trailing-whitespace)
   )
+;; bash
+(add-hook 'sh-mode-hook 'setup-common)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; HTML
