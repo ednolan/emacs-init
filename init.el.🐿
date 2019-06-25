@@ -94,9 +94,6 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 
-;; C-c e to mark-whole-buffer
-(global-set-key (kbd "C-c e") 'mark-whole-buffer)
-
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
@@ -139,6 +136,19 @@
 ;; Recognize Makefile.foo
 (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
 
+;; use system copypaste buffer
+;; https://stackoverflow.com/a/24557276
+(setq x-select-enable-clipboard t)
+(defun xsel-cut-function (text &optional push)
+  (with-temp-buffer
+    (insert text)
+    (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
+(defun xsel-paste-function()
+  (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
+    (unless (string= (car kill-ring) xsel-output)
+      xsel-output )))
+(setq interprogram-cut-function 'xsel-cut-function)
+(setq interprogram-paste-function 'xsel-paste-function)
 ;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
@@ -316,18 +326,15 @@
   :bind (("C-x g" . magit-status))
   )
 
+;; org
+(use-package org)
+
 ;; programming languages
 
 ;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
-  )
-
-;; Python
-(use-package py-yapf
-  :init
-  (add-hook 'python-mode-hook 'py-yapf-enable-on-save)
   )
 
 ;; Swift
