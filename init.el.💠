@@ -154,17 +154,6 @@
 
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
-(setq x-select-enable-clipboard t)
-(defun xsel-cut-function (text &optional push)
-  (with-temp-buffer
-    (insert text)
-    (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
-(defun xsel-paste-function()
-  (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
-    (unless (string= (car kill-ring) xsel-output)
-      xsel-output )))
-(setq interprogram-cut-function 'xsel-cut-function)
-(setq interprogram-paste-function 'xsel-paste-function)
 ;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."

@@ -173,6 +173,9 @@
 (global-set-key [remap fill-paragraph]
                 #'endless/fill-or-unfill)
 
+;; registers for commonly used files
+(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
+
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
 ;; https://stackoverflow.com/a/29556894
