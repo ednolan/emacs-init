@@ -161,6 +161,10 @@
 *️⃣;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
+🍎💠;; registers for commonly used files
+🍎(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
+💠(set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
+
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
 ☣(setq x-select-enable-clipboard t)
@@ -195,9 +199,6 @@
 
 (global-set-key [remap fill-paragraph]
                 #'endless/fill-or-unfill)
-
-🍎;; registers for commonly used files
-(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 
 *️⃣;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
