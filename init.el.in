@@ -399,6 +399,9 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; transpose-frame
+(use-package transpose-frame)
+
 ;; string-inflection
 (use-package string-inflection
   :init
