@@ -149,8 +149,6 @@
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
-;; use system copypaste buffer
-;; https://stackoverflow.com/a/24557276
 (setq x-select-enable-clipboard t)
 (defun xsel-cut-function (text &optional push)
   (with-temp-buffer
@@ -354,6 +352,9 @@
 ;; helper for mode remappings
 (use-package bind-key)
 
+;; transpose-frame
+(use-package transpose-frame)
+
 ;; string-inflection
 (use-package string-inflection
   :init
@@ -504,26 +505,9 @@
 (use-package meson-mode)
 
 ;; OCaml
-
-;; tuareg
-(load "/home/eddie/.opam/4.07.1/share/emacs/site-lisp/tuareg-site-file")
-
-;; merlin
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)))
-
-;; ocp-indent and ocp-index
-(add-to-list 'load-path "/home/eddie/.opam/4.07.1/share/emacs/site-lisp")
-(require 'ocp-indent)
-(require 'ocp-index)
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
 
 ;; Rust
 (use-package rust-mode

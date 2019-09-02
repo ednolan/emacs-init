@@ -152,6 +152,9 @@
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
+;; registers for commonly used files
+(set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
+
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
 ;; fill/unfill paragraph toggle with M-q
@@ -347,6 +350,9 @@
 
 ;; helper for mode remappings
 (use-package bind-key)
+
+;; transpose-frame
+(use-package transpose-frame)
 
 ;; string-inflection
 (use-package string-inflection

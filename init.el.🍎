@@ -149,8 +149,8 @@
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
-;; use system copypaste buffer
-;; https://stackoverflow.com/a/24557276
+;; registers for commonly used files
+(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 (unless window-system
     (setq interprogram-cut-function
           (lambda (text &optional push)
@@ -172,9 +172,6 @@
 
 (global-set-key [remap fill-paragraph]
                 #'endless/fill-or-unfill)
-
-;; registers for commonly used files
-(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 
 ;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
@@ -317,6 +314,9 @@
 
 ;; helper for mode remappings
 (use-package bind-key)
+
+;; transpose-frame
+(use-package transpose-frame)
 
 ;; string-inflection
 (use-package string-inflection
