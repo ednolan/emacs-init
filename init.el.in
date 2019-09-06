@@ -161,6 +161,9 @@
 *️⃣;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
+;; use ssh with tramp by default (saves typing "ssh:")
+(setq tramp-default-method "ssh")
+
 🍎💠;; registers for commonly used files
 🍎(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 💠(set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
