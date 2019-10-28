@@ -496,7 +496,7 @@
 ;; org
 (use-package org)
 
-;; ledger-mode
+☣;; ledger-mode
 (use-package ledger-mode
   :bind (("TAB" . completion-at-point)))
 (use-package flycheck-ledger)
