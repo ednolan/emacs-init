@@ -53,9 +53,6 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; delete selection mode
 (delete-selection-mode 1)
 
@@ -148,6 +145,9 @@
 
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
+
+;; use ssh with tramp by default (saves typing "ssh:")
+(setq tramp-default-method "ssh")
 
 ;; registers for commonly used files
 (set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
@@ -392,6 +392,11 @@
 
 ;; org
 (use-package org)
+
+;; ledger-mode
+(use-package ledger-mode
+  :bind (("TAB" . completion-at-point)))
+(use-package flycheck-ledger)
 
 ;; programming languages
 

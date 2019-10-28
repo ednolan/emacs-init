@@ -63,9 +63,6 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; delete selection mode
 (delete-selection-mode 1)
 
@@ -152,11 +149,11 @@
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
+;; use ssh with tramp by default (saves typing "ssh:")
+(setq tramp-default-method "ssh")
+
 ;; registers for commonly used files
 (set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
-
-;; use system copypaste buffer
-;; https://stackoverflow.com/a/24557276
 ;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
@@ -420,6 +417,11 @@
 
 ;; org
 (use-package org)
+
+;; ledger-mode
+(use-package ledger-mode
+  :bind (("TAB" . completion-at-point)))
+(use-package flycheck-ledger)
 
 ;; programming languages
 

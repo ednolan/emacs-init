@@ -65,9 +65,6 @@
 *️⃣(setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; delete selection mode
 (delete-selection-mode 1)
 
@@ -167,6 +164,7 @@
 🍎💠;; registers for commonly used files
 🍎(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 💠(set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
+☣(set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
 
 ;; use system copypaste buffer
 ;; https://stackoverflow.com/a/24557276
@@ -497,6 +495,11 @@
 
 ;; org
 (use-package org)
+
+;; ledger-mode
+(use-package ledger-mode
+  :bind (("TAB" . completion-at-point)))
+(use-package flycheck-ledger)
 
 *️⃣;; programming languages
 
