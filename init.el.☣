@@ -101,6 +101,9 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 
+;; .ino files are c++
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
+
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
