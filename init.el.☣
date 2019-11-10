@@ -431,7 +431,8 @@
 
 ;; ledger-mode
 (use-package ledger-mode
-  :bind (("TAB" . completion-at-point)))
+  :bind (:map ledger-mode-map
+         ("TAB" . completion-at-point)))
 (use-package flycheck-ledger)
 
 ;; programming languages
