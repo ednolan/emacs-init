@@ -435,6 +435,11 @@
          ("TAB" . completion-at-point)))
 (use-package flycheck-ledger)
 
+;; define-word
+(use-package define-word
+  :bind (("C-c d" . define-word-at-point))
+  )
+
 ;; programming languages
 
 ;; C++
