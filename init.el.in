@@ -87,7 +87,57 @@
 
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'mac-classic t)
+
+(defun epoch-to-midnight-localtime-secs ()
+  (if (eq system-type 'darwin)
+      (string-to-number
+       (shell-command-to-string
+        "date -j -f'%Y-%m-%d %H:%M:%S' \"$(date +%Y-%m-%d) 00:00:00\" +%s")
+       )
+    (string-to-number
+     (shell-command-to-string "date --date '' +%s")
+     )
+    )
+  )
+
+(defun set-todays-theme ()
+  (let ((theme-names '(bharadwaj-slate
+                       cyberpunk
+                       fogus
+                       gruber-darker
+                       inkpot
+                       intellij
+                       jsc-dark
+                       lavender
+                       mac-classic
+                       marine
+                       mistyday
+                       organic-green
+                       oswald
+                       overcast
+                       paper
+                       reykjavik
+                       toxi
+                       white))
+        (daily-theme-index
+         (string-to-number
+          (shell-command-to-string
+           (concat "echo \"$(echo "
+                   (number-to-string (epoch-to-midnight-localtime-secs))
+                   " | cksum | cut -d' ' -f1) % 18\" | bc")
+           )
+          )
+         ))
+    (if (boundp 'daily-theme)
+        (disable-theme daily-theme)
+      )
+    (setq daily-theme (nth daily-theme-index theme-names))
+    )
+  (load-theme daily-theme t)
+  )
+
+(set-todays-theme)
+(run-at-time "00:01" 86400 'set-todays-theme)
 
 ;; better highlight color
 (set-face-attribute 'region nil :background "#a9d1ff")
