@@ -83,6 +83,9 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
+;; better highlight color
+(set-face-attribute 'region nil :background "#a9d1ff")
+
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
@@ -136,9 +139,6 @@
 
 (set-todays-theme)
 (run-at-time "00:01" 86400 'set-todays-theme)
-
-;; better highlight color
-(set-face-attribute 'region nil :background "#a9d1ff")
 
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
