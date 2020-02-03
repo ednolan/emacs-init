@@ -107,9 +107,6 @@
 (set-todays-theme)
 (run-at-time "00:01" 86400 'set-todays-theme)
 
-(set-todays-theme)
-(run-at-time "00:01" 86400 'set-todays-theme)
-
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
 
