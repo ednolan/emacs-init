@@ -81,10 +81,10 @@
 
 (defun set-todays-theme ()
   (let* ((theme-names '(bharadwaj-slate borland-blue cyberpunk
-                       fogus gruber-darker inkpot intellij
-                       jsc-dark lavender mac-classic marine
-                       mistyday organic-green oswald overcast
-                       paper reykjavik toxi white))
+                       fogus gruber-darker intellij jsc-dark
+                       lavender mac-classic marine mistyday
+                       organic-green oswald overcast paper
+                       reykjavik toxi white))
          (epoch-to-midnight-utc-secs
           (if (eq system-type 'darwin)
               (string-to-number
