@@ -25,7 +25,7 @@
 ;; company
 ;; Complete (C-v)
 
-*️⃣;; col numbers
+✴️;; col numbers
 (setq column-number-mode t)
 
 ;; line numbers
@@ -62,7 +62,7 @@
 ☣(setq inhibit-startup-echo-area-message "eddie")
 🍎(setq inhibit-startup-echo-area-message "enolan")
 💠(setq inhibit-startup-echo-area-message "edward")
-*️⃣(setq inhibit-startup-message t)
+✴️(setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
 ;; delete selection mode
@@ -134,7 +134,7 @@
 ☣;; .ino files are c++
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
 
-*️⃣;; Nicer C-x C-b
+✴️;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
 ;; C-` to set mark
@@ -186,7 +186,7 @@
 ;; ctrl/cmd on mac
 (setq mac-command-modifier 'control)
 
-*️⃣;; ensure files end with newlines
+✴️;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
 ;; use ssh with tramp by default (saves typing "ssh:")
@@ -218,7 +218,7 @@
               (process-send-string pbproxy text)
               (process-send-eof pbproxy)))))
 
-*️⃣;; fill/unfill paragraph toggle with M-q
+✴️;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -232,7 +232,7 @@
 (global-set-key [remap fill-paragraph]
                 #'endless/fill-or-unfill)
 
-*️⃣;; don't prompt that file changed on disk based solely on timestamp
+✴️;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
 ;; https://stackoverflow.com/a/29556894
 ;; Ignore modification-time-only changes in files, i.e. ones that
@@ -299,7 +299,7 @@
 (add-to-list 'auto-mode-alist '("\\.slob\\'" . slob-mode))
 (add-hook 'slob-mode-hook (lambda () (setq indent-line-function 'insert-tab)))
 
-*️⃣;; major mode hooks
+✴️;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
 
@@ -341,7 +341,7 @@
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
-*️⃣;; Emacs Lisp
+✴️;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ☣🍎;; Golang
 (defun setup-go-mode ()
@@ -350,7 +350,7 @@
   (set (make-local-variable 'tab-width) 8))
 (add-hook 'go-mode-hook 'setup-common)
 (add-hook 'go-mode-hook 'setup-go-mode)
-*️⃣;; HTML
+✴️;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
@@ -362,11 +362,11 @@
 (add-hook 'js2-mode-hook 'setup-js2-mode)
 ☣🍎💠;; LaTeX
 (add-hook 'latex-mode-hook 'setup-common)
-*️⃣;; Markdown
+✴️;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
 ☣;; OCaml
 (add-hook 'tuareg-mode-hook 'setup-common)
-*️⃣;; Python
+✴️;; Python
 (defun setup-python-mode ()
   (setq tab-width 4))
 (add-hook 'python-mode-hook 'setup-common)
@@ -376,7 +376,7 @@
 ;; (add-hook 'rst-mode-hook 'setup-common)
 ☣;; Rust
 (add-hook 'rust-mode-hook 'setup-common)
-*️⃣;; Smerge
+✴️;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
@@ -388,7 +388,7 @@
 ☣🍎;; Swift
 (add-hook 'swift-mode-hook 'setup-common)
 
-*️⃣;; package management
+✴️;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -519,7 +519,7 @@
   (add-hook 'swift-mode-hook 'flycheck-mode)
  )
 
-*️⃣;; magit
+✴️;; magit
 (use-package magit
   :bind (("C-x g" . magit-status))
   )
@@ -533,12 +533,12 @@
          ("TAB" . completion-at-point)))
 (use-package flycheck-ledger)
 
-*️⃣;; define-word
+✴️;; define-word
 (use-package define-word
   :bind (("C-c d" . define-word-at-point))
   )
 
-*️⃣;; programming languages
+✴️;; programming languages
 
 ☣💠;; C++
 
@@ -612,7 +612,7 @@
             (setq TeX-command-default "XeLaTeX")
             (setq TeX-save-query nil)))
 
-*️⃣;; Markdown
+✴️;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
