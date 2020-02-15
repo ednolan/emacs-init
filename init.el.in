@@ -563,7 +563,7 @@
          ("C-c r p" . rtags-previous-match))
   :config
   💠(setq rtags-path "/u/edward/rtagsstuff/rtags/bin")
-  ☣️(setq rtags-path "/home/eddie/rtagsstuff/bin")
+  ☣️(setq rtags-path "/home/eddie/localbuild/rtags/bin")
   ☣️💠(setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
