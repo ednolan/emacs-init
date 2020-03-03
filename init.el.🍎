@@ -225,22 +225,6 @@
     (apply original arguments)))
 (advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
 
-;; style config
-(defconst mana-cpp-style
-  '((c-basic-offset . 4)
-    (c-offsets-alist . ((innamespace . 0)
-                        (access-label . -)
-                        (topmost-intro . 0)
-                        (arglist-intro . ++)
-                        (arglist-cont-nonempty . c-lineup-arglist)
-                        (comment-intro . 0)
-                        (member-init-intro . +)
-                        (case-label . 0)
-                        (statement-case-intro . +)
-                        (inline-open . 0)
-                        (substatement-open . 0))))
-  "MANA Tech LLC Style")
-
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination

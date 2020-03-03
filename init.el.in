@@ -242,9 +242,9 @@
     (apply original arguments)))
 (advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
 
-;; style config
+☣️💠;; style config
 (defconst mana-cpp-style
-  '((c-basic-offset . 4)
+  '((c-basic-offset . ☣️4💠2☣️💠)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . -)
                         (topmost-intro . 0)
