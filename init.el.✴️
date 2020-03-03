@@ -325,7 +325,8 @@
 
 ;; magit
 (use-package magit
-  :bind (("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status)
+         ("C-c v f" . magit-find-file))
   )
 
 ;; org
