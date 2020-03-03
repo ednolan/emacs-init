@@ -288,8 +288,9 @@
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
-    '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
-  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+    ☣️'(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
+    💠'(("\\.cpp\\'" (".h")) ("\\.hpp\\'" (".cpp"))))
+  ☣️💠(setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
   ;; (add-hook 'after-save-hook 'rtags-reparse-file)
   (flycheck-select-checker 'rtags)
