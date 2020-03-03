@@ -177,8 +177,6 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
-;; registers for commonly used files
-(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 ;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
@@ -254,25 +252,11 @@
 (add-hook 'sh-mode-hook 'setup-common)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
-;; Golang
-(defun setup-go-mode ()
-  ; Call Gofmt before saving
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (set (make-local-variable 'tab-width) 8))
-(add-hook 'go-mode-hook 'setup-common)
-(add-hook 'go-mode-hook 'setup-go-mode)
 ;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-;; JavaScript
-(defun setup-js2-mode ()
-  (set (make-local-variable 'js-indent-level) 4))
-(add-hook 'js2-mode-hook 'setup-common)
-(add-hook 'js2-mode-hook 'setup-js2-mode)
-;; LaTeX
-(add-hook 'latex-mode-hook 'setup-common)
 ;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; Python
@@ -289,9 +273,6 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
-;; Swift
-(add-hook 'swift-mode-hook 'setup-common)
-
 ;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
@@ -378,33 +359,6 @@
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
-;; company
-(use-package company
-  :bind (("C-v" . company-complete))
-  :init
-  (add-hook 'swift-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-sourcekit)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
-;; hack to fix fci-mode with company
-(defun on-off-fci-before-company(command)
-  (when (string= "show" command)
-    (turn-off-fci-mode))
-  (when (string= "hide" command)
-    (turn-on-fci-mode)))
-
-(advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-
-;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'swift-mode-hook 'flycheck-mode)
- )
-
 ;; magit
 (use-package magit
   :bind (("C-x g" . magit-status))
@@ -420,51 +374,9 @@
 
 ;; programming languages
 
-;; Go
-(use-package go-mode
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-  )
-
-;; JavaScript
-
-;; js2-mode
-(use-package js2-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-
-;; LaTeX
-(use-package tex-mode
-  :ensure auctex
-  :defer t
-  :init
-  (setq-default TeX-engine 'xetex)
-  (setq-default TeX-PDF-mode t)
-  )
-;; set XeTeX mode in TeX/LaTeX
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-            (setq TeX-command-default "XeLaTeX")
-            (setq TeX-save-query nil)))
-
 ;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
-;; Swift
-(use-package swift-mode)
-
-;; flycheck-swift
-(use-package flycheck-swift
-  :config
-  (flycheck-swift-setup)
-  (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk")
-  (setq flycheck-swift-target "arm64-apple-ios11")
-  )
-
-(use-package company-sourcekit)

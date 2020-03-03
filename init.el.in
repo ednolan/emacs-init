@@ -59,9 +59,8 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-☣️(setq inhibit-startup-echo-area-message "eddie")
-🍎(setq inhibit-startup-echo-area-message "enolan")
-💠(setq inhibit-startup-echo-area-message "edward")
+☣️💾(setq inhibit-startup-echo-area-message "eddie")
+🍎🍏💠(setq inhibit-startup-echo-area-message "enolan")
 ✴️(setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -176,10 +175,10 @@
 ;; Recognize Makefile.foo
 (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
 
-🍎💠;; mac os maps <insert> to <help> ???
+🍎🍏💠;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
-🍎;; home/end keys on mac
+🍎🍏;; home/end keys on mac
 (define-key global-map [home] 'beginning-of-line)
 (define-key global-map [end] 'end-of-line)
 
@@ -192,31 +191,10 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
-🍎💠;; registers for commonly used files
+🍎💠☣️;; registers for commonly used files
 🍎(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
-💠(set-register ?t (cons 'file "~/edwards-stuff/todo.org"))
+💠(set-register ?t (cons 'file "~/sync/todo/todo.org"))
 ☣️(set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
-
-;; use system copypaste buffer
-;; https://stackoverflow.com/a/24557276
-☣️(setq x-select-enable-clipboard t)
-(defun xsel-cut-function (text &optional push)
-  (with-temp-buffer
-    (insert text)
-    (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
-(defun xsel-paste-function()
-  (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
-    (unless (string= (car kill-ring) xsel-output)
-      xsel-output )))
-(setq interprogram-cut-function 'xsel-cut-function)
-(setq interprogram-paste-function 'xsel-paste-function)
-🍎(unless window-system
-    (setq interprogram-cut-function
-          (lambda (text &optional push)
-            (let* ((process-connection-type nil)
-                   (pbproxy (start-process "pbcopy" "pbcopy" "/usr/bin/pbcopy")))
-              (process-send-string pbproxy text)
-              (process-send-eof pbproxy)))))
 
 ✴️;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
@@ -280,24 +258,6 @@
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
-
-💠;; slob mode
-(defvar slob-font-lock-defaults
-      '((
-         ("\\<\\(fixme\\|FIXME\\|TODO\\):" . font-lock-prepend-warning-face)
-         ("\\<\\(add_order\\|delete_order\\|modify_order\\|exec_order\\|BEGIN\\|END\\)\\>" . font-lock-builtin-face)
-         ("\\<~\\|!\\>" . font-lock-negation-char-face)
-         ("$\\([-/_a-zA-Z0-9\\.]+\\)\\>" . font-lock-constant-face)
-         )))
-(defvar slob-tab-width 4 "Width of a tab for slob mode")
-(define-derived-mode slob-mode fundamental-mode "slob"
-  "slob mode"
-  (setq mode-name "slob")
-  (setq font-lock-defaults slob-font-lock-defaults)
-  (when slob-tab-width
-    (setq tab-width slob-tab-width)))
-(add-to-list 'auto-mode-alist '("\\.slob\\'" . slob-mode))
-(add-hook 'slob-mode-hook (lambda () (setq indent-line-function 'insert-tab)))
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
@@ -466,7 +426,7 @@
   (helm-projectile-on)
   )
 
-🍎;; fix mac os path issue
+🍎🍏;; fix mac os path issue
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -562,9 +522,8 @@
          ("C-c r n" . rtags-next-match)
          ("C-c r p" . rtags-previous-match))
   :config
-  💠(setq rtags-path "/u/edward/rtagsstuff/rtags/bin")
-  ☣️(setq rtags-path "/home/eddie/localbuild/rtags/bin")
-  ☣️💠(setq rtags-completions-enabled t)
+  (setq rtags-path "/home/eddie/localbuild/rtags/bin")
+  (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
   (define-key c++-mode-map (kbd "C-c r p") 'rtags-previous-match)

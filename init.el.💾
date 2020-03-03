@@ -49,6 +49,7 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
+(setq inhibit-startup-echo-area-message "eddie")
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
