@@ -523,7 +523,7 @@
   :config
   ☣️(setq rtags-path "/home/eddie/localbuild/rtags/bin")
   💠(setq rtags-path "/home/enolan/localbuild/rtags/bin")
-  (setq rtags-completions-enabled t)
+  ☣️💠(setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
   (define-key c++-mode-map (kbd "C-c r p") 'rtags-previous-match)
