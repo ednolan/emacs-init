@@ -458,6 +458,7 @@
          ("C-c r p" . rtags-previous-match))
   :config
   (setq rtags-path "/home/enolan/localbuild/rtags/bin")
+  (setq rtags-enabled nil)
   (setq rtags-completions-enabled t)
   (rtags-enable-standard-keybindings)
   ;; fix overridden rtags-previous-match keybinding
