@@ -1,3 +1,5 @@
+;; -*- mode: Emacs-Lisp;
+
 ;; keybinding ref
 
 ;; string-inflection
@@ -94,7 +96,7 @@
   (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
                        lavender mac-classic marine mistyday
                        organic-green oswald overcast paper
-                       reykjavik toxi white))
+                       toxi white))
          (epoch-to-midnight-utc-secs
           (if (eq system-type 'darwin)
               (string-to-number
