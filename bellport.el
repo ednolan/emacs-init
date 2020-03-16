@@ -30,7 +30,7 @@
   (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
-  (insert "} // " (bp-namespace-name) "\n"))
+  (insert "} // namespace " (bp-namespace-name) "\n"))
 
 (defun bp-insert-boilerplate-cpp ()
   "Insert boilerplate for a header file in Bellport"
@@ -41,4 +41,4 @@
   (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
-  (insert "} // " (bp-namespace-name) "\n"))
+  (insert "} // namespace " (bp-namespace-name) "\n"))
