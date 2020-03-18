@@ -295,7 +295,7 @@
     '(("\\.cpp\\'" (".hpp")) ("\\.hpp\\'" (".cpp"))))
   (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
-  ;; (add-hook 'after-save-hook 'rtags-reparse-file)
+  (add-hook 'after-save-hook 'rtags-reparse-file)
   (flycheck-select-checker 'rtags)
   (define-key c++-mode-map (kbd "M-g n") 'rtags-next-diag)
   (define-key c++-mode-map (kbd "M-g p") 'rtags-prev-diag)
