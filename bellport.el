@@ -33,7 +33,7 @@
   (insert "} // namespace " (bp-namespace-name) "\n"))
 
 (defun bp-insert-boilerplate-cpp ()
-  "Insert boilerplate for a header file in Bellport"
+  "Insert boilerplate for an implementation file in Bellport"
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
