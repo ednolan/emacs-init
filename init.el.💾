@@ -4,7 +4,7 @@
 
 ;; string-inflection
 ;; to snake case (C-c C-s)
-;; to camel case (C-c C-u)
+;; to pascal case (C-c C-u)
 ;; to lowercase camel case (C-c C-l)
 
 ;; smerge
