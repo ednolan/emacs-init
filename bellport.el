@@ -1,5 +1,11 @@
+(defun bp-hpp-include-path ()
+  (concat (substring
+           (substring buffer-file-name (length "/home/enolan/bellport/src/") nil)
+           0 -3)
+          "hpp"))
+
 (defun bp-header-comment-path ()
-  (substring buffer-file-name (length "/home/enolan/bellport/src/") nil))
+  (substring buffer-file-name (length "/home/enolan/bellport/src/bp/") nil))
 
 (defun bp-namespace-name ()
   (let ((srcdir (substring default-directory (length "/home/enolan/bellport/src/") -1)))
@@ -37,7 +43,7 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "#include \"" (concat (substring (bp-header-comment-path) 0 -3) "hpp") "\"\n")
+  (insert "#include \"" (bp-hpp-include-path) "\"\n")
   (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
