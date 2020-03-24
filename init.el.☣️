@@ -4,6 +4,7 @@
 
 ;; string-inflection
 ;; to snake case (C-c C-s)
+;; to all caps snake case (C-c C-h)
 ;; to pascal case (C-c C-u)
 ;; to lowercase camel case (C-c C-l)
 
@@ -401,6 +402,7 @@
   :init
   (bind-keys*
    ("C-c C-s" . string-inflection-underscore)
+   ("C-c C-h" . string-inflection-upcase)
    ("C-c C-u" . string-inflection-camelcase)
    ("C-c C-l" . string-inflection-lower-camelcase))
   )
