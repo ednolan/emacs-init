@@ -265,7 +265,7 @@
 
 ☣️💠;; style config
 (defconst mana-cpp-style
-  '((c-basic-offset . ☣️4💠2☣️💠)
+  '((c-basic-offset . 2)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . -)
                         (topmost-intro . 0)
