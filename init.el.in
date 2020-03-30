@@ -279,7 +279,7 @@
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
 
-💠(load-file (expand-file-name "~/.emacs.d/bellport.el"))
+💠☣️(load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
