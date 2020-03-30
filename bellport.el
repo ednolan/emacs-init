@@ -1,14 +1,14 @@
 (defun bp-hpp-include-path ()
   (concat (substring
-           (substring buffer-file-name (length "/home/enolan/bellport/src/") nil)
+           (substring buffer-file-name (length (expand-file-name "~/bellport/src/")) nil)
            0 -3)
           "hpp"))
 
 (defun bp-header-comment-path ()
-  (substring buffer-file-name (length "/home/enolan/bellport/src/bp/") nil))
+  (substring buffer-file-name (length (expand-file-name "~/bellport/src/")) nil))
 
 (defun bp-namespace-name ()
-  (let ((srcdir (substring default-directory (length "/home/enolan/bellport/src/") -1)))
+  (let ((srcdir (substring default-directory (length (expand-file-name "~/bellport/src/")) -1)))
     (replace-regexp-in-string "/" "::" srcdir)))
 
 (defun bp-header-comment ()
