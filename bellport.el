@@ -43,7 +43,7 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "#include \"" (bp-hpp-include-path) "\"\n")
+  (insert "#include <" (bp-hpp-include-path) ">\n")
   (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
