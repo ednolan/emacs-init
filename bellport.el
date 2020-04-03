@@ -5,7 +5,7 @@
           "hpp"))
 
 (defun bp-header-comment-path ()
-  (substring buffer-file-name (length (expand-file-name "~/bellport/src/")) nil))
+  (substring buffer-file-name (length (expand-file-name "~/bellport/src/bp/")) nil))
 
 (defun bp-namespace-name ()
   (let ((srcdir (substring default-directory (length (expand-file-name "~/bellport/src/")) -1)))
