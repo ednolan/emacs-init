@@ -281,6 +281,9 @@
 
 💠☣️(load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
+✴️ (load-file (expand-file-name "~/.emacs.d/git-util.el"))
+(global-set-key [C-c C-j] 'helm-git-grep-this-project)
+
 ✴️;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
