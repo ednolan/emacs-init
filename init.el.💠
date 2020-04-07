@@ -263,6 +263,9 @@
 
 (load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
+(load-file (expand-file-name "~/.emacs.d/git-util.el"))
+(global-set-key (kbd "C-c C-j") 'helm-git-grep-this-project)
+
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
@@ -307,6 +310,11 @@
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
+;; Golang
+(defun setup-go-mode ()
+  (set (make-local-variable 'tab-width) 8))
+(add-hook 'go-mode-hook 'setup-common)
+(add-hook 'go-mode-hook 'setup-go-mode)
 ;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
@@ -495,6 +503,14 @@
 
 ;; flycheck-rtags
 (use-package flycheck-rtags)
+
+;; Go
+(use-package go-mode
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+  )
 
 ;; Markdown
 (use-package markdown-mode

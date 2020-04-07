@@ -251,7 +251,7 @@
 
 ;; style config
 (defconst mana-cpp-style
-  '((c-basic-offset . 2)
+  '((c-basic-offset . 4)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . -)
                         (topmost-intro . 0)
@@ -265,7 +265,8 @@
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
 
-(load-file (expand-file-name "~/.emacs.d/bellport.el"))
+(load-file (expand-file-name "~/.emacs.d/git-util.el"))
+(global-set-key (kbd "C-c C-j") 'helm-git-grep-this-project)
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -297,9 +298,8 @@
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
-    ;;'(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
-    '(("\\.cpp\\'" (".hpp")) ("\\.hpp\\'" (".cpp"))))
-  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+    '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
+    (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
   (add-hook 'after-save-hook 'rtags-reparse-file)
   (flycheck-select-checker 'rtags)

@@ -265,7 +265,7 @@
 
 ☣️💠;; style config
 (defconst mana-cpp-style
-  '((c-basic-offset . 2)
+  '((c-basic-offset . ☣️4💠2☣️💠)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . -)
                         (topmost-intro . 0)
@@ -279,9 +279,9 @@
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
 
-💠☣️(load-file (expand-file-name "~/.emacs.d/bellport.el"))
+💠(load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
-✴️ (load-file (expand-file-name "~/.emacs.d/git-util.el"))
+✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
 (global-set-key (kbd "C-c C-j") 'helm-git-grep-this-project)
 
 ✴️;; major mode hooks
@@ -314,8 +314,8 @@
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   (defvar my-cpp-other-file-alist
-    ☣️;;'(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
-    💠☣️'(("\\.cpp\\'" (".hpp")) ("\\.hpp\\'" (".cpp"))))
+    ☣️'(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
+    💠'(("\\.cpp\\'" (".hpp")) ("\\.hpp\\'" (".cpp"))))
   ☣️💠(setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; rtags
   (add-hook 'after-save-hook 'rtags-reparse-file)
@@ -329,11 +329,11 @@
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 ✴️;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
-☣️🍎;; Golang
+☣️🍎💠;; Golang
 (defun setup-go-mode ()
-  ; Call Gofmt before saving
+  ☣️🍎; Call Gofmt before saving
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (set (make-local-variable 'tab-width) 8))
+  ☣️🍎💠(set (make-local-variable 'tab-width) 8))
 (add-hook 'go-mode-hook 'setup-common)
 (add-hook 'go-mode-hook 'setup-go-mode)
 ✴️;; HTML
@@ -569,7 +569,7 @@
 ;; flycheck-rtags
 (use-package flycheck-rtags)
 
-☣️🍎;; Go
+☣️🍎💠;; Go
 (use-package go-mode
   :defer t
   :init
