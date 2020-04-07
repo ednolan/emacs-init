@@ -14,7 +14,8 @@
 (defun bp-header-comment ()
   (let* ((current-year (shell-command-to-string "echo -n $(date +%Y)"))
          (comment-path (bp-header-comment-path))
-         (comment-dash-padding-length (- 79
+         (comment-width (if (> (length comment-path) 54) 89 79))
+         (comment-dash-padding-length (- comment-width
                                          (length "//--- ")
                                          (length comment-path)
                                          (length " ")
@@ -25,7 +26,7 @@
             "//               Bellport Low Latency Trading Infrastructure.\n"
             "//\n"
             "// Copyright MayStreet " current-year " - all rights reserved\n"
-            "//===---------------------------------------------------------------------===//\n")))
+            "//===" (make-string (- comment-width 10) ?-) "===//\n")))
 
 (defun bp-insert-boilerplate-hpp ()
   "Insert boilerplate for a header file in Bellport"
