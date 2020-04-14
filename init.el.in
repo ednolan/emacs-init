@@ -341,9 +341,9 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-☣️🍎;; JavaScript
+☣️🍎💠;; JavaScript
 (defun setup-js2-mode ()
-  (set (make-local-variable 'js-indent-level) 4))
+  (set (make-local-variable 'js-indent-level) ☣️🍎4💠2☣️🍎💠))
 (add-hook 'js2-mode-hook 'setup-common)
 (add-hook 'js2-mode-hook 'setup-js2-mode)
 ☣️🍎💠;; LaTeX
@@ -577,14 +577,14 @@
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
   )
 
-☣️🍎;; JavaScript
+☣️🍎💠;; JavaScript
 
 ;; js2-mode
 (use-package js2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 
-;; LaTeX
+☣️🍎;; LaTeX
 (use-package tex-mode
   :ensure auctex
   :defer t
