@@ -34,13 +34,6 @@
 (setq-default tab-width 4)
 (setq-default tab-stop-list (number-sequence 4 200 4))
 
-;; fix tabs in text mode
-(add-hook 'text-mode-hook
-          '(lambda ()
-             (setq indent-line-function (quote insert-tab))
-             )
-          )
-
 ;; meta-arrow to move between buffers
 (global-set-key [M-left] 'windmove-left)
 (global-set-key [M-right] 'windmove-right)
@@ -297,6 +290,11 @@
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
 ;; Swift
 (add-hook 'swift-mode-hook 'setup-common)
+;; Text
+(defun setup-text-mode ()
+  (setq indent-line-function (quote insert-tab))
+  (electric-indent-local-mode -1))
+(add-hook 'text-mode-hook 'setup-text-mode)
 
 ;; package management
 ;; melpa
