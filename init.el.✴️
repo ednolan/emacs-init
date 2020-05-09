@@ -16,6 +16,9 @@
 ;; Invoke buffer selection menu (C-x C-b)
 ;; Revert buffer without confirmation (F5)
 
+;; avy
+;; Goto word (M-s)
+
 ;; define-word
 ;; Define word (C-c d)
 
@@ -343,6 +346,11 @@
 
 ;; transpose-frame
 (use-package transpose-frame)
+
+;; avy
+(use-package avy
+  :ensure t
+  :bind (("M-s" . avy-goto-word-1)))
 
 ;; string-inflection
 (use-package string-inflection
