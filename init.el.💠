@@ -2,11 +2,61 @@
 
 ;; keybinding ref
 
-;; string-inflection
-;; to snake case (C-c C-s)
-;; to all caps snake case (C-c C-h)
-;; to pascal case (C-c C-u)
-;; to lowercase camel case (C-c C-l)
+;; editing
+;; Set mark (C-`)
+;; Rectangle mark mode (C-x `)
+;; Endless fill/unfill paragraph (M-q)
+
+;; navigation
+;; Move betweeen buffers in a single frame (M-<arrow>)
+;;  note: org-mode overrides this
+;; Scroll buffer without scolling cursor (shift-<up/down>)
+
+;; buffers
+;; Invoke buffer selection menu (C-x C-b)
+;; Revert buffer without confirmation (F5)
+
+;; c++
+;; Tab to tab stop (M-tab) (Linux: C-M-i)
+;; Insert four spaces (M-shift-tab) (Linux: C-M-y)
+
+;; company
+;; Complete (C-v)
+
+;; define-word
+;; Define word (C-c d)
+
+;; frames
+;; Other frame (f2)
+
+;; flycheck
+;; Next error (M-g n)
+;; Previous error (M-g p)
+
+;; fundamental mode
+;; Enter fundamental mode (C-c f)
+
+;; helm
+;; Helm git grep (C-c g)
+
+;; magit
+;; Magit status (C-x g)
+;; Magit find file (C-c v f)
+
+;; projectile
+;; Helm-projectile (C-c p h)
+;; Helm-projectile switch project (C-c p p)
+
+;; rtags
+;; Find symbol at point (C-c r .)
+;; Find all references at point (C-c r /)
+;; Next match (C-c r n)
+;; Previous match (C-c r p)
+;; Reparse file (C-c r e)
+;; Bury or delete buffer (C-c r g)
+;; Symbol type (C-c t)
+;; Print class hierarchy (C-c r h)
+;; Find functions called by this function (C-c r A)
 
 ;; smerge
 ;; Prev conflict (C-c m p)
@@ -14,19 +64,47 @@
 ;; Keep ours (C-c m o)
 ;; Keep theirs (C-c m t)
 
-;; flycheck
-;; Next error (M-g n)
-;; Previous error (M-g p)
+;; string-inflection
+;; To snake case (C-c C-s)
+;; To all caps snake case (C-c C-h)
+;; To pascal case (C-c C-u)
+;; To lowercase camel case (C-c C-l)
 
-;; rtags
-;; Find symbol at point (C-c r .)
-;; Find all references at point (C-c r /)
-;; Reparse file (C-c r e)
-;; Print class hierarchy (C-c r h)
-;; Find functions called by this function (C-c r A)
+;; C-` to set mark
+(global-set-key (kbd "C-`") 'set-mark-command)
+(global-set-key (kbd "C-x `") 'rectangle-mark-mode)
 
-;; company
-;; Complete (C-v)
+;; meta-arrow to move between buffers
+(global-set-key [M-left] 'windmove-left)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-up] 'windmove-up)
+(global-set-key [M-down] 'windmove-down)
+
+;; Shift + up/down to scroll buffer without moving cursor
+(defun gcm-scroll-down ()
+      (interactive)
+      (scroll-up 1))
+    (defun gcm-scroll-up ()
+      (interactive)
+      (scroll-down 1))
+(global-set-key [(shift down)] 'gcm-scroll-down)
+(global-set-key [(shift up)]   'gcm-scroll-up)
+
+;; Nicer C-x C-b
+(global-set-key (kbd "C-x C-b") 'bs-show)
+
+;; F5 to revert-buffer without confirmation
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
+(global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
+
+;; F2 to switch frames
+(global-set-key (kbd "<f2>") 'other-frame)
+
+;; Fundamental mode keybinding
+(global-set-key (kbd "C-c f") 'fundamental-mode)
+
 
 ;; col numbers
 (setq column-number-mode t)
@@ -43,12 +121,6 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default tab-stop-list (number-sequence 4 200 4))
-
-;; meta-arrow to move between buffers
-(global-set-key [M-left] 'windmove-left)
-(global-set-key [M-right] 'windmove-right)
-(global-set-key [M-up] 'windmove-up)
-(global-set-key [M-down] 'windmove-down)
 
 ;; cursor
 (setq-default cursor-type 'bar)
@@ -121,41 +193,12 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 
-;; Nicer C-x C-b
-(global-set-key (kbd "C-x C-b") 'bs-show)
-
-;; C-` to set mark
-(global-set-key (kbd "C-`") 'set-mark-command)
-(global-set-key (kbd "C-x `") 'rectangle-mark-mode)
-
 ;; Don't use F1 for help menu
 (global-unset-key (kbd "<f1>"))
-
-;; F2 to switch frames
-(global-set-key (kbd "<f2>") 'other-frame)
-
-;; F5 to revert-buffer without confirmation
-(defun revert-buffer-no-confirm ()
-  "Revert buffer without confirmation."
-  (interactive) (revert-buffer t t))
-(global-set-key (kbd "<f5>") 'revert-buffer-no-confirm)
 
 ;; Mouse scroll in terminal mode
 (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
 (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
-
-;; Shift + up/down to scroll buffer without moving cursor
-(defun gcm-scroll-down ()
-      (interactive)
-      (scroll-up 1))
-    (defun gcm-scroll-up ()
-      (interactive)
-      (scroll-down 1))
-(global-set-key [(shift down)] 'gcm-scroll-down)
-(global-set-key [(shift up)]   'gcm-scroll-up)
-
-;; Fundamental mode keybinding
-(global-set-key (kbd "C-c f") 'fundamental-mode)
 
 ;; TAGS file annoyance
 (setq tags-revert-without-query 1)
