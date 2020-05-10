@@ -440,7 +440,7 @@
 ;; avy
 (use-package avy
   :ensure t
-  :bind (("M-s" . avy-goto-word-1)))
+  :config (bind-key* "M-s" 'avy-goto-char))
 
 ;; string-inflection
 (use-package string-inflection
