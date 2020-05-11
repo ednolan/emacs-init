@@ -235,6 +235,7 @@
 
 🍎💠☣️;; registers for commonly used files
 🍎(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
+(set-register ?s (cons 'file "~/Library/Mobile Documents/com~apple~CloudDocs/shopping-list.org"))
 💠(set-register ?t (cons 'file "~/sync/todo/todo.org"))
 ☣️(set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
 
