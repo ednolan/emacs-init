@@ -17,7 +17,7 @@
 ;; Revert buffer without confirmation (F5)
 
 ;; avy
-;; Goto word (M-s)
+;; Goto word (C-d)
 
 ;; define-word
 ;; Define word (C-c d)
@@ -355,7 +355,7 @@
 ;; avy
 (use-package avy
   :ensure t
-  :config (bind-key* "M-s" 'avy-goto-char))
+  :config (bind-key* "C-d" 'avy-goto-char))
 
 ;; string-inflection
 (use-package string-inflection
