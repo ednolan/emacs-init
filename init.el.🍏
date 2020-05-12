@@ -272,7 +272,7 @@
 (advice-add 'find-file :around #'find-file--line-number)
 
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
-(global-set-key (kbd "C-c C-j") 'helm-git-grep-this-project)
+(global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-this-project)
 
 ;; major mode hooks
 ;; delete trailing whitespace
