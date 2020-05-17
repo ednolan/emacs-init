@@ -243,7 +243,6 @@
 💠(set-register ?t (cons 'file "~/sync/todo/todo.org"))
 ☣️(set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
 
-
 ✴️;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()
@@ -340,7 +339,7 @@
 ✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
 (global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-this-project)
 
-☣️(load-file (expand-file-name "~/.emacs.d/ledgerutil.el")
+☣️(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
