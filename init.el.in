@@ -42,7 +42,11 @@
 ;; helm
 ;; Helm git grep (C-c g)
 
-;; magit
+☣️;; ledgerutil
+;; Suggest category for transaction (C-c l c)
+;; Add transaction to category suggestion mapping (C-c l i)
+
+✴️;; magit
 ;; Magit status (C-x g)
 ;; Magit find file (C-c v f)
 
@@ -323,6 +327,8 @@
 
 ✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
 (global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-this-project)
+
+☣️(load-file (expand-file-name "~/.emacs.d/ledgerutil.el")
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
