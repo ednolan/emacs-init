@@ -207,6 +207,17 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
+;; prompt before quitting
+;; https://emacs.stackexchange.com/a/30475
+(defun ask-before-closing ()
+  "Close only if y was pressed."
+  (interactive)
+  (if (y-or-n-p (format "Are you sure you want to close this frame? "))
+      (save-buffers-kill-emacs)
+    (message "Canceled frame close")))
+
+(global-set-key (kbd "C-x C-c") 'ask-before-closing)
+
 ;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
