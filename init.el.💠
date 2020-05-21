@@ -358,6 +358,8 @@
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
+;; Dockerfile
+(add-hook 'dockerfile-mode-hook 'setup-common)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; Golang
@@ -569,6 +571,9 @@
 
 ;; flycheck-rtags
 (use-package flycheck-rtags)
+
+;; Dockerfile
+(use-package dockerfile-mode)
 
 ;; Go
 (use-package go-mode
