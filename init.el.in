@@ -487,7 +487,10 @@
 ;; avy
 (use-package avy
   :ensure t
-  :config (bind-key* "C-d" 'avy-goto-char))
+  :config
+  (bind-key* "C-d" 'avy-goto-char-2)
+  (setq-default avy-all-windows nil)
+  )
 
 ;; string-inflection
 (use-package string-inflection
@@ -501,14 +504,12 @@
 
 ;; helm
 (use-package helm
-  :config
-  (helm-mode 1)
-  (progn
-    (use-package helm-projectile)
-    (use-package helm-git-grep
-      :bind (("C-c g" . helm-git-grep))
-      )
-    )
+  :config (helm-mode 1)
+  )
+
+(use-package helm-projectile)
+(use-package helm-git-grep
+  :bind (("C-c g" . helm-git-grep))
   )
 
 ;; projectile
