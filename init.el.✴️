@@ -189,6 +189,9 @@
 ;; Recognize Makefile.foo
 (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)[Mm]akefile" . makefile-gmake-mode))
 
+;; Recognize foo.yml
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
 ;; ensure files end with newlines
 (setq-default require-final-newline 'visit)
 
@@ -360,7 +363,6 @@
 
 ;; avy
 (use-package avy
-  :ensure t
   :config
   (bind-key* "C-d" 'avy-goto-char-2)
   (setq-default avy-all-windows nil)
@@ -419,3 +421,6 @@
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
+;; yaml
+(use-package yaml-mode
+  :bind (("C-m" . newline-and-indent)))
