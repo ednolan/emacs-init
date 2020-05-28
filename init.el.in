@@ -384,6 +384,7 @@
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
+(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
 💠;; Dockerfile
 (add-hook 'dockerfile-mode-hook 'setup-common)
 ✴️;; Emacs Lisp
@@ -638,6 +639,10 @@
 
 ;; flycheck-rtags
 (use-package flycheck-rtags)
+
+;; modern-cpp-font-lock
+(use-package modern-cpp-font-lock
+  :ensure t)
 
 💠;; Dockerfile
 (use-package dockerfile-mode)

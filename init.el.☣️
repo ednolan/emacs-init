@@ -366,6 +366,7 @@
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
+(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; Golang
@@ -589,6 +590,10 @@
 
 ;; flycheck-rtags
 (use-package flycheck-rtags)
+
+;; modern-cpp-font-lock
+(use-package modern-cpp-font-lock
+  :ensure t)
 
 ;; Go
 (use-package go-mode
