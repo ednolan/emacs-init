@@ -536,5 +536,4 @@
 (use-package company-sourcekit)
 
 ;; yaml
-(use-package yaml-mode
-  :bind (("C-m" . newline-and-indent)))
+(use-package yaml-mode)
