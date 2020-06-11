@@ -36,6 +36,15 @@
 (defun bp-test-namespace-name (namespace-name)
   (concat (replace-regexp-in-string "::test" "" namespace-name) "::test"))
 
+(defun bp-insert-boilerplate-inl ()
+  "Insert boilerplate for an inline definitions file in Bellport"
+  (interactive)
+  (insert (bp-header-comment (bp-header-comment-path)))
+  (insert "\n")
+  (insert "namespace " (bp-namespace-name) " {\n")
+  (insert "\n")
+  (insert "} // namespace " (bp-namespace-name) "\n"))
+
 (defun bp-insert-boilerplate-hpp ()
   "Insert boilerplate for a header file in Bellport"
   (interactive)
@@ -58,9 +67,7 @@
   (insert "\n")
   (insert "namespace " (bp-test-namespace-name (bp-namespace-name)) " {\n")
   (insert "\n")
-  (insert "TEST(TodoProjectName, TodoComponentName) {\n")
-  (insert "  #warning empty test\n")
-  (insert "}\n")
+  (insert "#warning class lacks unit tests\n")
   (insert "\n")
   (insert "} // namespace " (bp-test-namespace-name (bp-namespace-name)) "\n")
   )
@@ -84,4 +91,6 @@
         (bp-insert-boilerplate-cpp)
       (if (string-suffix-p "_test.hpp" buffer-file-name)
           (bp-insert-boilerplate-test)
-          (bp-insert-boilerplate-hpp)))))
+        (if (string-suffix-p ".hpp" buffer-file-name)
+            (bp-insert-boilerplate-hpp)
+          (bp-insert-boilerplate-inl))))))
