@@ -146,6 +146,9 @@
 ;; better highlight color
 (set-face-attribute 'region nil :background "#a9d1ff")
 
+;; so long mode
+(global-so-long-mode 1)
+
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
