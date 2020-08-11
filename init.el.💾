@@ -125,6 +125,10 @@
 ;; mouse support in terminal mode
 (xterm-mouse-mode t)
 
+;; fill column indicator
+(global-display-fill-column-indicator-mode t)
+(setq-default display-fill-column-indicator-column 90)
+
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
                     nil
@@ -346,17 +350,6 @@
   (setq make-backup-files nil)
   (add-hook 'after-save-hook 'backup-each-save)
 )
-
-;; thin gray line at 90 cols
-(use-package fill-column-indicator
-  :init
-  (setq-default fill-column 90)
-  (add-hook 'prog-mode-hook (lambda ()
-                              (fci-mode 1)
-                              ))
-  :config
-  (setq fci-handle-truncate-lines nil)
-  )
 
 ;; cleaner mode lines
 (use-package diminish)
