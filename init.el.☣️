@@ -77,6 +77,9 @@
 ;; To pascal case (C-c C-u)
 ;; To lowercase camel case (C-c C-l)
 
+;; dired
+;; Create empty file (f7)
+
 ;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
 (global-set-key (kbd "C-x `") 'rectangle-mark-mode)
@@ -380,6 +383,11 @@
 (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
+;; Dired
+(defun setup-dired-mode ()
+  (local-set-key (kbd "<f7>") 'dired-create-empty-file)
+  )
+(add-hook 'dired-mode-hook 'setup-dired-mode)
 ;; Golang
 (defun setup-go-mode ()
   ; Call Gofmt before saving
