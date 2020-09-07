@@ -351,7 +351,7 @@
 💠(load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
 ✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
-(global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-this-project)
+(global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-custom-project-directory)
 
 ☣️(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
 
