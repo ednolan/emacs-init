@@ -40,5 +40,5 @@
 (defun git-util-helm-git-grep-custom-project-directory ()
   "Perform a helm git grep with the path set by git-util-custom-project-directory"
   (interactive)
-  (let ((helm-git-grep-pathspecs '(git-util-custom-project-directory)))
+  (let ((helm-git-grep-pathspecs (list git-util-custom-project-directory)))
     (helm-git-grep)))
