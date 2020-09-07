@@ -215,8 +215,8 @@
 ;; ctrl/cmd on mac
 (setq mac-command-modifier 'control)
 
-;; ensure files end with newlines
-(setq-default require-final-newline 'visit)
+;; prompt to add missing newlines on saving
+(setq-default require-final-newline 't)
 
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")

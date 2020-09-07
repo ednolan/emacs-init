@@ -226,8 +226,8 @@
 ;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
-;; ensure files end with newlines
-(setq-default require-final-newline 'visit)
+;; prompt to add missing newlines on saving
+(setq-default require-final-newline 't)
 
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
