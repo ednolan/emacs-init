@@ -31,6 +31,12 @@
   :group 'git-util-custom-group
   :type '(string))
 
+(defun git-util-open-custom-project-directory ()
+  "Open all paths in this git repository"
+  (interactive)
+  (mapc 'find-file-noselect
+        (directory-files-recursively git-util-custom-project-directory "." nil)))
+
 (defun git-util-helm-git-grep-custom-project-directory ()
   "Perform a helm git grep with the path set by git-util-custom-project-directory"
   (interactive)
