@@ -21,3 +21,18 @@
   (interactive)
   (let ((helm-git-grep-pathspecs (git-util-this-project-paths)))
     (helm-git-grep)))
+
+(defgroup git-util-custom-group nil
+  "Customize group for git-util."
+  :group 'convenience)
+
+(defcustom git-util-custom-project-directory ""
+  "Project directory that git-util-helm-git-grep-custom-project-directory will search"
+  :group 'git-util-custom-group
+  :type '(string))
+
+(defun git-util-helm-git-grep-custom-project-directory ()
+  "Perform a helm git grep with the path set by git-util-custom-project-directory"
+  (interactive)
+  (let ((helm-git-grep-pathspecs '(git-util-custom-project-directory)))
+    (helm-git-grep)))
