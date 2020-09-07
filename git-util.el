@@ -6,6 +6,10 @@
   (split-string (shell-command-to-string
                  (concat "cd " default-directory " ; git ls-tree --full-name --full-tree -r --name-only HEAD | xargs -n1 -i{} echo $(git rev-parse --show-toplevel)/{}"))))
 
+(defun text-files-in-directory (directory)
+  (split-string (shell-command-to-string
+                 (concat "source ~/.bash_functions ; while read -r line; do isbinary \"$line\" ; [[ \"$?\" -ne 0 ]] && echo \"$line\" ; done < <(find " directory " -type f)"))))
+
 (defun git-util-open-this-repo ()
   "Open all paths in this git repository"
   (interactive)
@@ -35,7 +39,7 @@
   "Open all paths in this git repository"
   (interactive)
   (mapc 'find-file-noselect
-        (directory-files-recursively git-util-custom-project-directory "." nil)))
+        (text-files-in-directory git-util-custom-project-directory)))
 
 (defun git-util-helm-git-grep-custom-project-directory ()
   "Perform a helm git grep with the path set by git-util-custom-project-directory"
