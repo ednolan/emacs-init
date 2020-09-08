@@ -235,7 +235,7 @@
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
 ;; prompt to add missing newlines on saving
-(setq-default require-final-newline 't)
+(setq-default require-final-newline "ask")
 
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
