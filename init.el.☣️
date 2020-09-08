@@ -39,8 +39,13 @@
 ;; fundamental mode
 ;; Enter fundamental mode (C-c f)
 
+;; menu bar
+;; Text-mode emulation menu bar (f10)
+;; Open menu bar (M-M)
+
 ;; helm
 ;; Helm git grep (C-c g)
+;; Helm git grep custom project directory (C-c C-j)
 
 ;; ledgerutil
 ;; Suggest category for transaction (C-c l c)
@@ -115,6 +120,9 @@
 ;; Fundamental mode keybinding
 (global-set-key (kbd "C-c f") 'fundamental-mode)
 
+;; Move around menu bar keybindings to make room to use M-` for ide prefix
+(global-set-key (kbd "M-M") 'menu-bar-open)
+(global-set-key (kbd "<f10>") 'tmm-menubar)
 
 ;; col numbers
 (setq column-number-mode t)
