@@ -41,6 +41,8 @@
   (interactive)
   (insert (bp-header-comment (bp-header-comment-path)))
   (insert "\n")
+  (insert "static_assert(__cplusplus > 201700, \"C++17 Required\");\n")
+  (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
   (insert "} // namespace " (bp-namespace-name) "\n"))
@@ -49,6 +51,8 @@
   "Insert boilerplate for a header file in Bellport"
   (interactive)
   (insert (bp-header-comment (bp-header-comment-path)))
+  (insert "\n")
+  (insert "static_assert(__cplusplus > 201700, \"C++17 Required\");\n")
   (insert "\n")
   (insert "#pragma once\n")
   (insert "\n")
@@ -60,6 +64,8 @@
   "Insert boilerplate for a test file in Bellport"
   (interactive)
   (insert (bp-header-comment (bp-header-comment-path)))
+  (insert "\n")
+  (insert "static_assert(__cplusplus > 201700, \"C++17 Required\");\n")
   (insert "\n")
   (insert "#pragma once\n")
   (insert "#include <" (bp-test-corresponding-header (bp-hpp-include-path)) ">\n")
@@ -76,6 +82,8 @@
   "Insert boilerplate for an implementation file in Bellport"
   (interactive)
   (insert (bp-header-comment (bp-header-comment-path)))
+  (insert "\n")
+  (insert "static_assert(__cplusplus > 201700, \"C++17 Required\");\n")
   (insert "\n")
   (insert "#include <" (bp-hpp-include-path) ">\n")
   (insert "\n")
