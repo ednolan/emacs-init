@@ -48,6 +48,7 @@
 ;; helm
 ;; Helm git grep (C-c g)
 ;; Helm git grep custom project directory (C-c C-j)
+;; helm-ls-git (C-x C-d)
 
 ;; ledgerutil
 ;; Suggest category for transaction (C-c l c)
@@ -501,6 +502,9 @@
 (use-package helm-projectile)
 (use-package helm-git-grep
   :bind (("C-c g" . helm-git-grep))
+  )
+(use-package helm-ls-git
+  :bind (("C-x C-d" . helm-browse-project))
   )
 
 ;; projectile
