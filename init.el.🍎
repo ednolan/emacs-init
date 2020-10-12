@@ -16,6 +16,8 @@
 ;; Invoke buffer selection menu (C-x C-b)
 ;; Revert buffer without confirmation (F5)
 
+;; Quit window (C-c q)
+
 ;; avy
 ;; Goto word (C-d)
 
@@ -85,6 +87,8 @@
       (scroll-down 1))
 (global-set-key [(shift down)] 'gcm-scroll-down)
 (global-set-key [(shift up)]   'gcm-scroll-up)
+
+(global-set-key (kbd "C-c q") 'quit-window)
 
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
