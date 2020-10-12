@@ -627,7 +627,7 @@
 (use-package ccls
   :init
   ☣️(setq ccls-executable "/home/eddie/sync/setup/scripts/ccls_wrapper.sh.biohazard_sign"))
-  💠(setq ccls-executable "/home/eddie/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside"))
+  💠(setq ccls-executable "/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside"))
 ;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
 
