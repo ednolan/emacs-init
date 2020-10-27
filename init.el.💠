@@ -63,6 +63,7 @@
 ;; Find all references at point (M-` g r)
 ;; Restart server (M-` s r)
 ;; Find definition of type of symbol at point (M-` g t)
+;; Show documentation of symbol at point (C-c ?)
 
 ;; smerge
 ;; Prev conflict (C-c m p)
@@ -562,6 +563,11 @@
 (use-package lsp-mode
   :init
   (setq lsp-enable-on-type-formatting nil)
+  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-sideline-show-code-actions nil)
+  (setq lsp-ui-sideline-show-hover nil)
+  :bind (("C-c ?" . lsp-ui-doc-show))
   :commands lsp)
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package company-lsp :commands company-lsp)
