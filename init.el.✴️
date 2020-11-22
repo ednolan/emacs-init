@@ -304,9 +304,13 @@
 ;; delete trailing whitespace
 ;; configure tabination
 
+(defun delete-trailing-whitespace-if-not-markdown ()
+  (when (not (or (derived-mode-p 'markdown-mode)))
+    (delete-trailing-whitespace)))
+
 ;; all
 (defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace-if-not-markdown)
   )
 ;; bash
 (add-hook 'sh-mode-hook 'setup-common)
