@@ -62,14 +62,7 @@
 ;; Helm-projectile (C-c p h)
 ;; Helm-projectile switch project (C-c p p)
 
-☣️💠;; ccls
-;; Find symbol at point (M-` g g)
-;; Find all references at point (M-` g r)
-;; Restart server (M-` s r)
-;; Find definition of type of symbol at point (M-` g t)
-;; Show documentation of symbol at point (C-c ?)
-
-✴️;; smerge
+;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
 ;; Keep ours (C-c m o)
@@ -406,9 +399,8 @@
     ("\\.hpp\\'" (".cpp"))))
   ☣️💠(setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   ;; ccls
-  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
   (if (cclsutil-buffer-in-registered-directoryp)
-      (progn (require 'ccls) (lsp)))
+      (eglot-ensure))
   )
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
@@ -627,25 +619,39 @@
          auto-mode-alist))
   )
 
-;; ccls and lsp
-(setq lsp-keymap-prefix "M-`")
-(use-package lsp-mode
-  :init
-  (setq lsp-enable-on-type-formatting nil)
-  (setq lsp-enable-symbol-highlighting nil)
-  (setq lsp-ui-doc-enable nil)
-  (setq lsp-ui-sideline-show-code-actions nil)
-  (setq lsp-ui-sideline-show-hover nil)
-  :bind (("C-c ?" . lsp-ui-doc-show))
-  :commands lsp)
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package company-lsp :commands company-lsp)
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; ccls and eglot
+(use-package eglot)
 
-(use-package ccls
-  :init
-  ☣️(setq ccls-executable "/home/eddie/sync/setup/scripts/ccls_wrapper.sh.biohazard_sign"))
-  💠(setq ccls-executable "/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside"))
+;; disable client-side completion sorting
+;; https://github.com/MaskRay/ccls/wiki/eglot
+(setq company-transformers nil)
+
+;; customize eglot-server-programs to use script that provides proper args
+;; https://github.com/joaotavora/eglot
+☣️(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.biohazard_sign")))
+💠(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
+
+;; make eglot use projectile to detect the project root
+;; https://github.com/MaskRay/ccls/wiki/eglot
+(defun projectile-project-find-function (dir)
+  (let* ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+(with-eval-after-load 'project
+  (add-to-list 'project-find-functions 'projectile-project-find-function))
+
+;; configure projectile to prioritize .projectile files for detecting projects
+;; https://www.reddit.com/r/emacs/comments/920psp/projectile_ignoring_projectile_files/e32u6tk/?context=3
+(setq
+ projectile-project-root-files #'( ".projectile" )
+ projectile-project-root-files-functions #'(projectile-root-top-down
+                                            projectile-root-top-down-recurring
+                                            projectile-root-bottom-up
+                                            projectile-root-local))
+
+;; workaround for projectile git bug
+;; https://github.com/bbatsov/projectile/issues/1302#issuecomment-433894379
+(setq projectile-git-submodule-command nil)
+
 ;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
 
