@@ -141,9 +141,9 @@
 ;; mouse support in terminal mode
 (xterm-mouse-mode t)
 
-;; fill column indicator
+;; fill column
+(setq-default fill-column 90)
 (global-display-fill-column-indicator-mode t)
-(setq-default display-fill-column-indicator-column 90)
 
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
