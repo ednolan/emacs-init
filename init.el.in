@@ -568,11 +568,9 @@
   (setq company-idle-delay nil)
   )
 
-☣️💠;; flycheck
+☣️;; flycheck
 (use-package flycheck
   :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode)
  )
 
 🍎;; flycheck

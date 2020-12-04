@@ -516,13 +516,6 @@
   (setq company-idle-delay nil)
   )
 
-;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'c++-mode-hook 'flycheck-mode)
- )
-
 ;; magit
 (use-package magit
   :bind (("C-x g" . magit-status)
