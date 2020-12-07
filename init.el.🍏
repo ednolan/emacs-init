@@ -433,6 +433,8 @@
   (projectile-mode)
   (setq projectile-enable-caching t)
   (setq projectile-completion-system 'helm)
+  ;; this indexing method is required so that .projectile can be used to ignore files
+  ;; https://docs.projectile.mx/projectile/projects.html#ignoring-files
   (setq projectile-indexing-method 'hybrid)
   (helm-projectile-on)
   )
