@@ -62,6 +62,12 @@
 ;; Helm-projectile (C-c p h)
 ;; Helm-projectile switch project (C-c p p)
 
+;; origami
+;; Close node (C-c c)
+;; Open node (C-c u)
+;; Close node recursively (C-c -)
+;; Open node recursively (C-c +)
+
 ;; smerge
 ;; Prev conflict (C-c m p)
 ;; Next conflict (C-c m n)
@@ -516,6 +522,14 @@
   ;; https://docs.projectile.mx/projectile/projects.html#ignoring-files
   (setq projectile-indexing-method 'hybrid)
   (helm-projectile-on)
+  )
+
+;; origami
+(use-package origami
+  :bind (("C-c c" . origami-close-node)
+         ("C-c u" . origami-open-node)
+         ("C-c -" . origami-close-node-recursively)
+         ("C-c +" . origami-open-node-recursively))
   )
 
 ;; company
