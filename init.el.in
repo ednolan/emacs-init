@@ -63,10 +63,12 @@
 ;; Helm-projectile switch project (C-c p p)
 
 ;; origami
-;; Close node (C-c c)
-;; Open node (C-c u)
-;; Close node recursively (C-c -)
-;; Open node recursively (C-c +)
+;; Close node (C-c n c)
+;; Open node (C-c n o)
+;; Close node recursively (C-c n -)
+;; Open node recursively (C-c n +)
+;; Next fold (C-c n n)
+;; Previous fold (C-c n p)
 
 ;; smerge
 ;; Prev conflict (C-c m p)
@@ -411,6 +413,7 @@
 (add-hook 'c++-mode-hook 'setup-common)
 (add-hook 'c++-mode-hook 'setup-c++-mode)
 (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
+(add-hook 'c++-mode-hook #'origami-mode)
 💠;; Dockerfile
 (add-hook 'dockerfile-mode-hook 'setup-common)
 ✴️;; Emacs Lisp
@@ -551,10 +554,12 @@
 
 ;; origami
 (use-package origami
-  :bind (("C-c c" . origami-close-node)
-         ("C-c u" . origami-open-node)
-         ("C-c -" . origami-close-node-recursively)
-         ("C-c +" . origami-open-node-recursively))
+  :bind (("C-c n c" . origami-close-node)
+         ("C-c n o" . origami-open-node)
+         ("C-c n -" . origami-close-node-recursively)
+         ("C-c n +" . origami-open-node-recursively)
+         ("C-c n n" . origami-next-fold)
+         ("C-c n p" . origami-previous-fold))
   )
 
 🍎🍏;; fix mac os path issue
