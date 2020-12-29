@@ -186,7 +186,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (defun set-todays-theme ()
-☣️💾🍎  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
+☣️💾🍎👿  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
                        lavender mac-classic marine mistyday
                        organic-green oswald overcast paper
                        toxi white))
