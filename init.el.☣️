@@ -598,7 +598,7 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.biohazard_sign")))
+(add-to-list 'eglot-server-programs '(c++-mode . ("/home/eddie/localbuild/ccls/ccls/Release/ccls")))
 ;; Go
 (use-package go-mode
   :defer t
