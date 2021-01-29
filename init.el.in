@@ -717,10 +717,11 @@
 ☣️;; Meson
 (use-package meson-mode)
 
-;; neuron
+☣️💠;; neuron
 (use-package neuron-mode
-  :custom (neuron-rib-server-host "192.168.120.110")
-  :config (bind-keys*
+  💠:custom (neuron-executable "docker exec -i enolan_neuron neuron")
+  ☣️:custom (neuron-rib-server-host "192.168.120.110")
+  ☣️💠:config (bind-keys*
            ("C-c C-q" . neuron-insert-zettel-link)
            ("C-c C-y" . neuron-toggle-connection-type)
            ("C-c C-m" . neuron-query-tags)
