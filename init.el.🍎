@@ -524,6 +524,7 @@
 
 ;; programming languages
 
+
 ;; Go
 (use-package go-mode
   :defer t
