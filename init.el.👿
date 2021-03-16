@@ -318,7 +318,7 @@
 (global-set-key (kbd "C-c k s") 'macroutil-store-named-macro)
 (global-set-key (kbd "C-c k n") 'macroutil-name-and-store-register-macro)
 (global-set-key (kbd "C-c k a") 'macroutil-assign-named-macro-to-register)
-(global-set-key (kbd "C-c k 0") 'macroutil-register-1)
+(global-set-key (kbd "C-c k 0") 'macroutil-register-0)
 (global-set-key (kbd "C-c k 1") 'macroutil-register-1)
 (global-set-key (kbd "C-c k 2") 'macroutil-register-2)
 (global-set-key (kbd "C-c k 3") 'macroutil-register-3)
