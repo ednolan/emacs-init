@@ -248,6 +248,9 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
+;; dired switches
+(setq dired-listing-switches "-alh")
+
 ;; registers for commonly used files
 (set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
 (set-register ?s (cons 'file "~/Library/Mobile Documents/com~apple~CloudDocs/shopping-list.org"))

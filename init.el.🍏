@@ -242,6 +242,9 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
+;; dired switches
+(setq dired-listing-switches "-alh")
+
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()

@@ -249,6 +249,9 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
+;; dired switches
+(setq dired-listing-switches "-alh")
+
 ;; registers for commonly used files
 (set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
 

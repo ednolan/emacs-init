@@ -242,6 +242,9 @@
 ;; use ssh with tramp by default (saves typing "ssh:")
 (setq tramp-default-method "ssh")
 
+;; dired switches
+(setq dired-listing-switches "-alh")
+
 ;; registers for commonly used files
 (set-register ?t (cons 'file "~/sync/todo/todo.org"))
 ;; prompt before quitting
