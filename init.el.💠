@@ -602,6 +602,7 @@
 ;; https://github.com/joaotavora/eglot
 (add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
 
+
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot
 (defun projectile-project-find-function (dir)

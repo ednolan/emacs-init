@@ -670,8 +670,9 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-☣️(add-to-list 'eglot-server-programs '(c++-mode . ("/home/eddie/localbuild/ccls/ccls/Release/ccls")))
-💠📒(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
+☣️📒(add-to-list 'eglot-server-programs '(c++-mode . ("/home/eddie/localbuild/ccls/ccls/Release/ccls")))
+💠(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
+💠📒
 
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot
@@ -694,10 +695,10 @@
 ;; https://github.com/bbatsov/projectile/issues/1302#issuecomment-433894379
 (setq projectile-git-submodule-command nil)
 
-;; modern-cpp-font-lock
+☣️💠📒;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
 
-💠📒;; Dockerfile
+;; Dockerfile
 (use-package dockerfile-mode)
 
 ☣️🍎💠📒;; Go
