@@ -670,7 +670,8 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-☣️📒(add-to-list 'eglot-server-programs '(c++-mode . ("/home/eddie/localbuild/ccls/ccls/Release/ccls")))
+☣️(add-to-list 'eglot-server-programs '(c++-mode . ("/home/eddie/localbuild/ccls/ccls/Release/ccls")))
+📒(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/localbuild/ccls/ccls/Release/ccls")))
 💠(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
 💠📒
 
