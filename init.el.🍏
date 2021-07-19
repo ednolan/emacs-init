@@ -490,7 +490,9 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-c v f" . magit-find-file))
-  :custom (magit-list-refs-sortby "-creatordate")
+  :custom
+  (magit-list-refs-sortby "-creatordate")
+  (magit-diff-refine-hunk 'all)
   )
 
 ;; org

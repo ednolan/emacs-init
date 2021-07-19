@@ -503,6 +503,7 @@
 ;; helm
 (use-package helm
   :config (helm-mode 1)
+  :custom (helm-git-grep-candidate-number-limit 5000)
   )
 
 (use-package helm-projectile)
@@ -541,7 +542,9 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-c v f" . magit-find-file))
-  :custom (magit-list-refs-sortby "-creatordate")
+  :custom
+  (magit-list-refs-sortby "-creatordate")
+  (magit-diff-refine-hunk 'all)
   )
 
 ;; org
