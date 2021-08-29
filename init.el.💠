@@ -440,7 +440,8 @@
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; Python
 (defun setup-python-mode ()
-  (setq tab-width 4))
+  (setq tab-width 4)
+  )
 (add-hook 'python-mode-hook 'setup-common)
 (add-hook 'python-mode-hook 'setup-python-mode)
 ;; reStructuredText

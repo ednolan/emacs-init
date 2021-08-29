@@ -470,7 +470,9 @@
 (add-hook 'tuareg-mode-hook 'setup-common)
 ✴️;; Python
 (defun setup-python-mode ()
-  (setq tab-width 4))
+  (setq tab-width 4)
+☣️  (add-to-list 'company-backends 'company-jedi)
+✴️  )
 (add-hook 'python-mode-hook 'setup-common)
 (add-hook 'python-mode-hook 'setup-python-mode)
 💠📒;; reStructuredText
@@ -597,7 +599,8 @@
   :bind (("C-v" . company-complete))
   :init
   (add-hook 'c++-mode-hook 'company-mode)
-  :config
+☣️  (add-hook 'python-mode-hook 'company-mode)
+☣️💠📒  :config
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
   )
@@ -759,6 +762,9 @@
 ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
 (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
 ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
+
+☣️;; Python
+(use-package company-jedi)
 
 ☣️;; Rust
 (use-package rust-mode
