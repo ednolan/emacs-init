@@ -18,6 +18,16 @@
 
 ;; Quit window (C-c q)
 
+;; Sort lines (C-c s)
+
+;; Reverse region (C-c %)
+
+;; Pop mark (M-`)
+
+;; Show path to current file (C-c /)
+
+;; Replace whitespace in region with single spaces (C-c _)
+
 ;; avy
 ;; Goto word (C-d)
 
@@ -76,6 +86,8 @@
 ;; Keep ours (C-c m o)
 ;; Keep theirs (C-c m t)
 
+;; sort-lines (C-c s)
+
 ;; string-inflection
 ;; To snake case (C-c C-s)
 ;; To all caps snake case (C-c C-h)
@@ -107,6 +119,14 @@
 
 (global-set-key (kbd "C-c q") 'quit-window)
 
+(global-set-key (kbd "C-c s") 'sort-lines)
+
+(global-set-key (kbd "C-c %") 'reverse-region)
+
+(global-set-key (kbd "M-`") (kbd "C-u C-`"))
+
+(global-set-key (kbd "C-c /") (lambda () (interactive) (message (buffer-file-name))))
+
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
@@ -122,7 +142,7 @@
 ;; Fundamental mode keybinding
 (global-set-key (kbd "C-c f") 'fundamental-mode)
 
-;; Move around menu bar keybindings to make room to use M-` for ide prefix
+;; Move around menu bar keybindings to make room to use M-` for popping the mark
 (global-set-key (kbd "M-M") 'menu-bar-open)
 (global-set-key (kbd "<f10>") 'tmm-menubar)
 
@@ -280,6 +300,22 @@
     (message "Canceled frame close")))
 
 (global-set-key (kbd "C-x C-c") 'ask-before-closing)
+
+;; just-one-space-in-region
+;; https://stackoverflow.com/a/8674989
+(defun just-one-space-in-region (beg end)
+  "replace all whitespace in the region with single spaces"
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-+" nil t)
+        (replace-match " ")))))
+
+(global-set-key
+ (kbd "C-c _")
+ (lambda () (interactive) (just-one-space-in-region (region-beginning) (region-end))))
 
 ✴️;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
@@ -445,6 +481,9 @@
   (local-set-key (kbd "<f7>") 'dired-create-empty-file)
   )
 (add-hook 'dired-mode-hook 'setup-dired-mode)
+(defun setup-git-commit-mode ()
+  (setq fill-column 70))
+(add-hook 'git-commit-setup-hook 'setup-git-commit-mode)
 ☣️🍎💠🔶📒;; Golang
 (defun setup-go-mode ()
   ☣️🍎; Call Gofmt before saving
