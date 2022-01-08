@@ -162,7 +162,7 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-☣️💾(setq inhibit-startup-echo-area-message "eddie")
+☣️🌐💾(setq inhibit-startup-echo-area-message "eddie")
 🍎🍏💠🔶📒(setq inhibit-startup-echo-area-message "enolan")
 ✴️(setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
@@ -201,7 +201,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (defun set-todays-theme ()
-☣️💾🍎👿  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
+☣️🌐💾🍎👿  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
                        lavender mac-classic marine mistyday
                        organic-green oswald overcast paper
                        toxi white))
@@ -479,11 +479,11 @@
 (defun setup-git-commit-mode ()
   (setq fill-column 70))
 (add-hook 'git-commit-setup-hook 'setup-git-commit-mode)
-☣️🍎💠🔶📒;; Golang
+☣️🌐🍎💠🔶📒;; Golang
 (defun setup-go-mode ()
-  ☣️🍎; Call Gofmt before saving
+  ☣️🌐🍎; Call Gofmt before saving
   (add-hook 'before-save-hook 'gofmt-before-save)
-  ☣️🍎💠🔶📒(set (make-local-variable 'tab-width) 8))
+  ☣️🌐🍎💠🔶📒(set (make-local-variable 'tab-width) 8))
 (add-hook 'go-mode-hook 'setup-common)
 (add-hook 'go-mode-hook 'setup-go-mode)
 ✴️;; HTML
@@ -491,9 +491,9 @@
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-☣️🍎💠🔶📒;; JavaScript
+☣️🌐🍎💠🔶📒;; JavaScript
 (defun setup-js2-mode ()
-  (set (make-local-variable 'js-indent-level) ☣️🍎4💠🔶📒2☣️🍎💠🔶📒))
+  (set (make-local-variable 'js-indent-level) ☣️🌐🍎4💠🔶📒2☣️🌐🍎💠🔶📒))
 (add-hook 'js2-mode-hook 'setup-common)
 (add-hook 'js2-mode-hook 'setup-js2-mode)
 ☣️🍎💠🔶📒;; LaTeX
@@ -742,7 +742,7 @@
 ;; Dockerfile
 (use-package dockerfile-mode)
 
-☣️🍎💠🔶📒;; Go
+☣️🌐🍎💠🔶📒;; Go
 (use-package go-mode
   :defer t
   :init
@@ -750,7 +750,7 @@
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
   )
 
-☣️🍎💠🔶📒;; JavaScript
+☣️🌐🍎💠🔶📒;; JavaScript
 
 ;; js2-mode
 (use-package js2-mode
@@ -800,7 +800,7 @@
 ☣️;; Python
 (use-package company-jedi)
 
-☣️;; Rust
+☣️🌐🍎📒;; Rust
 (use-package rust-mode
   :defer t
   :init

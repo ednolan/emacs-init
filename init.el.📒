@@ -146,12 +146,7 @@
 (setq column-number-mode t)
 
 ;; line numbers
-(global-linum-mode t)
-(defadvice linum-update-window (around linum-dynamic activate)
-  (let* ((w (length (number-to-string
-                     (count-lines (point-min) (point-max)))))
-         (linum-format (concat " %" (number-to-string w) "d ")))
-    ad-do-it))
+(global-display-line-numbers-mode t)
 
 ;; tabs
 (setq-default indent-tabs-mode nil)
@@ -703,6 +698,14 @@
            ("C-c C-i" . neuron-insert-new-zettel)
            ("C-c C-w" . neuron-refresh))
   )
+
+;; Rust
+(use-package rust-mode
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
 
 ;; yaml
 (use-package yaml-mode)

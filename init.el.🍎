@@ -619,6 +619,14 @@
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
+;; Rust
+(use-package rust-mode
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
+
 ;; Swift
 (use-package swift-mode)
 

@@ -151,6 +151,7 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
+(setq inhibit-startup-echo-area-message "eddie")
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
@@ -389,11 +390,23 @@
 (defun setup-git-commit-mode ()
   (setq fill-column 70))
 (add-hook 'git-commit-setup-hook 'setup-git-commit-mode)
+;; Golang
+(defun setup-go-mode ()
+  ; Call Gofmt before saving
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (set (make-local-variable 'tab-width) 8))
+(add-hook 'go-mode-hook 'setup-common)
+(add-hook 'go-mode-hook 'setup-go-mode)
 ;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
+;; JavaScript
+(defun setup-js2-mode ()
+  (set (make-local-variable 'js-indent-level) 4))
+(add-hook 'js2-mode-hook 'setup-common)
+(add-hook 'js2-mode-hook 'setup-js2-mode)
 ;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; Python
@@ -525,11 +538,34 @@
 
 ;; programming languages
 
+;; Go
+(use-package go-mode
+  :defer t
+  :init
+  (require 'go-mode)
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+  )
+
+;; JavaScript
+
+;; js2-mode
+(use-package js2-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
 ;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
+
+;; Rust
+(use-package rust-mode
+  :defer t
+  :init
+  (require 'rust-mode)
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+)
 
 ;; yaml
 (use-package yaml-mode)
