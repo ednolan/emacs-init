@@ -638,7 +638,7 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/localbuild/ccls/ccls/Release/ccls")))
+(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.ledger")))
 
 
 ;; make eglot use projectile to detect the project root
