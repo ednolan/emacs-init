@@ -268,8 +268,6 @@
 (setq dired-listing-switches "-alh")
 
 ;; registers for commonly used files
-(set-register ?f (cons 'file "~/financial/ledger/edward.ledger"))
-
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()

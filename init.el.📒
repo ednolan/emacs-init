@@ -261,7 +261,6 @@
 (setq dired-listing-switches "-alh")
 
 ;; registers for commonly used files
-(set-register ?t (cons 'file "~/sync/todo/todo.org"))
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()

@@ -268,7 +268,9 @@
 
 ;; registers for commonly used files
 (set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
+(set-register ?r (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/readinglist.org"))
 (set-register ?s (cons 'file "~/Library/Mobile Documents/com~apple~CloudDocs/shopping-list.org"))
+
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()
@@ -362,6 +364,8 @@
 
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
 (global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-custom-project-directory)
+
+(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
 
 (load-file (expand-file-name "~/.emacs.d/macroutil.el"))
 (global-set-key (kbd "<f8>") 'macroutil-end-and-process-macro-or-exec-named-macro)
@@ -575,6 +579,12 @@
 
 ;; org
 (use-package org)
+
+;; ledger-mode
+(use-package ledger-mode
+  :bind (:map ledger-mode-map
+         ("TAB" . completion-at-point)))
+(use-package flycheck-ledger)
 
 ;; define-word
 (use-package define-word
