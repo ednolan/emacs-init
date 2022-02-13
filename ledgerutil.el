@@ -65,8 +65,12 @@
 (defun ledgerutil-move-to-next-transaction ()
   (move-beginning-of-line ())
   (next-line)
-  (while (not (ledgerutil-line-starts-with-date))
-    (next-line)))
+  ;; (while (not (ledgerutil-line-starts-with-date))
+  ;;   (next-line)))
+  (next-line)
+  (next-line)
+  (next-line)
+  (next-line))
 
 (defun ledgerutil-suggested-category (category-in)
   (let* ((category-alist-keys (map-keys ledgerutil-category-alist))
@@ -85,6 +89,7 @@
                    (ledgerutil-category-replace suggested-category)))))
     (ledgerutil-move-to-next-transaction)
     (ledger-highlight-xact-under-point)
+    (move-beginning-of-line ())
     (ledgerutil-check-transaction)))
 
 (defun ledgerutil-save-alist ()
