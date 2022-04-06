@@ -170,7 +170,7 @@
 (delete-selection-mode 1)
 
 ;; yes/no -> y/n
-(defalias 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 
 ;; mouse support in terminal mode
 (xterm-mouse-mode t)
@@ -266,6 +266,9 @@
 
 ;; dired switches
 (setq dired-listing-switches "-alh")
+
+;; gdb restores window config
+(setq gdb-restore-window-configuration-after-quit t)
 
 ;; registers for commonly used files
 ;; prompt before quitting
