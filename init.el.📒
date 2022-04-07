@@ -636,7 +636,8 @@
   )
 
 ;; ccls and eglot
-(use-package eglot)
+(use-package eglot
+  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
 
 ;; disable client-side completion sorting
 ;; https://github.com/MaskRay/ccls/wiki/eglot
