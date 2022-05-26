@@ -571,6 +571,7 @@
   (helm-rg-default-extra-args '("-F"))
   (helm-rg-thing-at-point nil)
   (helm-rg-candidate-number-limit 5000)
+  (helm-rg-ripgrep-executable "/home/enolan/ripgrep/target/release/rg")
   )
 
 ;; origami
