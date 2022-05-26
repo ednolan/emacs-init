@@ -20,12 +20,6 @@
   (interactive)
   (mapc 'find-file-noselect (git-util-this-project-paths)))
 
-(defun git-util-helm-git-grep-this-project ()
-  "Perform a helm git grep with only the paths that differ from master"
-  (interactive)
-  (let ((helm-git-grep-pathspecs (git-util-this-project-paths)))
-    (helm-git-grep)))
-
 (defgroup git-util-custom-group nil
   "Customize group for git-util."
   :group 'convenience)
@@ -40,9 +34,3 @@
   (interactive)
   (mapc 'find-file-noselect
         (text-files-in-directory git-util-custom-project-directory)))
-
-(defun git-util-helm-git-grep-custom-project-directory ()
-  "Perform a helm git grep with the path set by git-util-custom-project-directory"
-  (interactive)
-  (let ((helm-git-grep-pathspecs (list git-util-custom-project-directory)))
-    (helm-git-grep)))

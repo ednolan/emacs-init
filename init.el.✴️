@@ -49,8 +49,8 @@
 ;; Open menu bar (M-M)
 
 ;; helm
-;; Helm git grep (C-c g)
-;; Helm git grep custom project directory (C-c C-j)
+;; ripgrep project (C-c g)
+;; ripgrep current directory (C-c r)
 ;; helm-ls-git (C-x C-d)
 
 ;; magit
@@ -343,7 +343,6 @@
 (advice-add 'find-file :around #'find-file--line-number)
 
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
-(global-set-key (kbd "C-c C-j") 'git-util-helm-git-grep-custom-project-directory)
 
 ;; https://old.reddit.com/r/spacemacs/comments/q0eqcd/how_to_get_my_magit_keybindings_back_mode/hgegkt6/
 (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist)
@@ -476,11 +475,7 @@
 (use-package helm
   :config (helm-mode 1)
   )
-
 (use-package helm-projectile)
-(use-package helm-git-grep
-  :bind (("C-c g" . helm-git-grep))
-  )
 (use-package helm-ls-git
   :bind (("C-x C-d" . helm-browse-project))
   )
@@ -497,6 +492,14 @@
   ;; https://docs.projectile.mx/projectile/projects.html#ignoring-files
   (setq projectile-indexing-method 'hybrid)
   (helm-projectile-on)
+  )
+
+(use-package helm-rg
+  :bind (("C-c r" . helm-rg)
+         ("C-c g" . helm-projectile-rg))
+  :custom
+  (helm-rg-default-extra-args '("-F"))
+  (helm-rg-thing-at-point nil)
   )
 
 ;; origami
