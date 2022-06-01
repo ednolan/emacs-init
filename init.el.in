@@ -399,8 +399,9 @@
 ✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
 
 ;; https://old.reddit.com/r/spacemacs/comments/q0eqcd/how_to_get_my_magit_keybindings_back_mode/hgegkt6/
-(delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist)
-(delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist)
+;; https://stackoverflow.com/a/51117995
+(setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
+(setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
 ☣️🍎(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
 
