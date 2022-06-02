@@ -612,7 +612,16 @@
   (helm-projectile-on)
   )
 
+;; need quelpa-use-package to grab my own fork of helm-rg
+(use-package quelpa)
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
+(quelpa-use-package-activate-advice)
 (use-package helm-rg
+  :quelpa (helm-rg :fetcher github :repo "ednolan/helm-rg")
   :bind (("C-c r" . helm-rg)
          ("C-c g" . helm-projectile-rg))
   :custom
