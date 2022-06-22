@@ -542,6 +542,11 @@
    ("C-c C-l" . string-inflection-lower-camelcase))
   )
 
+;; evil-numbers
+(use-package evil-numbers
+  :bind (("C-c +" . evil-numbers/inc-at-pt)
+         ("C-c -" . evil-numbers/dec-at-pt)))
+
 ;; helm
 (use-package helm
   :config (helm-mode 1)
