@@ -27,6 +27,15 @@
             "// Copyright MayStreet " current-year " - all rights reserved\n"
             "//===" (make-string (- comment-width 10) ?-) "===//\n")))
 
+(defun bp-nofile-header-comment ()
+  (let* ((current-year (shell-command-to-string "echo -n $(date +%Y)")))
+    (concat "//---------------------------------------------------------------*- C++ -*-==//\n"
+            "//\n"
+            "//               Bellport Low Latency Trading Infrastructure.\n"
+            "//\n"
+            "// Copyright MayStreet " current-year " - all rights reserved\n"
+            "//===" (make-string 69 ?-) "===//\n")))
+
 (defun bp-test-corresponding-header (include-path)
   (replace-regexp-in-string
    "/test/"
@@ -39,7 +48,7 @@
 (defun bp-insert-boilerplate-inl ()
   "Insert boilerplate for an inline definitions file in Bellport"
   (interactive)
-  (insert (bp-header-comment (bp-header-comment-path)))
+  (insert (bp-nofile-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000, \"C++20 Required\");\n")
   (insert "\n")
@@ -50,7 +59,7 @@
 (defun bp-insert-boilerplate-hpp ()
   "Insert boilerplate for a header file in Bellport"
   (interactive)
-  (insert (bp-header-comment (bp-header-comment-path)))
+  (insert (bp-nofile-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000, \"C++20 Required\");\n")
   (insert "\n")
@@ -63,7 +72,7 @@
 (defun bp-insert-boilerplate-test ()
   "Insert boilerplate for a test file in Bellport"
   (interactive)
-  (insert (bp-header-comment (bp-header-comment-path)))
+  (insert (bp-nofile-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000, \"C++20 Required\");\n")
   (insert "\n")
@@ -81,7 +90,7 @@
 (defun bp-insert-boilerplate-cpp ()
   "Insert boilerplate for an implementation file in Bellport"
   (interactive)
-  (insert (bp-header-comment (bp-header-comment-path)))
+  (insert (bp-nofile-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000, \"C++20 Required\");\n")
   (insert "\n")
