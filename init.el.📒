@@ -714,6 +714,13 @@
 ;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
 
+;; clang-format
+(use-package clang-format
+  :bind (("C-c a" . clang-format-region))
+  :custom
+  (clang-format-executable
+   "/home/enolan/sync/setup/scripts/clang_format_wrapper.sh.ledger"))
+
 ;; Dockerfile
 (use-package dockerfile-mode)
 
