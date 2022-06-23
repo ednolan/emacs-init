@@ -263,6 +263,30 @@
 ;; gdb restores window config
 (setq gdb-restore-window-configuration-after-quit t)
 
+;; override built-in query-replace keybinding with this logic:
+;; if there is a currently active highlight, and that highlight:
+;; - contains no newline characters
+;; - is less than 90 characters long
+;; then use the contents of that highlight as the string to replace
+;; otherwise fallback to normal query-replace
+(defun region-contents-string ()
+  (if (region-active-p)
+      (buffer-substring (region-beginning) (region-end))))
+(defun query-replace-region ()
+  (interactive)
+  (let ((search-start-point (region-beginning))
+        (to-replace (region-contents-string)))
+    (if (and to-replace
+             (< (length to-replace) 90)
+             (not (string-match-p "\n" to-replace)))
+        (progn
+          (goto-char search-start-point)
+          (deactivate-mark)
+          (query-replace to-replace
+                         (read-string (concat "Query replace " to-replace " with: "))))
+      (call-interactively 'query-replace))))
+(global-set-key (kbd "M-%") 'query-replace-region)
+
 ;; registers for commonly used files
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
