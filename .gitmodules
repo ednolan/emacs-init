@@ -1,0 +1,3 @@
+[submodule "feedly"]
+	path = feedly
+	url = git@github.com:ednolan/feedly.git
