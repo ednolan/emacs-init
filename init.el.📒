@@ -731,6 +731,15 @@
 ;; Dockerfile
 (use-package dockerfile-mode)
 
+(use-package gerrit
+  :custom
+  (gerrit-host "gerrit.corp.maystreet.com")
+  :config
+  (progn
+    (add-hook 'magit-status-sections-hook #'gerrit-magit-insert-status t)
+    (global-set-key (kbd "C-c t u") 'gerrit-upload-transient)
+    (global-set-key (kbd "C-c t d") 'gerrit-download)))
+
 ;; Go
 (use-package go-mode
   :defer t
