@@ -667,7 +667,8 @@
   (helm-rg-default-extra-args '("-F"))
   (helm-rg-thing-at-point nil)
   ☣️🔶📒(helm-rg-candidate-number-limit 5000)
-  ✴️)
+  ✴️:custom-face
+  (helm-rg-file-match-face ((t (:foreground "black" :underline t)))))
 
 ;; origami
 (use-package origami

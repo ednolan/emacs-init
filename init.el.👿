@@ -555,7 +555,8 @@
   :custom
   (helm-rg-default-extra-args '("-F"))
   (helm-rg-thing-at-point nil)
-  )
+  :custom-face
+  (helm-rg-file-match-face ((t (:foreground "black" :underline t)))))
 
 ;; origami
 (use-package origami
