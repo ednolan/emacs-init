@@ -102,6 +102,11 @@
 ;; Insert new zettel (C-c C-i)
 ;; Refresh (C-c C-w)
 
+;; gerrit
+;; Upload changes to Gerrit (C-c t u)
+;; Download change from Gerrit (C-c t g)
+;; Show Gerrit dashboard (C-c t d)
+
 ;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
 (global-set-key (kbd "C-x `") 'rectangle-mark-mode)
@@ -674,9 +679,9 @@
   (gerrit-host "gerrit.corp.maystreet.com")
   :config
   (progn
-    (add-hook 'magit-status-sections-hook #'gerrit-magit-insert-status t)
     (global-set-key (kbd "C-c t u") 'gerrit-upload-transient)
-    (global-set-key (kbd "C-c t d") 'gerrit-download)))
+    (global-set-key (kbd "C-c t g") 'gerrit-download)
+    (global-set-key (kbd "C-c t d") 'gerrit-dashboard)))
 
 ;; Go
 (use-package go-mode
