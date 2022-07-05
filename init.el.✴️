@@ -380,6 +380,13 @@
 
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
 
+(if (and
+     (file-exists-p (expand-file-name "~/.emacs.d/feedly-token.el"))
+     (file-exists-p (expand-file-name "~/.emacs.d/feedly/feedly.el")))
+    (progn
+      (load-file (expand-file-name "~/.emacs.d/feedly-token.el"))
+      (load-file (expand-file-name "~/.emacs.d/feedly/feedly.el"))))
+
 ;; https://old.reddit.com/r/spacemacs/comments/q0eqcd/how_to_get_my_magit_keybindings_back_mode/hgegkt6/
 ;; https://stackoverflow.com/a/51117995
 (setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
