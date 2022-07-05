@@ -467,14 +467,9 @@
   (defun ff-find-other-file-ignore-headers ()
     (interactive)
     (ff-find-other-file nil t))
-  (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
-  (defvar my-cpp-other-file-alist
-    '(("\\.cpp\\'" (".inl"))
-    ("\\.inl\\'" (".hpp"))
-    ("\\.hpp\\'" (".cpp"))))
-  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+  (local-set-key (kbd "C-c o") 'bp-find-other-file)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
       (eglot-ensure))
