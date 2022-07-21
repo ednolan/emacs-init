@@ -693,7 +693,7 @@
          auto-mode-alist))
   )
 
-;; ccls and eglot
+;; clangd and eglot
 (use-package eglot
   :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
 
@@ -703,8 +703,7 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs '(c++-mode . ("/home/enolan/sync/setup/scripts/ccls_wrapper.sh.diamond_shape_with_a_dot_inside")))
-
+(add-to-list 'eglot-server-programs '(c++-mode . ("clangd-14")))
 
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot
