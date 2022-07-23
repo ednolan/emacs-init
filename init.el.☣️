@@ -414,6 +414,14 @@
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
 
+(load-file (expand-file-name "~/.emacs.d/cpp2util.el"))
+
+(defun cpp2 ()
+   (interactive)
+   (bind-key* "C-c o" 'cpp2util-find-file))
+
+(cpp2)
+
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
 
 (if (and
@@ -478,15 +486,9 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  (defun ff-find-other-file-ignore-headers ()
-    (interactive)
-    (ff-find-other-file nil t))
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
-  (defvar my-cpp-other-file-alist
-    '(("\\.cpp\\'" (".h")) ("\\.h\\'" (".cpp"))))
-  (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
-  (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
+   (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
       (eglot-ensure))

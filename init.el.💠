@@ -409,6 +409,14 @@
 
 (load-file (expand-file-name "~/.emacs.d/bellport.el"))
 
+(bind-key* "C-c o" 'bp-find-other-file)
+
+(load-file (expand-file-name "~/.emacs.d/cpp2util.el"))
+
+(defun cpp2 ()
+   (interactive)
+   (bind-key* "C-c o" 'cpp2util-find-file))
+
 (load-file (expand-file-name "~/.emacs.d/git-util.el"))
 
 (if (and
@@ -471,9 +479,6 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  (defun ff-find-other-file-ignore-headers ()
-    (interactive)
-    (ff-find-other-file nil t))
   (c-add-style "mana" mana-cpp-style)
   (c-set-style "mana")
   ;; ccls
