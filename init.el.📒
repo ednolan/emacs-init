@@ -612,6 +612,7 @@
   :config
   (helm-mode 1)
   (add-to-list 'helm-completing-read-handlers-alist '(find-file))
+  (add-to-list 'helm-completing-read-handlers-alist '(write-file))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename)))
 (use-package helm-projectile)
