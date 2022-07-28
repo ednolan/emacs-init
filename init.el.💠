@@ -391,6 +391,11 @@
 
 (advice-add 'find-file :around #'find-file--line-number)
 
+;; https://old.reddit.com/r/spacemacs/comments/q0eqcd/how_to_get_my_magit_keybindings_back_mode/hgegkt6/
+;; https://stackoverflow.com/a/51117995
+(setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
+(setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
+
 ;; style config
 (defconst mana-cpp-style
   '((c-basic-offset . 2)
@@ -406,51 +411,6 @@
                         (inline-open . 0)
                         (substatement-open . 0))))
   "MANA Tech LLC Style")
-
-(load-file (expand-file-name "~/.emacs.d/bellport.el"))
-
-(bind-key* "C-c o" 'bp-find-other-file)
-
-(load-file (expand-file-name "~/.emacs.d/cpp2util.el"))
-
-(defun cpp2 ()
-   (interactive)
-   (bind-key* "C-c o" 'cpp2util-find-file))
-
-(load-file (expand-file-name "~/.emacs.d/git-util.el"))
-
-(if (and
-     (file-exists-p (expand-file-name "~/.emacs.d/feedly-token.el"))
-     (file-exists-p (expand-file-name "~/.emacs.d/feedly/feedly.el")))
-    (progn
-      (load-file (expand-file-name "~/.emacs.d/feedly-token.el"))
-      (load-file (expand-file-name "~/.emacs.d/feedly/feedly.el"))))
-
-;; https://old.reddit.com/r/spacemacs/comments/q0eqcd/how_to_get_my_magit_keybindings_back_mode/hgegkt6/
-;; https://stackoverflow.com/a/51117995
-(setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
-(setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
-
-(load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
-
-(load-file (expand-file-name "~/.emacs.d/macroutil.el"))
-(global-set-key (kbd "<f8>") 'macroutil-end-and-process-macro-or-exec-named-macro)
-(global-set-key (kbd "C-c k p") 'macroutil-process-last-macro)
-(global-set-key (kbd "C-c k s") 'macroutil-store-named-macro)
-(global-set-key (kbd "C-c k n") 'macroutil-name-and-store-register-macro)
-(global-set-key (kbd "C-c k a") 'macroutil-assign-named-macro-to-register)
-(global-set-key (kbd "C-c k 0") 'macroutil-register-0)
-(global-set-key (kbd "C-c k 1") 'macroutil-register-1)
-(global-set-key (kbd "C-c k 2") 'macroutil-register-2)
-(global-set-key (kbd "C-c k 3") 'macroutil-register-3)
-(global-set-key (kbd "C-c k 4") 'macroutil-register-4)
-(global-set-key (kbd "C-c k 5") 'macroutil-register-5)
-(global-set-key (kbd "C-c k 6") 'macroutil-register-6)
-(global-set-key (kbd "C-c k 7") 'macroutil-register-7)
-(global-set-key (kbd "C-c k 8") 'macroutil-register-8)
-(global-set-key (kbd "C-c k 9") 'macroutil-register-9)
-
-(load-file (expand-file-name "~/.emacs.d/macroutil-macros.el"))
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -771,3 +731,45 @@
 
 ;; yaml
 (use-package yaml-mode)
+
+;; custom utilities
+
+(load-file (expand-file-name "~/.emacs.d/bellport.el"))
+
+(bind-key* "C-c o" 'bp-find-other-file)
+
+(load-file (expand-file-name "~/.emacs.d/cpp2util.el"))
+
+(defun cpp2 ()
+   (interactive)
+   (bind-key* "C-c o" 'cpp2util-find-file))
+
+(load-file (expand-file-name "~/.emacs.d/git-util.el"))
+
+(if (and
+     (file-exists-p (expand-file-name "~/.emacs.d/feedly-token.el"))
+     (file-exists-p (expand-file-name "~/.emacs.d/feedly/feedly.el")))
+    (progn
+      (load-file (expand-file-name "~/.emacs.d/feedly-token.el"))
+      (load-file (expand-file-name "~/.emacs.d/feedly/feedly.el"))))
+
+(load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
+
+(load-file (expand-file-name "~/.emacs.d/macroutil.el"))
+(global-set-key (kbd "<f8>") 'macroutil-end-and-process-macro-or-exec-named-macro)
+(global-set-key (kbd "C-c k p") 'macroutil-process-last-macro)
+(global-set-key (kbd "C-c k s") 'macroutil-store-named-macro)
+(global-set-key (kbd "C-c k n") 'macroutil-name-and-store-register-macro)
+(global-set-key (kbd "C-c k a") 'macroutil-assign-named-macro-to-register)
+(global-set-key (kbd "C-c k 0") 'macroutil-register-0)
+(global-set-key (kbd "C-c k 1") 'macroutil-register-1)
+(global-set-key (kbd "C-c k 2") 'macroutil-register-2)
+(global-set-key (kbd "C-c k 3") 'macroutil-register-3)
+(global-set-key (kbd "C-c k 4") 'macroutil-register-4)
+(global-set-key (kbd "C-c k 5") 'macroutil-register-5)
+(global-set-key (kbd "C-c k 6") 'macroutil-register-6)
+(global-set-key (kbd "C-c k 7") 'macroutil-register-7)
+(global-set-key (kbd "C-c k 8") 'macroutil-register-8)
+(global-set-key (kbd "C-c k 9") 'macroutil-register-9)
+
+(load-file (expand-file-name "~/.emacs.d/macroutil-macros.el"))
