@@ -402,7 +402,7 @@
 (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
 ;; style config
-(defconst mana-cpp-style
+(defconst my-custom-style
   '((c-basic-offset . 2)
     (c-offsets-alist . ((innamespace . 0)
                         (access-label . -)
@@ -415,7 +415,7 @@
                         (statement-case-intro . +)
                         (inline-open . 0)
                         (substatement-open . 0))))
-  "MANA Tech LLC Style")
+  "my_custom_style")
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -444,8 +444,8 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  (c-add-style "mana" mana-cpp-style)
-  (c-set-style "mana")
+  (c-add-style "custom" my-custom-style)
+  (c-set-style "custom")
   (local-set-key (kbd "C-c o") 'bp-find-other-file)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
