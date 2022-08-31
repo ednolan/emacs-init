@@ -670,6 +670,12 @@
 
 ;; programming languages
 
+;; bash
+(use-package flymake-shellcheck
+  :commands flymake-shellcheck-load
+  :init
+  (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
+
 ;; C++
 
 ;; cmake
@@ -694,7 +700,8 @@
 
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs '(c++-mode . ("clangd-14")))
+(add-to-list 'eglot-server-programs
+             '(c++-mode . (expand-file-name ("~/sync/setup/scripts/clangd_wrapper.sh"))))
 
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot
@@ -719,6 +726,13 @@
 
 ;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
+
+;; clang-format
+(use-package clang-format
+  :bind (("C-c a" . clang-format-region))
+  :custom
+  (clang-format-executable
+   (expand-file-name "~/sync/setup/scripts/clang_format_wrapper.sh.ledger")))
 
 ;; Dockerfile
 (use-package dockerfile-mode)
