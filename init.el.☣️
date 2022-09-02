@@ -701,7 +701,7 @@
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
 (add-to-list 'eglot-server-programs
-             '(c++-mode . (expand-file-name ("~/sync/setup/scripts/clangd_wrapper.sh"))))
+             '(c++-mode . ("/home/eddie/sync/setup/scripts/clangd_wrapper.sh")))
 
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot

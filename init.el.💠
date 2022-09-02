@@ -659,40 +659,6 @@
          auto-mode-alist))
   )
 
-;; clangd and eglot
-(use-package eglot
-  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
-
-;; disable client-side completion sorting
-;; https://github.com/MaskRay/ccls/wiki/eglot
-(setq company-transformers nil)
-
-;; customize eglot-server-programs to use script that provides proper args
-;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs
-             '(c++-mode . (expand-file-name ("~/sync/setup/scripts/clangd_wrapper.sh"))))
-
-;; make eglot use projectile to detect the project root
-;; https://github.com/MaskRay/ccls/wiki/eglot
-(defun projectile-project-find-function (dir)
-  (let* ((root (projectile-project-root dir)))
-    (and root (cons 'transient root))))
-(with-eval-after-load 'project
-  (add-to-list 'project-find-functions 'projectile-project-find-function))
-
-;; configure projectile to prioritize .projectile files for detecting projects
-;; https://www.reddit.com/r/emacs/comments/920psp/projectile_ignoring_projectile_files/e32u6tk/?context=3
-(setq
- projectile-project-root-files #'( ".projectile" )
- projectile-project-root-files-functions #'(projectile-root-top-down
-                                            projectile-root-top-down-recurring
-                                            projectile-root-bottom-up
-                                            projectile-root-local))
-
-;; workaround for projectile git bug
-;; https://github.com/bbatsov/projectile/issues/1302#issuecomment-433894379
-(setq projectile-git-submodule-command nil)
-
 ;; modern-cpp-font-lock
 (use-package modern-cpp-font-lock)
 
