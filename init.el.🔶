@@ -12,10 +12,6 @@
 ;;  note: org-mode overrides this
 ;; Scroll buffer without scolling cursor (shift-<up/down>)
 
-;; buffers
-;; Invoke buffer selection menu (C-x C-b)
-;; Revert buffer without confirmation (F5)
-
 ;; Quit window (C-c q)
 
 ;; Sort lines (C-c s)
@@ -31,12 +27,22 @@
 ;; avy
 ;; Goto word (C-d)
 
-;; c++
+;; buffers
+;; Invoke buffer selection menu (C-x C-b)
+;; Revert buffer without confirmation (F5)
+
+;; tabs (C++ mode only)
 ;; Tab to tab stop (M-tab) (Linux: C-M-i)
 ;; Insert four spaces (M-shift-tab) (Linux: C-M-y)
 
+;; clang
+;; clang-format region (C-c a)
+
 ;; define-word
 ;; Define word (C-c d)
+
+;; dired
+;; Create empty file (f7)
 
 ;; frames
 ;; Other frame (f2)
@@ -45,21 +51,34 @@
 ;; Next error (M-g n)
 ;; Previous error (M-g p)
 
-;; fundamental mode
-;; Enter fundamental mode (C-c f)
-
 ;; menu bar
 ;; Text-mode emulation menu bar (f10)
 ;; Open menu bar (M-M)
+
+;; gerrit
+;; Upload changes to Gerrit (C-c t u)
+;; Download change from Gerrit (C-c t g)
+;; Show Gerrit dashboard (C-c t d)
 
 ;; helm
 ;; ripgrep project (C-c g)
 ;; ripgrep current directory (C-c r)
 ;; helm-ls-git (C-x C-d)
 
+;; increment
+;; Increment at point (C-c +)
+;; Decrement at point (C-c -)
+
 ;; magit
 ;; Magit status (C-x g)
 ;; Magit find file (C-c v f)
+
+;; neuron
+;; Insert zettel link (C-c C-q)
+;; Toggle connection type (C-c C-y)
+;; Query tags (C-c C-m)
+;; Insert new zettel (C-c C-i)
+;; Refresh (C-c C-w)
 
 ;; projectile
 ;; Helm-projectile (C-c p h)
@@ -79,33 +98,18 @@
 ;; Keep ours (C-c m o)
 ;; Keep theirs (C-c m t)
 
-;; sort-lines (C-c s)
-
 ;; string-inflection
 ;; To snake case (C-c C-s)
 ;; To all caps snake case (C-c C-h)
 ;; To pascal case (C-c C-u)
 ;; To lowercase camel case (C-c C-l)
 
-;; dired
-;; Create empty file (f7)
+;; tabs (C++ mode only)
+;; Tab to tab stop (M-tab) (Linux: C-M-i)
+;; Insert four spaces (M-shift-tab) (Linux: C-M-y)
 
-;; Increment at point (C-c +)
-;; Decrement at point (C-c -)
-
-;; clang-format region (C-c a)
-
-;; neuron
-;; Insert zettel link (C-c C-q)
-;; Toggle connection type (C-c C-y)
-;; Query tags (C-c C-m)
-;; Insert new zettel (C-c C-i)
-;; Refresh (C-c C-w)
-
-;; gerrit
-;; Upload changes to Gerrit (C-c t u)
-;; Download change from Gerrit (C-c t g)
-;; Show Gerrit dashboard (C-c t d)
+;; text mode
+;; Enter text mode (C-c f)
 
 ;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
@@ -149,8 +153,8 @@
 ;; F2 to switch frames
 (global-set-key (kbd "<f2>") 'other-frame)
 
-;; Fundamental mode keybinding
-(global-set-key (kbd "C-c f") 'fundamental-mode)
+;; Text mode keybinding
+(global-set-key (kbd "C-c f") 'text-mode)
 
 ;; Move around menu bar keybindings to make room to use M-` for popping the mark
 (global-set-key (kbd "M-M") 'menu-bar-open)
