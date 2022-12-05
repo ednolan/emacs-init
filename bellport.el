@@ -4,37 +4,18 @@
            0 -3)
           "hpp"))
 
-(defun bp-header-comment-path ()
-  (substring buffer-file-name (length (expand-file-name "~/bellport/src/bp/")) nil))
-
 (defun bp-namespace-name ()
   (let ((srcdir (substring default-directory (length (expand-file-name "~/bellport/src/")) -1)))
     (replace-regexp-in-string "/" "::" srcdir)))
 
-(defun bp-header-comment (comment-path)
-  (let* ((current-year (shell-command-to-string "echo -n $(date +%Y)"))
-         (comment-width (if (> (length comment-path) 54) 89 79))
-         (comment-dash-padding-length (- comment-width
-                                         (length "//--- ")
-                                         (length comment-path)
-                                         (length " ")
-                                         (length "*- C++ -*-==//")))
-         (comment-dash-padding (make-string comment-dash-padding-length ?-)))
-    (concat "//--- " comment-path " " comment-dash-padding "*- C++ -*-==//\n"
-            "//\n"
-            "//               Bellport Low Latency Trading Infrastructure.\n"
-            "//\n"
-            "// Copyright MayStreet " current-year " - all rights reserved\n"
-            "//===" (make-string (- comment-width 10) ?-) "===//\n")))
-
-(defun bp-nofile-header-comment ()
+(defun bp-header-comment ()
   (let* ((current-year (shell-command-to-string "echo -n $(date +%Y)")))
-    (concat "//---------------------------------------------------------------*- C++ -*-==//\n"
+    (concat "//===-------------------------------------------------------*- C++ -*-===//\n"
             "//\n"
             "//               Bellport Low Latency Trading Infrastructure.\n"
             "//\n"
             "// Copyright MayStreet " current-year " - all rights reserved\n"
-            "//===" (make-string 69 ?-) "===//\n")))
+            "//===-----------------------------------------------------------------===//\n")))
 
 (defun bp-test-corresponding-header (include-path)
   (replace-regexp-in-string
@@ -55,7 +36,7 @@
 (defun bp-insert-boilerplate-inl ()
   "Insert boilerplate for an inline definitions file in Bellport"
   (interactive)
-  (insert (bp-nofile-header-comment))
+  (insert (bp-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000);\n")
   (insert "\n")
@@ -66,7 +47,7 @@
 (defun bp-insert-boilerplate-hpp ()
   "Insert boilerplate for a header file in Bellport"
   (interactive)
-  (insert (bp-nofile-header-comment))
+  (insert (bp-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000);\n")
   (insert "\n")
@@ -79,7 +60,7 @@
 (defun bp-insert-boilerplate-test ()
   "Insert boilerplate for a test file in Bellport"
   (interactive)
-  (insert (bp-nofile-header-comment))
+  (insert (bp-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000);\n")
   (insert "\n")
@@ -97,7 +78,7 @@
 (defun bp-insert-boilerplate-cpp ()
   "Insert boilerplate for an implementation file in Bellport"
   (interactive)
-  (insert (bp-nofile-header-comment))
+  (insert (bp-header-comment))
   (insert "\n")
   (insert "static_assert(__cplusplus > 202000);\n")
   (insert "\n")
