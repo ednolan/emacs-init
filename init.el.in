@@ -644,7 +644,6 @@
   :bind (("C-c r" . helm-rg)
          ("C-c g" . helm-projectile-rg))
   :custom
-  (helm-rg-default-extra-args '("-F"))
   (helm-rg-thing-at-point nil)
   ☣️🔶📒(helm-rg-candidate-number-limit 5000)
   ✴️:custom-face
