@@ -301,7 +301,6 @@
       (call-interactively 'query-replace))))
 (global-set-key (kbd "M-%") 'query-replace-region)
 
-;; registers for commonly used files
 ;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()
