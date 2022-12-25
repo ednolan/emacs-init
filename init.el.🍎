@@ -201,7 +201,8 @@
                        organic-green oswald overcast paper
                        toxi white))
          (epoch-to-midnight-utc-secs
-          (if (eq system-type 'darwin)
+          (if (or (eq system-type 'darwin)
+                  (eq system-type 'berkeley-unix))
               (string-to-number
                (shell-command-to-string
                 "date -u -j -f'%Y-%m-%d %H:%M:%S' \"$(date +%Y-%m-%d) 00:00:00\" +%s"))
