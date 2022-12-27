@@ -568,6 +568,11 @@
   :bind (("C-c +" . evil-numbers/inc-at-pt)
          ("C-c -" . evil-numbers/dec-at-pt)))
 
+;; clipetty
+;; (hook into system paste buffer using OSC 52)
+(use-package clipetty
+  :hook (after-init . global-clipetty-mode))
+
 ;; helm
 (use-package helm
   :config
