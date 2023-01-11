@@ -82,7 +82,16 @@
          (let ((suggested-category (ledgerutil-suggested-category transaction-description)))
            (if suggested-category
                (if (y-or-n-p (concat "Use transaction category: " suggested-category))
-                   (ledgerutil-category-replace suggested-category)))))
+                   (ledgerutil-category-replace suggested-category)
+                 (progn
+                   (next-line)
+                   (next-line)
+                   (right-char 13)
+                   (completion-at-point)
+                   (move-beginning-of-line ())
+                   (previous-line)
+                   (previous-line)
+                   (ledgerutil-insert-one-transaction))))))
     (ledgerutil-move-to-next-transaction)
     (ledger-highlight-xact-under-point)
     (ledgerutil-check-transaction)))
@@ -96,9 +105,7 @@
   (setq ledgerutil-category-alist ())
   (ledgerutil-save-alist))
 
-(defun ledgerutil-insert-transaction ()
-  "Add the transaction at point to the mapping. Repeat with the next transaction"
-  (interactive)
+(defun ledgerutil-insert-one-transaction ()
   (let ((transaction-description (ledgerutil-transaction-description)))
     (if transaction-description
          (let ((transaction-category (ledgerutil-transaction-category)))
@@ -107,10 +114,15 @@
                                  transaction-category))
                (progn
                  (add-to-list 'ledgerutil-category-alist (cons transaction-description transaction-category))
-                 (ledgerutil-save-alist)))))
-    (ledgerutil-move-to-next-transaction)
-    (ledger-highlight-xact-under-point)
-    (ledgerutil-insert-transaction)))
+                 (ledgerutil-save-alist)))))))
+
+(defun ledgerutil-insert-transaction ()
+  "Add the transaction at point to the mapping. Repeat with the next transaction"
+  (interactive)
+  (ledgerutil-insert-one-transaction)
+  (ledgerutil-move-to-next-transaction)
+  (ledger-highlight-xact-under-point)
+  (ledgerutil-insert-transaction))
 
 (global-set-key (kbd "C-c l c") 'ledgerutil-check-transaction)
 (global-set-key (kbd "C-c l i") 'ledgerutil-insert-transaction)
