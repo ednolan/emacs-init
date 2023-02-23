@@ -876,6 +876,9 @@
 ☣️🍎;; Swift
 (use-package swift-mode)
 
+📒;; SML
+(use-package sml-mode)
+
 🍎;; flycheck-swift
 (use-package flycheck-swift
   :config
