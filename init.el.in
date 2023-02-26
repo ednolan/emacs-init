@@ -543,6 +543,7 @@
 (defun setup-text-mode ()
   (setq indent-line-function (quote insert-tab))
   (electric-indent-local-mode -1))
+(add-hook 'text-mode-hook 'setup-common)
 (add-hook 'text-mode-hook 'setup-text-mode)
 
 ✴️;; package management
