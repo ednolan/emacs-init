@@ -656,6 +656,9 @@
   :bind (("C-c d" . define-word-at-point))
   )
 
+;; gptel
+(use-package gptel)
+
 ;; programming languages
 
 ;; C++
@@ -790,6 +793,9 @@
     (progn
       (load-file (expand-file-name "~/.emacs.d/feedly-token.el"))
       (load-file (expand-file-name "~/.emacs.d/feedly/feedly.el"))))
+
+(if (file-exists-p (expand-file-name "~/.emacs.d/openaikey.el"))
+    (load-file (expand-file-name "~/.emacs.d/openaikey.el")))
 
 (load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
 
