@@ -76,7 +76,7 @@
 ;; neuron
 ;; Insert zettel link (C-c C-q)
 ;; Toggle connection type (C-c C-y)
-;; Query tags (C-c C-m)
+;; Query tags (C-c C-o)
 ;; Insert new zettel (C-c C-i)
 ;; Refresh (C-c C-w)
 
