@@ -247,7 +247,7 @@
 (setq tramp-default-method "ssh")
 
 ;; dired switches
-(setq dired-listing-switches "-alh")
+(setq dired-listing-switches "-alhv")
 
 ;; gdb restores window config
 (setq gdb-restore-window-configuration-after-quit t)
