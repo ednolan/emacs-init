@@ -31,17 +31,7 @@
 ;; Invoke buffer selection menu (C-x C-b)
 ;; Revert buffer without confirmation (F5)
 
-☣️🔶📒;; tabs (C++ mode only)
-;; Tab to tab stop (M-tab) (Linux: C-M-i)
-;; Insert four spaces (M-shift-tab) (Linux: C-M-y)
-
-;; clang
-;; clang-format region (C-c a)
-
-☣️📒🍎;; company
-;; Complete (C-v)
-
-✴️;; define-word
+;; define-word
 ;; Define word (C-c d)
 
 ;; dired
@@ -58,25 +48,7 @@
 ;; Text-mode emulation menu bar (f10)
 ;; Open menu bar (M-M)
 
-🔶📒;; gerrit
-;; Upload changes to Gerrit (C-c t u)
-;; Download change from Gerrit (C-c t g)
-;; Show Gerrit dashboard (C-c t d)
-
-;; helm
-;; ripgrep project (C-c g)
-;; ripgrep current directory (C-c r)
-;; helm-ls-git (C-x C-d)
-
-;; increment
-;; Increment at point (C-c +)
-;; Decrement at point (C-c -)
-
-☣️🍎;; ledgerutil
-;; Suggest category for transaction (C-c l c)
-;; Add transaction to category suggestion mapping (C-c l i)
-
-✴️;; magit
+;; magit
 ;; Magit status (C-x g)
 ;; Magit find file (C-c v f)
 
@@ -111,14 +83,10 @@
 ;; To pascal case (C-c C-u)
 ;; To lowercase camel case (C-c C-l)
 
-☣️🔶📒;; tabs (C++ mode only)
-;; Tab to tab stop (M-tab) (Linux: C-M-i)
-;; Insert four spaces (M-shift-tab) (Linux: C-M-y)
-
-✴️;; text mode
+;; text mode
 ;; Enter text mode (C-c f)
 
-✴️;; C-` to set mark
+;; C-` to set mark
 (global-set-key (kbd "C-`") 'set-mark-command)
 (global-set-key (kbd "C-x `") 'rectangle-mark-mode)
 
@@ -183,9 +151,7 @@
 
 ;; annoying startup messages
 (setq inhibit-splash-screen t)
-☣️🌐💾(setq inhibit-startup-echo-area-message "eddie")
-🍎🍏🔶📒(setq inhibit-startup-echo-area-message "enolan")
-✴️(setq inhibit-startup-message t)
+(setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 
 ;; delete selection mode
@@ -222,11 +188,10 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (defun set-todays-theme ()
-☣️🌐💾🍎💿👿  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
+  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
                        mac-classic marine mistyday organic-green oswald overcast paper
                        toxi white))
-🔶📒🍏  (let* ((theme-names '(mac-classic))
-✴️         (epoch-to-midnight-utc-secs
+         (epoch-to-midnight-utc-secs
           (if (or (eq system-type 'darwin)
                   (eq system-type 'berkeley-unix))
               (string-to-number
@@ -262,10 +227,7 @@
 (add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
 
-☣️;; .ino files are c++
-(add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
-
-✴️;; Don't use F1 for help menu
+;; Don't use F1 for help menu
 (global-unset-key (kbd "<f1>"))
 
 ;; Mouse scroll in terminal mode
@@ -281,17 +243,17 @@
 ;; Recognize foo.yml
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
-🍎🍏💿🔶📒;; mac os maps <insert> to <help> ???
+;; mac os maps <insert> to <help> ???
 (global-set-key (kbd "<help>") 'overwrite-mode)
 
-🍎🍏💿;; home/end keys on mac
+;; home/end keys on mac
 (define-key global-map [home] 'beginning-of-line)
 (define-key global-map [end] 'end-of-line)
 
 ;; ctrl/cmd on mac
 (setq mac-command-modifier 'control)
 
-✴️;; prompt to add missing newlines on saving
+;; prompt to add missing newlines on saving
 (setq-default require-final-newline "ask")
 
 ;; use ssh with tramp by default (saves typing "ssh:")
@@ -327,12 +289,7 @@
       (call-interactively 'query-replace))))
 (global-set-key (kbd "M-%") 'query-replace-region)
 
-🍎;; registers for commonly used files
-(set-register ?t (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/inbox.org"))
-(set-register ?r (cons 'file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/readinglist.org"))
-(set-register ?s (cons 'file "~/Library/Mobile Documents/com~apple~CloudDocs/shopping-list.org"))
-
-✴️;; prompt before quitting
+;; prompt before quitting
 ;; https://emacs.stackexchange.com/a/30475
 (defun ask-before-closing ()
   "Close only if y was pressed."
@@ -359,7 +316,7 @@
  (kbd "C-c _")
  (lambda () (interactive) (just-one-space-in-region (region-beginning) (region-end))))
 
-✴️;; fill/unfill paragraph toggle with M-q
+;; fill/unfill paragraph toggle with M-q
 (defun endless/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -373,7 +330,7 @@
 (global-set-key [remap fill-paragraph]
                 #'endless/fill-or-unfill)
 
-✴️;; don't prompt that file changed on disk based solely on timestamp
+;; don't prompt that file changed on disk based solely on timestamp
 ;; credit to Stack Overflow user doublep
 ;; https://stackoverflow.com/a/29556894
 ;; Ignore modification-time-only changes in files, i.e. ones that
@@ -428,23 +385,7 @@
 (setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
 (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
-☣️🔶📒;; style config
-(defconst my-custom-style
-  '((c-basic-offset . 2)
-    (c-offsets-alist . ((innamespace . 0)
-                        (access-label . -)
-                        (topmost-intro . 0)
-                        (arglist-intro . ++)
-                        (arglist-cont-nonempty . c-lineup-arglist)
-                        (comment-intro . 0)
-                        (member-init-intro . +)
-                        (case-label . 0)
-                        (statement-case-intro . +)
-                        (inline-open . 0)
-                        (substatement-open . 0))))
-  "my_custom_style")
-
-✴️;; major mode hooks
+;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
 
@@ -458,36 +399,9 @@
   )
 ;; bash
 (add-hook 'sh-mode-hook 'setup-common)
-☣️🔶📒;; C
-(defun setup-c-mode ()
-  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
-  (set (make-local-variable 'c-basic-offset) 4))
-(add-hook 'c-mode-hook 'setup-common)
-(add-hook 'c-mode-hook 'setup-c-mode)
-;; C++
-(defun setup-c++-mode ()
-  (global-set-key (kbd "C-M-i") 'tab-to-tab-stop)
-  (defun insert-four-spaces ()
-    (interactive)
-    (insert "    "))
-  (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  (c-add-style "custom" my-custom-style)
-  (c-set-style "custom")
-  ☣️ (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
-  🔶📒(local-set-key (kbd "C-c o") 'bp-find-other-file)
-  ☣️📒;; ccls
-  (if (cclsutil-buffer-in-registered-directoryp)
-      (eglot-ensure))
-  ☣️🔶📒)
-(add-hook 'c++-mode-hook 'setup-common)
-(add-hook 'c++-mode-hook 'setup-c++-mode)
-(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
-(add-hook 'c++-mode-hook #'origami-mode)
-🔶📒;; Dockerfile
-(add-hook 'dockerfile-mode-hook 'setup-common)
-✴️;; Emacs Lisp
+;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
-✴️;; Dired
+;; Dired
 (defun setup-dired-mode ()
   (local-set-key (kbd "<f7>") 'dired-create-empty-file)
   )
@@ -495,39 +409,20 @@
 (defun setup-git-commit-mode ()
   (setq fill-column 70))
 (add-hook 'git-commit-setup-hook 'setup-git-commit-mode)
-☣️🌐🍎🔶📒;; Golang
-(defun setup-go-mode ()
-  ☣️🌐🍎; Call Gofmt before saving
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  ☣️🌐🍎🔶📒(set (make-local-variable 'tab-width) 8))
-(add-hook 'go-mode-hook 'setup-common)
-(add-hook 'go-mode-hook 'setup-go-mode)
-✴️;; HTML
+;; HTML
 (defun setup-html-mode ()
   (set (make-local-variable 'sgml-basic-offset) 4))
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
-☣️🌐🍎🔶📒;; JavaScript
-(defun setup-js2-mode ()
-  (set (make-local-variable 'js-indent-level) ☣️🌐🍎4🔶📒2☣️🌐🍎🔶📒))
-(add-hook 'js2-mode-hook 'setup-common)
-(add-hook 'js2-mode-hook 'setup-js2-mode)
-☣️🍎🔶📒;; LaTeX
-(add-hook 'latex-mode-hook 'setup-common)
-✴️;; Markdown
+;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
-☣️;; OCaml
-(add-hook 'tuareg-mode-hook 'setup-common)
-✴️;; Python
+;; Python
 (defun setup-python-mode ()
   (setq tab-width 4)
-☣️  (add-to-list 'company-backends 'company-jedi)
-✴️  )
+  )
 (add-hook 'python-mode-hook 'setup-common)
 (add-hook 'python-mode-hook 'setup-python-mode)
-☣️;; Rust
-(add-hook 'rust-mode-hook 'setup-common)
-✴️;; Smerge
+;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
   (local-set-key (kbd "C-c m n") 'smerge-next)
@@ -536,16 +431,14 @@
   )
 (add-hook 'smerge-mode-hook 'setup-common)
 (add-hook 'smerge-mode-hook 'setup-smerge-mode)
-☣️🍎;; Swift
-(add-hook 'swift-mode-hook 'setup-common)
-✴️;; Text
+;; Text
 (defun setup-text-mode ()
   (setq indent-line-function (quote insert-tab))
   (electric-indent-local-mode -1))
 (add-hook 'text-mode-hook 'setup-common)
 (add-hook 'text-mode-hook 'setup-text-mode)
 
-✴️;; package management
+;; package management
 ;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -648,8 +541,7 @@
          ("C-c g" . helm-projectile-rg))
   :custom
   (helm-rg-thing-at-point nil)
-  ☣️🔶📒(helm-rg-candidate-number-limit 5000)
-  ✴️:custom-face
+  :custom-face
   (helm-rg-file-match-face ((t (:foreground "black" :underline t)))))
 
 ;; origami
@@ -662,48 +554,14 @@
          ("C-c n p" . origami-previous-fold))
   )
 
-🍎🍏💿;; fix mac os path issue
+;; fix mac os path issue
 (use-package exec-path-from-shell
   :config
   (push "HISTFILE" exec-path-from-shell-variables)
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 
-☣️📒;; company
-(use-package company
-  :bind (("C-v" . company-complete))
-  :init
-  (add-hook 'c++-mode-hook 'company-mode)
-☣️  (add-hook 'python-mode-hook 'company-mode)
-☣️📒  :config
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
-🍎;; company
-(use-package company
-  :bind (("C-v" . company-complete))
-  :init
-  (add-hook 'swift-mode-hook 'company-mode)
-  :config
-  (add-to-list 'company-backends 'company-sourcekit)
-  (setq company-async-timeout 30)
-  (setq company-idle-delay nil)
-  )
-
-☣️;; flycheck
-(use-package flycheck
-  :defer t
- )
-
-🍎;; flycheck
-(use-package flycheck
-  :defer t
-  :init
-  (add-hook 'swift-mode-hook 'flycheck-mode)
- )
-
-✴️;; magit
+;; magit
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-c v f" . magit-find-file))
@@ -715,13 +573,7 @@
 ;; org
 (use-package org)
 
-☣️🍎;; ledger-mode
-(use-package ledger-mode
-  :bind (:map ledger-mode-map
-         ("TAB" . completion-at-point)))
-(use-package flycheck-ledger)
-
-✴️;; define-word
+;; define-word
 (use-package define-word
   :bind (("C-c d" . define-word-at-point))
   )
@@ -729,184 +581,27 @@
 ;; gptel
 (use-package gptel)
 
-✴️;; programming languages
+;; programming languages
 
-☣️;; bash
-(use-package flymake-shellcheck
-  :commands flymake-shellcheck-load
-  :init
-  (add-hook 'sh-mode-hook 'flymake-shellcheck-load))
-
-☣️🔶📒;; C++
-
-;; cmake
-; Add cmake listfile names to the mode list.
-(use-package cmake-mode
-  :defer t
-  :init
-  (setq auto-mode-alist
-        (append
-         '(("CMakeLists\\.txt\\'" . cmake-mode))
-         '(("\\.cmake\\'" . cmake-mode))
-         auto-mode-alist))
-  )
-
-☣️📒;; clangd and eglot
-(use-package eglot
-  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
-
-;; disable client-side completion sorting
-;; https://github.com/MaskRay/ccls/wiki/eglot
-(setq company-transformers nil)
-
-;; customize eglot-server-programs to use script that provides proper args
-;; https://github.com/joaotavora/eglot
-(add-to-list 'eglot-server-programs
-             '(c++-mode . ("/home/☣️eddie📒enolan☣️📒/sync/setup/scripts/clangd_wrapper.sh")))
-
-;; make eglot use projectile to detect the project root
-;; https://github.com/MaskRay/ccls/wiki/eglot
-(defun projectile-project-find-function (dir)
-  (let* ((root (projectile-project-root dir)))
-    (and root (cons 'transient root))))
-(with-eval-after-load 'project
-  (add-to-list 'project-find-functions 'projectile-project-find-function))
-
-;; configure projectile to prioritize .projectile files for detecting projects
-;; https://www.reddit.com/r/emacs/comments/920psp/projectile_ignoring_projectile_files/e32u6tk/?context=3
-(setq
- projectile-project-root-files #'( ".projectile" )
- projectile-project-root-files-functions #'(projectile-root-top-down
-                                            projectile-root-top-down-recurring
-                                            projectile-root-bottom-up
-                                            projectile-root-local))
-
-;; workaround for projectile git bug
-;; https://github.com/bbatsov/projectile/issues/1302#issuecomment-433894379
-(setq projectile-git-submodule-command nil)
-
-☣️🔶📒;; modern-cpp-font-lock
-(use-package modern-cpp-font-lock)
-
-📒☣️;; clang-format
-(use-package clang-format
-  :bind (("C-c a" . clang-format-region))
-  :custom
-  (clang-format-executable
-   (expand-file-name "~/sync/setup/scripts/clang_format_wrapper.sh.ledger")))
-
-☣️🔶📒;; Dockerfile
-(use-package dockerfile-mode)
-
-🔶📒(use-package gerrit
-  :custom
-  (gerrit-host "gerrit.corp.maystreet.com")
-  :config
-  (progn
-    (global-set-key (kbd "C-c t u") 'gerrit-upload-transient)
-    (global-set-key (kbd "C-c t g") 'gerrit-download)
-    (global-set-key (kbd "C-c t d") 'gerrit-dashboard)))
-
-☣️🌐🍎🔶📒;; Go
-(use-package go-mode
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-  )
-
-☣️🌐🍎💿🔶📒;; JavaScript
+;; JavaScript
 
 ;; js2-mode
 (use-package js2-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 
-☣️🍎;; LaTeX
-(use-package tex-mode
-  :ensure auctex
-  :defer t
-  :init
-  (setq-default TeX-engine 'xetex)
-  (setq-default TeX-PDF-mode t)
-  )
-;; set XeTeX mode in TeX/LaTeX
-(add-hook 'LaTeX-mode-hook
-          (lambda()
-            (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-            (setq TeX-command-default "XeLaTeX")
-            (setq TeX-save-query nil)))
-
-✴️;; Markdown
+;; Markdown
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode))
   :init (setq markdown-command "pandoc --from commonmark --to html5 -s")
   )
 
-☣️;; Meson
-(use-package meson-mode)
-
-☣️📒🌐;; neuron
-(use-package neuron-mode
-  ☣️:custom (neuron-rib-server-host "192.168.120.110")
-  ☣️📒🌐:config (bind-keys*
-           ("C-c C-q" . neuron-insert-zettel-link)
-           ("C-c C-y" . neuron-toggle-connection-type)
-           ("C-c C-o" . neuron-query-tags)
-           ("C-c C-i" . neuron-insert-new-zettel)
-           ("C-c C-w" . neuron-refresh))
-  )
-
-☣️;; OCaml
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line
-
-☣️;; Python
-(use-package company-jedi)
-
-☣️🌐🍎📒;; Rust
-(use-package rust-mode
-  :defer t
-  :init
-  (require 'rust-mode)
-  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-)
-
-☣️🍎;; Swift
-(use-package swift-mode)
-
-📒;; SML
-(use-package sml-mode)
-
-🍎;; flycheck-swift
-(use-package flycheck-swift
-  :config
-  (flycheck-swift-setup)
-  (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk")
-  (setq flycheck-swift-target "arm64-apple-ios11")
-  )
-
-(use-package company-sourcekit)
-
-✴️;; yaml
+;; yaml
 (use-package yaml-mode)
 
 ;; custom utilities
 
-🔶📒(load-file (expand-file-name "~/.emacs.d/bellport.el"))
-
-(bind-key* "C-c o" 'bp-find-other-file)
-
-☣️🔶📒(load-file (expand-file-name "~/.emacs.d/cpp2util.el"))
-
-(defun cpp2 ()
-   (interactive)
-   (bind-key* "C-c o" 'cpp2util-find-file))
-
-☣️(cpp2)
-
-✴️(load-file (expand-file-name "~/.emacs.d/git-util.el"))
+(load-file (expand-file-name "~/.emacs.d/git-util.el"))
 
 (if (and
      (file-exists-p (expand-file-name "~/.emacs.d/feedly-token.el"))
@@ -918,11 +613,7 @@
 (if (file-exists-p (expand-file-name "~/.emacs.d/openaikey.el"))
     (load-file (expand-file-name "~/.emacs.d/openaikey.el")))
 
-☣️🍎(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
-
-☣️📒(load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
-
-✴️(load-file (expand-file-name "~/.emacs.d/macroutil.el"))
+(load-file (expand-file-name "~/.emacs.d/macroutil.el"))
 (global-set-key (kbd "<f8>") 'macroutil-end-and-process-macro-or-exec-named-macro)
 (global-set-key (kbd "C-c k p") 'macroutil-process-last-macro)
 (global-set-key (kbd "C-c k s") 'macroutil-store-named-macro)
