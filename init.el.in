@@ -24,6 +24,8 @@
 
 ;; Replace whitespace in region with single spaces (C-c _)
 
+;; Go to scratch buffer (C-c h)
+
 ;; avy
 ;; Goto word (C-d)
 
@@ -148,6 +150,8 @@
 
 (global-set-key (kbd "C-c /") (lambda () (interactive) (message (buffer-file-name))))
 
+(global-set-key (kbd "C-c h") 'scratch-buffer)
+
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
 
@@ -201,6 +205,9 @@
 (setq-default fill-column 90)
 (global-display-fill-column-indicator-mode t)
 
+;; allow undo close frame
+(setq undelete-frame-mode t)
+
 ;; remove vertical border between buffers
 (set-face-attribute 'vertical-border
                     nil
@@ -214,9 +221,6 @@
 
 ;; better highlight color
 (set-face-attribute 'region nil :background "#a9d1ff")
-
-;; so long mode
-(global-so-long-mode 1)
 
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -429,20 +433,21 @@
 (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
 ☣️🔶📒;; style config
-(defconst my-custom-style
-  '((c-basic-offset . 2)
-    (c-offsets-alist . ((innamespace . 0)
-                        (access-label . -)
-                        (topmost-intro . 0)
-                        (arglist-intro . ++)
-                        (arglist-cont-nonempty . c-lineup-arglist)
-                        (comment-intro . 0)
-                        (member-init-intro . +)
-                        (case-label . 0)
-                        (statement-case-intro . +)
-                        (inline-open . 0)
-                        (substatement-open . 0))))
-  "my_custom_style")
+;; todo: tree-sitter
+;; (defconst my-custom-style
+;;   '((c-basic-offset . 2)
+;;     (c-offsets-alist . ((innamespace . 0)
+;;                         (access-label . -)
+;;                         (topmost-intro . 0)
+;;                         (arglist-intro . ++)
+;;                         (arglist-cont-nonempty . c-lineup-arglist)
+;;                         (comment-intro . 0)
+;;                         (member-init-intro . +)
+;;                         (case-label . 0)
+;;                         (statement-case-intro . +)
+;;                         (inline-open . 0)
+;;                         (substatement-open . 0))))
+;;   "my_custom_style")
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
@@ -471,8 +476,9 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  (c-add-style "custom" my-custom-style)
-  (c-set-style "custom")
+  ;; todo: tree-sitter
+  ;; (c-add-style "custom" my-custom-style)
+  ;; (c-set-style "custom")
   ☣️ (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   🔶📒(local-set-key (kbd "C-c o") 'bp-find-other-file)
   ☣️📒;; ccls
@@ -546,6 +552,9 @@
 (add-hook 'text-mode-hook 'setup-text-mode)
 
 ✴️;; package management
+
+(setq package-install-upgrade-built-in t)
+
 ;; melpa
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -554,12 +563,7 @@
    '("melpa" . "http://melpa.org/packages/")
    t)
   (package-initialize))
-;; use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
+
 (setq use-package-always-ensure t)
 
 ;; file backups
@@ -634,16 +638,21 @@
   (helm-projectile-on)
   )
 
-;; need quelpa-use-package to grab my own fork of helm-rg
-(use-package quelpa)
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "https://github.com/quelpa/quelpa-use-package.git"))
-(require 'quelpa-use-package)
-(quelpa-use-package-activate-advice)
+;; use tree sitter modes automatically
+(use-package treesit-auto
+  :demand t
+  :config
+  (global-treesit-auto-mode))
+
+;; need vc-use-package to grab my own fork of helm-rg
+(unless (package-installed-p 'vc-use-package)
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
+(require 'vc-use-package)
 (use-package helm-rg
-  :quelpa (helm-rg :fetcher github :repo "ednolan/helm-rg")
+  :vc (:fetcher "github"
+       :repo "ednolan/helm-rg"
+       :rev "candidate_number_limit_defcustom"
+       :backend Git)
   :bind (("C-c r" . helm-rg)
          ("C-c g" . helm-projectile-rg))
   :custom
@@ -753,6 +762,7 @@
 
 ☣️📒;; clangd and eglot
 (use-package eglot
+  :ensure nil
   :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
 
 ;; disable client-side completion sorting
