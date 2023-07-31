@@ -533,10 +533,10 @@
   )
 
 ;; use tree sitter modes automatically
-(use-package treesit-auto
-  :demand t
-  :config
-  (global-treesit-auto-mode))
+;; (use-package treesit-auto
+;;   :demand t
+;;   :config
+;;   (global-treesit-auto-mode))
 
 ;; need vc-use-package to grab my own fork of helm-rg
 (unless (package-installed-p 'vc-use-package)

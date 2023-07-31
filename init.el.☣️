@@ -403,20 +403,20 @@
 
 ;; style config
 ;; todo: tree-sitter
-;; (defconst my-custom-style
-;;   '((c-basic-offset . 2)
-;;     (c-offsets-alist . ((innamespace . 0)
-;;                         (access-label . -)
-;;                         (topmost-intro . 0)
-;;                         (arglist-intro . ++)
-;;                         (arglist-cont-nonempty . c-lineup-arglist)
-;;                         (comment-intro . 0)
-;;                         (member-init-intro . +)
-;;                         (case-label . 0)
-;;                         (statement-case-intro . +)
-;;                         (inline-open . 0)
-;;                         (substatement-open . 0))))
-;;   "my_custom_style")
+(defconst my-custom-style
+  '((c-basic-offset . 2)
+    (c-offsets-alist . ((innamespace . 0)
+                        (access-label . -)
+                        (topmost-intro . 0)
+                        (arglist-intro . ++)
+                        (arglist-cont-nonempty . c-lineup-arglist)
+                        (comment-intro . 0)
+                        (member-init-intro . +)
+                        (case-label . 0)
+                        (statement-case-intro . +)
+                        (inline-open . 0)
+                        (substatement-open . 0))))
+  "my_custom_style")
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -446,8 +446,8 @@
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
   ;; todo: tree-sitter
-  ;; (c-add-style "custom" my-custom-style)
-  ;; (c-set-style "custom")
+  (c-add-style "custom" my-custom-style)
+  (c-set-style "custom")
    (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
@@ -605,10 +605,10 @@
   )
 
 ;; use tree sitter modes automatically
-(use-package treesit-auto
-  :demand t
-  :config
-  (global-treesit-auto-mode))
+;; (use-package treesit-auto
+;;   :demand t
+;;   :config
+;;   (global-treesit-auto-mode))
 
 ;; need vc-use-package to grab my own fork of helm-rg
 (unless (package-installed-p 'vc-use-package)
