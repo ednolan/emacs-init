@@ -227,9 +227,9 @@
 (load custom-file :noerror)
 
 ;; .h, .cc, and .inl files are c++
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
 
 ;; Don't use F1 for help menu
 (global-unset-key (kbd "<f1>"))

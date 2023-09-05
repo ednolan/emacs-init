@@ -246,12 +246,12 @@
 (load custom-file :noerror)
 
 ;; .h, .cc, and .inl files are c++
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cc\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-ts-mode))
 
 ;; .ino files are c++
-(add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-ts-mode))
 
 ;; Don't use F1 for help menu
 (global-unset-key (kbd "<f1>"))
@@ -402,21 +402,19 @@
 (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
 ;; style config
-;; todo: tree-sitter
-;; (defconst my-custom-style
-;;   '((c-basic-offset . 2)
-;;     (c-offsets-alist . ((innamespace . 0)
-;;                         (access-label . -)
-;;                         (topmost-intro . 0)
-;;                         (arglist-intro . ++)
-;;                         (arglist-cont-nonempty . c-lineup-arglist)
-;;                         (comment-intro . 0)
-;;                         (member-init-intro . +)
-;;                         (case-label . 0)
-;;                         (statement-case-intro . +)
-;;                         (inline-open . 0)
-;;                         (substatement-open . 0))))
-;;   "my_custom_style")
+(defun my-treesit-match-namespace (node parent bol &rest _)
+  (string= (treesit-node-type (treesit-node-parent parent)) "namespace_definition"))
+(defun my-custom-style()
+  "Override the built-in BSD indentation style with some additional rules."
+  `(((match nil "argument_list" nil 1 1) parent-bol 4)
+    ((parent-is "argument_list") (nth-sibling 1) 0)
+    ((match nil "parameter_list" nil 1 1) parent-bol 4)
+    ((parent-is "parameter_list") (nth-sibling 1) 0)
+    (my-treesit-match-namespace parent-bol 0)
+
+    ,@(alist-get 'bsd (c-ts-mode--indent-styles 'cpp))))
+(setq c-ts-mode-indent-offset 2)
+(setq c-ts-mode-indent-style 'my-custom-style)
 
 ;; major mode hooks
 ;; delete trailing whitespace
@@ -445,18 +443,14 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  ;; todo: tree-sitter
-  ;; (c-add-style "custom" my-custom-style)
-  ;; (c-set-style "custom")
    (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
       (eglot-ensure))
   )
-(add-hook 'c++-mode-hook 'setup-common)
-(add-hook 'c++-mode-hook 'setup-c++-mode)
-(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
-(add-hook 'c++-mode-hook #'origami-mode)
+(add-hook 'c++-ts-mode-hook 'setup-common)
+(add-hook 'c++-ts-mode-hook 'setup-c++-mode)
+(add-hook 'c++-ts-mode-hook #'origami-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; Dired
@@ -641,7 +635,7 @@
 (use-package company
   :bind (("C-v" . company-complete))
   :init
-  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'c++-ts-mode-hook 'company-mode)
   (add-hook 'python-mode-hook 'company-mode)
   :config
   (setq company-async-timeout 30)
@@ -713,7 +707,7 @@
 ;; customize eglot-server-programs to use script that provides proper args
 ;; https://github.com/joaotavora/eglot
 (add-to-list 'eglot-server-programs
-             '(c++-mode . ("/home/eddie/sync/setup/scripts/clangd_wrapper.sh")))
+             '(c++-ts-mode . ("/home/eddie/sync/setup/scripts/clangd_wrapper.sh")))
 
 ;; make eglot use projectile to detect the project root
 ;; https://github.com/MaskRay/ccls/wiki/eglot
@@ -735,9 +729,6 @@
 ;; workaround for projectile git bug
 ;; https://github.com/bbatsov/projectile/issues/1302#issuecomment-433894379
 (setq projectile-git-submodule-command nil)
-
-;; modern-cpp-font-lock
-(use-package modern-cpp-font-lock)
 
 ;; clang-format
 (use-package clang-format
