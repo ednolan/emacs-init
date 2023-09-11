@@ -410,6 +410,8 @@
     ((parent-is "argument_list") (nth-sibling 1) 0)
     ((match nil "parameter_list" nil 1 1) parent-bol 4)
     ((parent-is "parameter_list") (nth-sibling 1) 0)
+    ((node-is "case") parent-bol 0)
+    ((parent-is "case") parent-bol c-ts-indent-offset)
     (my-treesit-match-namespace parent-bol 0)
 
     ,@(alist-get 'bsd (c-ts-mode--indent-styles 'cpp))))
