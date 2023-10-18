@@ -1,3 +1,6 @@
 [submodule "feedly"]
 	path = feedly
 	url = git@github.com:codecoll/feedly.git
+[submodule "undersea-theme"]
+	path = undersea-theme
+	url = https://github.com/jcs-elpa/undersea-theme.git
