@@ -408,7 +408,10 @@
 
 (defun delete-trailing-whitespace-if-not-markdown ()
   (when (not (or (derived-mode-p 'markdown-mode)))
-    (delete-trailing-whitespace)))
+    (setq delete-trailing-whitespace-previous-major-mode major-mode)
+    (text-mode)
+    (delete-trailing-whitespace)
+    (funcall delete-trailing-whitespace-previous-major-mode)))
 
 ;; all
 (defun setup-common ()
