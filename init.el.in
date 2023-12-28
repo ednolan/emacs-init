@@ -762,7 +762,7 @@
 ☣️📒;; clangd and eglot
 (use-package eglot
   :ensure nil
-  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
+  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider :inlayHintProvider)))
 
 ;; disable client-side completion sorting
 ;; https://github.com/MaskRay/ccls/wiki/eglot
