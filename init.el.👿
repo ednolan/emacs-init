@@ -542,7 +542,7 @@
   :custom
   (helm-rg-thing-at-point nil)
   :custom-face
-  (helm-rg-file-match-face ((t (:foreground "black" :underline t)))))
+  (helm-rg-file-match-face ((t (:foreground "black" :background "white" :underline t)))))
 
 ;; origami
 (use-package origami
