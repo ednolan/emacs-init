@@ -210,33 +210,21 @@
 ;; custom theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
-(defun set-todays-theme ()
-  (let* ((theme-names '(cyberpunk gruber-darker intellij jsc-dark
-                       mac-classic marine mistyday organic-green oswald overcast paper
-                       toxi undersea white))
-         (epoch-to-midnight-utc-secs
-          (if (or (eq system-type 'darwin)
-                  (eq system-type 'berkeley-unix))
-              (string-to-number
-               (shell-command-to-string
-                "date -u -j -f'%Y-%m-%d %H:%M:%S' \"$(date +%Y-%m-%d) 00:00:00\" +%s"))
-            (string-to-number
-             (shell-command-to-string "date --utc --date '' +%s"))))
-         (daily-theme-index
-          (string-to-number
-           (shell-command-to-string
-            (concat "echo \"$(echo "
-                    (number-to-string epoch-to-midnight-utc-secs)
-                    " | cksum | cut -d' ' -f1) % "
-                    (number-to-string (length theme-names))
-                    "\" | bc")))))
-      (if (boundp 'daily-theme)
-          (disable-theme daily-theme))
-      (setq daily-theme (nth daily-theme-index theme-names)))
-  (load-theme daily-theme t))
+(defun switch-dark-mode ()
+  (disable-theme 'mac-classic)
+  (load-theme 'monokai t))
 
-(set-todays-theme)
-(run-at-time "00:01" 86400 'set-todays-theme)
+(defun switch-light-mode ()
+  (disable-theme 'monokai)
+  (load-theme 'mac-classic t))
+
+(run-at-time "06pm" 86400 'switch-dark-mode)
+(run-at-time "06am" 86400 'switch-light-mode)
+
+(let ((current-hour (string-to-number (format-time-string "%H"))))
+  (if (or (>= current-hour 18) (< current-hour 8))
+      (load-theme 'monokai t)
+    (load-theme 'mac-classic t)))
 
 ;; scratch buffer to text mode
 (setq initial-major-mode 'text-mode)
