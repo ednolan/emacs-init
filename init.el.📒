@@ -228,8 +228,8 @@
   (disable-theme 'monokai)
   (load-theme 'mac-classic t))
 
-(run-at-time "06pm" 86400 'switch-dark-mode)
-(run-at-time "06am" 86400 'switch-light-mode)
+(run-at-time "07pm" 86400 'switch-dark-mode)
+(run-at-time "08am" 86400 'switch-light-mode)
 
 (let ((current-hour (string-to-number (format-time-string "%H"))))
   (if (or (>= current-hour 18) (< current-hour 8))
