@@ -21,7 +21,7 @@
   (replace-regexp-in-string
    "/test/"
    "/"
-   (concat (substring include-path 0 (- 0 (length "_test.hpp"))) ".hpp")))
+   include-path))
 
 (defun bp-header-corresponding-test (include-path)
   (file-truename
@@ -38,7 +38,7 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "static_assert(__cplusplus > 202000);\n")
+  (insert "static_assert(__cplusplus > 202300);\n")
   (insert "\n")
   (insert "namespace " (bp-namespace-name) " {\n")
   (insert "\n")
@@ -49,7 +49,7 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "static_assert(__cplusplus > 202000);\n")
+  (insert "static_assert(__cplusplus > 202300);\n")
   (insert "\n")
   (insert "#pragma once\n")
   (insert "\n")
@@ -62,9 +62,8 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "static_assert(__cplusplus > 202000);\n")
+  (insert "static_assert(__cplusplus > 202300);\n")
   (insert "\n")
-  (insert "#pragma once\n")
   (insert "#include <" (bp-test-corresponding-header (bp-hpp-include-path)) ">\n")
   (insert "#include <bp/test/bp_test.hpp>\n")
   (insert "\n")
@@ -80,7 +79,7 @@
   (interactive)
   (insert (bp-header-comment))
   (insert "\n")
-  (insert "static_assert(__cplusplus > 202000);\n")
+  (insert "static_assert(__cplusplus > 202300);\n")
   (insert "\n")
   (insert "#include <" (bp-hpp-include-path) ">\n")
   (insert "\n")
