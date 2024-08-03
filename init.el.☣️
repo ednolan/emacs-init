@@ -269,6 +269,9 @@
 ;; gdb restores window config
 (setq gdb-restore-window-configuration-after-quit t)
 
+;; ignore warnings
+(setq warning-minimum-level :error)
+
 ;; override built-in query-replace keybinding with this logic:
 ;; if there is a currently active highlight, and that highlight:
 ;; - contains no newline characters
