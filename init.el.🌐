@@ -486,8 +486,8 @@
    ("C-c C-s" . string-inflection-underscore)
    ("C-c C-h" . string-inflection-upcase)
    ("C-c C-u" . string-inflection-camelcase)
-   ("C-c C-l" . string-inflection-lower-camelcase))
-  )
+   ("C-c C-l" . string-inflection-lower-camelcase)
+   ("C-c C-b" . string-inflection-kebab-case)))
 
 ;; evil-numbers
 (use-package evil-numbers
