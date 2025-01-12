@@ -491,9 +491,10 @@
 ;; Python
 (defun setup-python-mode ()
   (setq tab-width 4)
+  (eglot-ensure)
   )
-(add-hook 'python-mode-hook 'setup-common)
-(add-hook 'python-mode-hook 'setup-python-mode)
+(add-hook 'python-ts-mode-hook 'setup-common)
+(add-hook 'python-ts-mode-hook 'setup-python-mode)
 ;; Smerge
 (defun setup-smerge-mode ()
   (local-set-key (kbd "C-c m p") 'smerge-prev)
@@ -635,6 +636,7 @@
   :bind (("C-v" . company-complete))
   :init
   (add-hook 'c++-ts-mode-hook 'company-mode)
+  (add-hook 'python-ts-mode-hook 'company-mode)
   :config
   (setq company-async-timeout 30)
   (setq company-idle-delay nil)
