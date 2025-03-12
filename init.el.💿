@@ -42,9 +42,9 @@
 ;; frames
 ;; Other frame (f2)
 
-;; flycheck
-;; Next error (M-g n)
-;; Previous error (M-g p)
+;; flymake
+;; Next error (C-c e n)
+;; Previous error (C-c e p)
 
 ;; menu bar
 ;; Text-mode emulation menu bar (f10)
@@ -119,6 +119,9 @@
 (global-set-key (kbd "C-c /") (lambda () (interactive) (message (buffer-file-name))))
 
 (global-set-key (kbd "C-c h") 'scratch-buffer)
+
+(global-set-key (kbd "C-c e n") 'flymake-goto-next-error)
+(global-set-key (kbd "C-c e p") 'flymake-goto-prev-error)
 
 ;; Nicer C-x C-b
 (global-set-key (kbd "C-x C-b") 'bs-show)
