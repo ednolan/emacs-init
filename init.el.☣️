@@ -578,7 +578,8 @@
   (add-to-list 'helm-completing-read-handlers-alist '(write-file))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename)))
-(use-package helm-projectile)
+(use-package helm-projectile
+  :custom (helm-projectile-ignore-strategy 'search-tool))
 (use-package helm-ls-git
   :bind (("C-x C-d" . helm-browse-project))
   )
