@@ -779,17 +779,6 @@
 ;; Meson
 (use-package meson-mode)
 
-;; neuron
-(use-package neuron-mode
-  :custom (neuron-rib-server-host "192.168.120.110")
-  :config (bind-keys*
-           ("C-c C-q" . neuron-insert-zettel-link)
-           ("C-c C-y" . neuron-toggle-connection-type)
-           ("C-c C-o" . neuron-query-tags)
-           ("C-c C-i" . neuron-insert-new-zettel)
-           ("C-c C-w" . neuron-refresh))
-  )
-
 ;; OCaml
 ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
 (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
