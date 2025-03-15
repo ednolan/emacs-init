@@ -671,7 +671,8 @@
   )
 
 ;; gptel
-(use-package gptel)
+(use-package gptel
+  :custom (gptel-model "gpt-4o"))
 
 ;; programming languages
 
