@@ -712,7 +712,9 @@
   :custom
   (magit-list-refs-sortby "-creatordate")
   (magit-diff-refine-hunk 'all)
-  )
+  :config
+  (remove-hook 'git-commit-setup-hook #'git-commit-turn-on-auto-fill)
+  (remove-hook 'git-commit-setup-hook #'git-commit-setup-changelog-support))
 
 ;; org
 (use-package org)
