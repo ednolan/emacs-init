@@ -610,7 +610,8 @@
   (add-to-list 'helm-completing-read-handlers-alist '(find-file))
   (add-to-list 'helm-completing-read-handlers-alist '(write-file))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy))
-  (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename)))
+  (add-to-list 'helm-completing-read-handlers-alist '(dired-do-rename))
+  (add-to-list 'helm-completing-read-handlers-alist '(dired-create-directory)))
 (use-package helm-projectile
   :custom (helm-projectile-ignore-strategy 'search-tool))
 (use-package helm-ls-git
