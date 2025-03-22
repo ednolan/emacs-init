@@ -720,7 +720,9 @@
 ☣️🍎;; ledger-mode
 (use-package ledger-mode
   :bind (:map ledger-mode-map
-         ("TAB" . completion-at-point)))
+              ("TAB" . completion-at-point)
+              ("S-<down>" . gcm-scroll-down)
+              ("S-<up>" . gcm-scroll-up)))
 (use-package flycheck-ledger)
 
 ✴️;; define-word
