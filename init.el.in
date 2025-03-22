@@ -918,6 +918,7 @@
     (load-file (expand-file-name "~/.emacs.d/openaikey.el")))
 
 ☣️🍎(load-file (expand-file-name "~/.emacs.d/ledgerutil.el"))
+(load-file (expand-file-name "~/.emacs.d/ledgerutil2.el"))
 
 ☣️📒(load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
 
