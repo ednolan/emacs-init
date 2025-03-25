@@ -503,6 +503,7 @@
 (use-package helm
   :config
   (helm-mode 1)
+  (setq helm-move-to-line-cycle-in-source nil)
   (add-to-list 'helm-completing-read-handlers-alist '(find-file))
   (add-to-list 'helm-completing-read-handlers-alist '(write-file))
   (add-to-list 'helm-completing-read-handlers-alist '(dired-do-copy))
