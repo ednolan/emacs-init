@@ -804,8 +804,8 @@
       (load-file (expand-file-name "~/.emacs.d/feedly-token.el"))
       (load-file (expand-file-name "~/.emacs.d/feedly/feedly.el"))))
 
-(if (file-exists-p (expand-file-name "~/.emacs.d/openaikey.el"))
-    (load-file (expand-file-name "~/.emacs.d/openaikey.el")))
+(if (file-exists-p (expand-file-name "~/.emacs.d/aikeys.el"))
+    (load-file (expand-file-name "~/.emacs.d/aikeys.el")))
 
 (load-file (expand-file-name "~/.emacs.d/cclsutil.el"))
 
