@@ -3,6 +3,7 @@
 ;; h -> Health Care
 ;; i -> Insurance
 ;; l -> Lifestyle
+;; L -> Lifestyle:Recurring
 ;; r -> Restaurants
 ;; R -> Rent
 ;; s -> Shopping
@@ -21,6 +22,7 @@
             "h" (lambda () (interactive) (ledgerutil2-categorize "Health Care"))
             "i" (lambda () (interactive) (ledgerutil2-categorize "Insurance"))
             "l" (lambda () (interactive) (ledgerutil2-categorize "Lifestyle"))
+            "L" (lambda () (interactive) (ledgerutil2-categorize "Lifestyle:Recurring"))
             "r" (lambda () (interactive) (ledgerutil2-categorize "Restaurants"))
             "R" (lambda () (interactive) (ledgerutil2-categorize "Rent"))
             "s" (lambda () (interactive) (ledgerutil2-categorize "Shopping"))
