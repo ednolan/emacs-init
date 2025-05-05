@@ -561,10 +561,6 @@
   :config
   (global-treesit-auto-mode))
 
-;; need vc-use-package to grab my own fork of helm-rg
-(unless (package-installed-p 'vc-use-package)
-  (package-vc-install "https://github.com/slotThe/vc-use-package"))
-(require 'vc-use-package)
 (use-package helm-rg
   :vc (:fetcher "github"
        :repo "ednolan/helm-rg"
