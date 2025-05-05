@@ -532,6 +532,7 @@
          ("C-c g" . helm-projectile-rg))
   :custom
   (helm-rg-thing-at-point nil)
+  (helm-rg-default-extra-args '("--hidden"))
   :custom-face
   (helm-rg-file-match-face ((t (:foreground "black" :background "white" :underline t)))))
 
