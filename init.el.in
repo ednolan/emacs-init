@@ -439,7 +439,7 @@
 
 (global-set-key (kbd "C-c i") #'insert-include-after-last)
 
-☣️🔶📒;; style config
+☣️🔶📒🍎;; style config
 (defun my-treesit-match-namespace (node parent bol &rest _)
   (string= (treesit-node-type (treesit-node-parent parent)) "namespace_definition"))
 (defun my-custom-style()
@@ -470,7 +470,7 @@
   )
 ;; bash
 (add-hook 'sh-mode-hook 'setup-common)
-☣️🔶📒;; C
+☣️🔶📒🍎;; C
 (defun setup-c-mode ()
   (local-set-key (kbd "TAB") 'tab-to-tab-stop)
   (set (make-local-variable 'c-basic-offset) 4))
@@ -483,12 +483,12 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-  ☣️ (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
+  ☣️🍎(local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   🔶📒(local-set-key (kbd "C-c o") 'bp-find-other-file)
   ☣️📒;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
       (eglot-ensure))
-  ☣️🔶📒)
+  ☣️🔶📒🍎)
 (add-hook 'c++-ts-mode-hook 'setup-common)
 (add-hook 'c++-ts-mode-hook 'setup-c++-mode)
 (add-hook 'c++-ts-mode-hook #'origami-mode)
@@ -749,6 +749,16 @@
 ;; gptel
 (use-package gptel
   :custom (gptel-model "gpt-4o"))
+
+🍎;; atomic-chrome fork
+(use-package atomic-chrome
+  :demand t
+  :vc (:fetcher "github"
+       :repo "KarimAziev/atomic-chrome"
+       :rev "master"
+       :backend Git)
+  :commands (atomic-chrome-start-server)
+  :config (atomic-chrome-start-server))
 
 ✴️;; programming languages
 

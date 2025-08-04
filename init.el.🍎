@@ -410,6 +410,23 @@
 
 (global-set-key (kbd "C-c i") #'insert-include-after-last)
 
+;; style config
+(defun my-treesit-match-namespace (node parent bol &rest _)
+  (string= (treesit-node-type (treesit-node-parent parent)) "namespace_definition"))
+(defun my-custom-style()
+  "Override the built-in GNU indentation style with some additional rules."
+  `(((match nil "argument_list" nil 1 1) parent-bol 4)
+    ((parent-is "argument_list") (nth-sibling 1) 0)
+    ((match nil "parameter_list" nil 1 1) parent-bol 4)
+    ((parent-is "parameter_list") (nth-sibling 1) 0)
+    ((node-is "case") parent-bol 0)
+    ((parent-is "case") parent-bol c-ts-indent-offset)
+    (my-treesit-match-namespace parent-bol 0)
+
+    ,@(alist-get 'gnu (c-ts-mode--indent-styles 'cpp))))
+(setq c-ts-mode-indent-offset 2)
+(setq c-ts-mode-indent-style 'my-custom-style)
+
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
@@ -424,6 +441,24 @@
   )
 ;; bash
 (add-hook 'sh-mode-hook 'setup-common)
+;; C
+(defun setup-c-mode ()
+  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
+  (set (make-local-variable 'c-basic-offset) 4))
+(add-hook 'c-mode-hook 'setup-common)
+(add-hook 'c-mode-hook 'setup-c-mode)
+;; C++
+(defun setup-c++-mode ()
+  (global-set-key (kbd "C-M-i") 'tab-to-tab-stop)
+  (defun insert-four-spaces ()
+    (interactive)
+    (insert "    "))
+  (local-set-key (kbd "C-M-y") 'insert-four-spaces)
+  (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
+  )
+(add-hook 'c++-ts-mode-hook 'setup-common)
+(add-hook 'c++-ts-mode-hook 'setup-c++-mode)
+(add-hook 'c++-ts-mode-hook #'origami-mode)
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'setup-common)
 ;; Dired
@@ -657,6 +692,16 @@
 ;; gptel
 (use-package gptel
   :custom (gptel-model "gpt-4o"))
+
+;; atomic-chrome fork
+(use-package atomic-chrome
+  :demand t
+  :vc (:fetcher "github"
+       :repo "KarimAziev/atomic-chrome"
+       :rev "master"
+       :backend Git)
+  :commands (atomic-chrome-start-server)
+  :config (atomic-chrome-start-server))
 
 ;; programming languages
 

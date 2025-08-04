@@ -453,7 +453,7 @@
     (interactive)
     (insert "    "))
   (local-set-key (kbd "C-M-y") 'insert-four-spaces)
-   (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
+  (local-set-key (kbd "C-c o") 'ff-find-other-file-ignore-headers)
   ;; ccls
   (if (cclsutil-buffer-in-registered-directoryp)
       (eglot-ensure))
