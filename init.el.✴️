@@ -373,6 +373,20 @@
 (setq auto-mode-alist (delete '("/COMMIT_EDITMSG$" . helm-ls-git-commit-mode) auto-mode-alist))
 (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
 
+(defun insert-include-after-last ()
+  "Find last #include, insert a new one below, and place point inside."
+  (interactive)
+  (goto-char (point-max))
+  (if (re-search-backward "^[ \t]*#include" nil t)
+      (progn
+        (end-of-line)
+        (newline-and-indent)
+        (insert "#include <>")
+        (backward-char 1))
+    (user-error "No #include directive found")))
+
+(global-set-key (kbd "C-c i") #'insert-include-after-last)
+
 ;; major mode hooks
 ;; delete trailing whitespace
 ;; configure tabination
