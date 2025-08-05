@@ -408,6 +408,7 @@
 (defun insert-include-after-last ()
   "Find last #include, insert a new one below, and place point inside."
   (interactive)
+  (push-mark)
   (goto-char (point-max))
   (if (re-search-backward "^[ \t]*#include" nil t)
       (progn
