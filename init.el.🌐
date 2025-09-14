@@ -248,6 +248,10 @@
 ;; dired switches
 (setq dired-listing-switches "-alhv")
 
+;; dired shouldn't prompt when copying/deleting directory
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+
 ;; gdb restores window config
 (setq gdb-restore-window-configuration-after-quit t)
 
