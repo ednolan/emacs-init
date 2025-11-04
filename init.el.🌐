@@ -462,14 +462,11 @@
 
 (setq package-install-upgrade-built-in t)
 
-;; melpa
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list
-   'package-archives
-   '("melpa" . "http://melpa.org/packages/")
-   t)
-  (package-initialize))
+;; https://github.com/emacs-china/elpa?tab=readme-ov-file#usage---github
+(setq package-archives
+      '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+        ("org"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/org/")
+        ("gnu"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")))
 
 (setq use-package-always-ensure t)
 
