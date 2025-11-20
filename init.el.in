@@ -471,8 +471,8 @@
 
 ;; all
 (defun setup-common ()
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace-if-not-markdown)
-  )
+☣️🍎🍏💿💾📒🌐  (add-to-list 'write-file-functions 'delete-trailing-whitespace-if-not-markdown)
+✴️  )
 ;; bash
 (add-hook 'sh-mode-hook 'setup-common)
 ☣️🔶📒🍎;; C
