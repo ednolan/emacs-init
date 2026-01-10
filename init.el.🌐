@@ -396,17 +396,17 @@
 ;; vibecoded section to restore emacs session with tmux-resurrect
 (require 'desktop)
 
-(defun my/get-tmux-session-name ()
-  "Returns the current tmux session name if running inside tmux, otherwise nil."
+(defun my/get-tmux-save-path ()
+  "Returns 'session/window/pane' if running inside tmux, otherwise nil."
   (when (getenv "TMUX")
-    (string-trim (shell-command-to-string "tmux display-message -p '#S'"))))
+    (string-trim (shell-command-to-string "tmux display-message -p '#S/#I/#P'"))))
 
 (defun my/configure-tmux-desktop-save ()
-  "Sets the desktop-dirname based on the tmux session."
-  (let ((session-name (my/get-tmux-session-name)))
-    (when session-name
-      ;; 1. Create a centralized directory for all tmux states
-      (let ((session-dir (concat user-emacs-directory "tmux-sessions/" session-name "/")))
+  "Sets the desktop-dirname based on the tmux session, window, and pane."
+  (let ((tmux-path (my/get-tmux-save-path)))
+    (when (and tmux-path (not (string-empty-p tmux-path)))
+      ;; 1. Create the specific directory: ~/.emacs.d/tmux-sessions/session/window/pane/
+      (let ((session-dir (concat user-emacs-directory "tmux-sessions/" tmux-path "/")))
         (unless (file-exists-p session-dir)
           (make-directory session-dir t))
 
