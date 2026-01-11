@@ -425,24 +425,26 @@
 (require 'desktop)
 
 (defun my/get-tmux-save-path ()
-  "Returns 'session/window/pane' if running inside tmux, otherwise nil."
-  (when (getenv "TMUX")
-    (string-trim (shell-command-to-string "tmux display-message -p '#S/#I/#P'"))))
+  "Returns 'session/window/pane' anchored to the current TMUX_PANE unique ID."
+  ;; 1. Get the Unique ID (e.g. %142) strictly from the environment
+  (let ((pane-unique-id (getenv "TMUX_PANE")))
+    (when pane-unique-id
+      ;; 2. Ask tmux for the metadata of THIS specific ID.
+      ;;    This ignores where the focus currently is.
+      (string-trim (shell-command-to-string 
+                    (format "tmux display-message -p -t '%s' '#S/#I/#P'" pane-unique-id))))))
 
 (defun my/configure-tmux-desktop-save ()
   "Sets the desktop-dirname based on the tmux session, window, and pane."
   (let ((tmux-path (my/get-tmux-save-path)))
     (when (and tmux-path (not (string-empty-p tmux-path)))
-      ;; 1. Create the specific directory: ~/.emacs.d/tmux-sessions/session/window/pane/
+      ;; 3. Create: ~/.emacs.d/tmux-sessions/session/window_index/pane_index/
       (let ((session-dir (concat user-emacs-directory "tmux-sessions/" tmux-path "/")))
         (unless (file-exists-p session-dir)
           (make-directory session-dir t))
 
-        ;; 2. Tell desktop-save-mode to look HERE, not in the current dir
         (setq desktop-dirname session-dir)
         (setq desktop-path (list session-dir))
-
-        ;; 3. Auto-save and Auto-restore
         (setq desktop-save t)
         (desktop-save-mode 1)))))
 
