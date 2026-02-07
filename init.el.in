@@ -566,6 +566,9 @@
 (defun setup-python-mode ()
   (setq tab-width 4)
 ☣️📒  (eglot-ensure)
+  ;; Removes the legacy python-flymake backend so it doesn't
+  ;; complain about missing flake8/pyflakes executables.
+  (remove-hook 'flymake-diagnostic-functions 'python-flymake t)
 ✴️  )
 (add-hook 'python-ts-mode-hook 'setup-common)
 (add-hook 'python-ts-mode-hook 'setup-python-mode)
