@@ -910,9 +910,9 @@
 ☣️;; Meson
 (use-package meson-mode)
 
-📒🌐;; neuron
+📒🌐🔶;; neuron
 (use-package neuron-mode
-  📒🌐:config (bind-keys*
+  :config (bind-keys*
            ("C-c C-q" . neuron-insert-zettel-link)
            ("C-c C-y" . neuron-toggle-connection-type)
            ("C-c C-o" . neuron-query-tags)
