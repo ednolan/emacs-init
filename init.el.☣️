@@ -608,8 +608,8 @@
 
 ;; evil-numbers
 (use-package evil-numbers
-  :bind (("C-c +" . evil-numbers/inc-at-pt)
-         ("C-c -" . evil-numbers/dec-at-pt)))
+  :bind (("M-+" . evil-numbers/inc-at-pt)
+         ("M--" . evil-numbers/dec-at-pt)))
 
 ;; clipetty
 ;; (hook into system paste buffer using OSC 52)
