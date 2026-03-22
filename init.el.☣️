@@ -221,11 +221,25 @@
   (disable-theme 'monokai)
   (load-theme 'mac-classic t))
 
-(run-at-time "06pm" 86400 'switch-dark-mode)
-(run-at-time "07am" 86400 'switch-light-mode)
+(defun seconds-until-utc-hour (target-hour)
+  "Return seconds from now until the next occurrence of TARGET-HOUR in UTC."
+  (let* ((utc-time (decode-time nil t))
+         (cur-hour (nth 2 utc-time))
+         (cur-min (nth 1 utc-time))
+         (cur-sec (nth 0 utc-time))
+         (seconds-since-midnight (+ (* cur-hour 3600) (* cur-min 60) cur-sec))
+         (target-seconds (* target-hour 3600))
+         (diff (- target-seconds seconds-since-midnight)))
+    (if (<= diff 0)
+        (+ diff 86400)
+      diff)))
 
-(let ((current-hour (string-to-number (format-time-string "%H"))))
-  (if (or (>= current-hour 18) (< current-hour 8))
+;; 7AM EST = 12:00 UTC, 6PM EST = 23:00 UTC
+(run-at-time (seconds-until-utc-hour 12) 86400 'switch-light-mode)
+(run-at-time (seconds-until-utc-hour 23) 86400 'switch-dark-mode)
+
+(let ((current-hour (string-to-number (format-time-string "%H" nil t))))
+  (if (or (>= current-hour 23) (< current-hour 12))
       (load-theme 'monokai t)
     (load-theme 'mac-classic t)))
 
