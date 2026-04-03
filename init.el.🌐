@@ -474,10 +474,7 @@
 (add-hook 'html-mode-hook 'setup-common)
 (add-hook 'html-mode-hook 'setup-html-mode)
 ;; JavaScript
-(defun setup-js2-mode ()
-  (set (make-local-variable 'js-indent-level) 4))
 (add-hook 'js2-mode-hook 'setup-common)
-(add-hook 'js2-mode-hook 'setup-js2-mode)
 ;; Markdown
 (add-hook 'markdown-mode-hook 'setup-common)
 ;; Python
@@ -634,7 +631,8 @@
   (remove-hook 'git-commit-setup-hook #'git-commit-setup-changelog-support))
 
 ;; org
-(use-package org)
+(use-package org
+  :defer t)
 
 ;; define-word
 (use-package define-word
@@ -649,18 +647,15 @@
 
 ;; Go
 (use-package go-mode
-  :defer t
-  :init
-  (require 'go-mode)
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-  )
+  :mode "\\.go\\'")
 
 ;; JavaScript
 
 ;; js2-mode
 (use-package js2-mode
+  :mode "\\.js\\'"
   :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+  (setq-local js-indent-level 4))
 
 ;; Markdown
 (use-package markdown-mode

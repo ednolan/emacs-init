@@ -639,7 +639,8 @@
   (remove-hook 'git-commit-setup-hook #'git-commit-setup-changelog-support))
 
 ;; org
-(use-package org)
+(use-package org
+  :defer t)
 
 ;; define-word
 (use-package define-word
