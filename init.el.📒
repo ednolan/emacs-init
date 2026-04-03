@@ -221,7 +221,7 @@
 (set-face-attribute 'region nil :background "#a9d1ff")
 
 ;; custom theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
 
 (defun switch-dark-mode ()
   (disable-theme 'mac-classic)
@@ -257,7 +257,7 @@
 (setq initial-major-mode 'text-mode)
 
 ;; save Customize settings in separate .el file
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file :noerror)
 
 ;; .h, .cc, and .inl files are c++
