@@ -20,7 +20,7 @@
 
 ;; Pop mark (M-`)
 
-;; Show path to current file (C-c /)
+;; Show and copy path to current file (C-c /)
 
 ;; Replace whitespace in region with single spaces (C-c _)
 
@@ -141,7 +141,11 @@
 
 (global-set-key (kbd "M-`") (kbd "C-u C-`"))
 
-(global-set-key (kbd "C-c /") (lambda () (interactive) (message (buffer-file-name))))
+(global-set-key (kbd "C-c /") (lambda () (interactive)
+                                 (let ((name (buffer-file-name)))
+                                   (if name
+                                       (progn (kill-new name) (message name))
+                                     (message "Buffer has no file name")))))
 
 (global-set-key (kbd "C-c h") 'scratch-buffer)
 
