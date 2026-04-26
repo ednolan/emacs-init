@@ -22,6 +22,8 @@
 
 ;; Show and copy path to current file (C-c /)
 
+;; Toggle between bemanproject and claudeworld_beman (C-c b)
+
 ;; Replace whitespace in region with single spaces (C-c _)
 
 ;; Go to scratch buffer (C-c h)
@@ -139,6 +141,25 @@
                                    (if name
                                        (progn (kill-new name) (message name))
                                      (message "Buffer has no file name")))))
+
+(defvar beman-toggle-paths
+  '(("~/sync/cpp/bemanproject/" . "~/sync/ai/claudeworld_beman/beman-repos/")
+    ("~/sync/ai/claudeworld_beman/beman-repos/" . "~/sync/cpp/bemanproject/")))
+
+(defun beman-toggle-find-file ()
+  "Toggle between bemanproject and claudeworld_beman mirror paths."
+  (interactive)
+  (let ((name (buffer-file-name)))
+    (unless name (user-error "Buffer has no file name"))
+    (let ((match (cl-find-if (lambda (pair) (string-prefix-p (expand-file-name (car pair)) name))
+                             beman-toggle-paths)))
+      (unless match (user-error "Not in a beman toggle path"))
+      (let* ((from (expand-file-name (car match)))
+             (to (expand-file-name (cdr match)))
+             (target (concat to (substring name (length from)))))
+        (find-file target)))))
+
+(global-set-key (kbd "C-c b") 'beman-toggle-find-file)
 
 (global-set-key (kbd "C-c h") 'scratch-buffer)
 
