@@ -603,6 +603,8 @@
 ;; use tree sitter modes automatically
 (use-package treesit-auto
   :demand t
+  :custom
+  (treesit-auto-install 'prompt)
   :config
   (global-treesit-auto-mode))
 
