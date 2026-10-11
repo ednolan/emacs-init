@@ -1,4 +1,10 @@
-;; -*- mode: Emacs-Lisp;
+;; -*- mode: Emacs-Lisp; lexical-binding: t -*-
+
+;; Emacs 30 compatibility: code that only exists to support Emacs 30 is fenced by
+;;   ;; >>> emacs-30-compat
+;;   ;; <<< emacs-30-compat
+;; and everything outside those fences targets Emacs 31.  To drop Emacs 30 support,
+;; delete each fenced block (markers included); nothing else needs to change.
 
 ;; keybinding ref
 
@@ -514,21 +520,36 @@
 (my/configure-tmux-desktop-save)
 
 ☣️🔶📒🍎;; style config
+;; >>> emacs-30-compat: Emacs 31 renamed c-ts-mode-indent-offset to c-ts-indent-offset
+(when (< emacs-major-version 31)
+  (defvaralias 'c-ts-indent-offset 'c-ts-mode-indent-offset))
+;; <<< emacs-30-compat
+(setq c-ts-indent-offset 2)
 (defun my-treesit-match-namespace (node parent bol &rest _)
   (string= (treesit-node-type (treesit-node-parent parent)) "namespace_definition"))
-(defun my-custom-style()
-  "Override the built-in GNU indentation style with some additional rules."
-  `(((match nil "argument_list" nil 1 1) parent-bol 4)
+(defvar my-c-ts-indent-rules
+  '(((match nil "argument_list" nil 1 1) parent-bol 4)
     ((parent-is "argument_list") (nth-sibling 1) 0)
     ((match nil "parameter_list" nil 1 1) parent-bol 4)
     ((parent-is "parameter_list") (nth-sibling 1) 0)
     ((node-is "case") parent-bol 0)
     ((parent-is "case") parent-bol c-ts-indent-offset)
-    (my-treesit-match-namespace parent-bol 0)
-
-    ,@(alist-get 'gnu (c-ts-mode--indent-styles 'cpp))))
-(setq c-ts-mode-indent-offset 2)
-(setq c-ts-mode-indent-style 'my-custom-style)
+    (my-treesit-match-namespace parent-bol 0))
+  "Indentation rules that take precedence over the built-in GNU style.")
+(defun my-c-ts-indent-setup ()
+  (setq-local treesit-simple-indent-override-rules
+              `((c ,@my-c-ts-indent-rules)
+                (cpp ,@my-c-ts-indent-rules))))
+(add-hook 'c-ts-base-mode-hook #'my-c-ts-indent-setup)
+;; >>> emacs-30-compat: Emacs 30 has no treesit-simple-indent-override-rules, so
+;; splice the rules into a custom style built on top of the GNU style instead
+(when (< emacs-major-version 31)
+  (defun my-custom-style ()
+    "Override the built-in GNU indentation style with some additional rules."
+    `(,@my-c-ts-indent-rules
+      ,@(alist-get 'gnu (c-ts-mode--indent-styles 'cpp))))
+  (setq c-ts-mode-indent-style 'my-custom-style))
+;; <<< emacs-30-compat
 
 ✴️;; major mode hooks
 ;; delete trailing whitespace
@@ -715,13 +736,18 @@
   (helm-projectile-on)
   )
 
-;; use tree sitter modes automatically
-(use-package treesit-auto
-  :demand t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (global-treesit-auto-mode))
+;; use tree sitter modes automatically, prompting to install missing grammars
+(setopt treesit-enabled-modes t)
+(setopt treesit-auto-install-grammar 'ask)
+;; >>> emacs-30-compat: Emacs 31 has the above built in, replacing treesit-auto
+(when (< emacs-major-version 31)
+  (use-package treesit-auto
+    :demand t
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (global-treesit-auto-mode)))
+;; <<< emacs-30-compat
 
 ;; need vc-use-package to grab my own fork of helm-rg
 (unless (package-installed-p 'vc-use-package)

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (defun macroutil--register-symbol-by-number (number)
   (cond
    ((equal number 0) 'macroutil-register-0)
@@ -13,6 +14,8 @@
 
 (defun macroutil--store-named-macro (macro-symbol)
   (find-file (expand-file-name "~/.emacs.d/macroutil-macros.el"))
+  ;; append, so the lexical-binding cookie stays on the first line
+  (goto-char (point-max))
   (insert-kbd-macro macro-symbol)
   (save-buffer)
   (quit-window))

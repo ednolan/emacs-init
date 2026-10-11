@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (load-file (expand-file-name "~/.emacs.d/fuzzy-match.el"))
 
 (defgroup ledgerutil nil

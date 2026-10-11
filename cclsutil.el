@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (defgroup cclsutil nil
   "Customization group for cclsutil"
   :group 'convenience)

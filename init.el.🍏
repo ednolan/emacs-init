@@ -1,4 +1,10 @@
-;; -*- mode: Emacs-Lisp;
+;; -*- mode: Emacs-Lisp; lexical-binding: t -*-
+
+;; Emacs 30 compatibility: code that only exists to support Emacs 30 is fenced by
+;;   ;; >>> emacs-30-compat
+;;   ;; <<< emacs-30-compat
+;; and everything outside those fences targets Emacs 31.  To drop Emacs 30 support,
+;; delete each fenced block (markers included); nothing else needs to change.
 
 ;; keybinding ref
 
@@ -612,13 +618,18 @@
   (helm-projectile-on)
   )
 
-;; use tree sitter modes automatically
-(use-package treesit-auto
-  :demand t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (global-treesit-auto-mode))
+;; use tree sitter modes automatically, prompting to install missing grammars
+(setopt treesit-enabled-modes t)
+(setopt treesit-auto-install-grammar 'ask)
+;; >>> emacs-30-compat: Emacs 31 has the above built in, replacing treesit-auto
+(when (< emacs-major-version 31)
+  (use-package treesit-auto
+    :demand t
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (global-treesit-auto-mode)))
+;; <<< emacs-30-compat
 
 ;; need vc-use-package to grab my own fork of helm-rg
 (unless (package-installed-p 'vc-use-package)

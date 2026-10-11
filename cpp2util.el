@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (defun cpp2util--is-header-p (filepath)
   (and (string-match-p "/include/" filepath)
        (string-equal "hpp" (file-name-extension filepath))))

@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (defun git-util-this-project-paths ()
   (split-string (shell-command-to-string
                  (concat "cd " default-directory " ; git diff --name-status master | cut -f2 | xargs -n1 -i{} echo $(git rev-parse --show-toplevel)/{}"))))

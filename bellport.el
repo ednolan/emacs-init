@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (defun bp-hpp-include-path ()
   (concat (substring
            (substring buffer-file-name (length (expand-file-name "~/bellport/src/")) nil)

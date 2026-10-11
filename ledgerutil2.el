@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;; d -> Donations
 ;; g -> Grocery
 ;; h -> Health Care

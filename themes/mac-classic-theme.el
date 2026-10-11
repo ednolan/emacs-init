@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 (deftheme mac-classic
   "Inspired by TextMate's Mac Classic theme.")
 

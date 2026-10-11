@@ -1,4 +1,4 @@
-;;; fuzzy-match.el --- fuzzy matching
+;;; fuzzy-match.el --- fuzzy matching  -*- lexical-binding: t -*-
 ;;
 ;; Filename: fuzzy-match.el
 ;; Description: fuzzy matching
