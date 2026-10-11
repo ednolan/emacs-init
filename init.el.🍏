@@ -294,6 +294,13 @@
 ;; ctrl/cmd on mac
 (setq mac-command-modifier 'control)
 
+;; The libgccjit bundled with the emacsformacosx.com build maps the Darwin kernel
+;; version to a macOS version with a pre-macOS-26 formula, so on Darwin 27 it passes
+;; -mmacosx-version-min=18.0, which clang rejects.  That breaks all native compilation,
+;; including the trampoline needed to advise verify-visited-file-modtime below.  Pin
+;; the target to the build's own minimum (macOS 11) so GCC skips the broken guess.
+(setq native-comp-driver-options '("-Wl,-w" "-mmacosx-version-min=11.0"))
+
 ;; prompt to add missing newlines on saving
 (setq-default require-final-newline "ask")
 
