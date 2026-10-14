@@ -506,13 +506,25 @@
 (defun my-treesit-match-namespace (node parent bol &rest _)
   (string= (treesit-node-type (treesit-node-parent parent)) "namespace_definition"))
 (defvar my-c-ts-indent-rules
-  '(((match nil "argument_list" nil 1 1) parent-bol 4)
+  `(((match nil "argument_list" nil 1 1) parent-bol 4)
     ((parent-is "argument_list") (nth-sibling 1) 0)
     ((match nil "parameter_list" nil 1 1) parent-bol 4)
     ((parent-is "parameter_list") (nth-sibling 1) 0)
     ((node-is "case") parent-bol 0)
     ((parent-is "case") parent-bol c-ts-indent-offset)
-    (my-treesit-match-namespace parent-bol 0))
+    (my-treesit-match-namespace parent-bol 0)
+    ;; Class members, as Emacs 30 did it.  Emacs 31 lines a member that follows a
+    ;; blank line up with the first thing in the class body, so after "public:" it
+    ;; lands in column 0.  Leave braces, access specifiers and preprocessor lines to
+    ;; the built-in rules.
+    ((and (parent-is "field_declaration_list")
+          (not (node-is ,(rx bos (or "}" "access_specifier" "#endif"
+                                     (seq "preproc" (* nonl)))
+                             eos))))
+     parent-bol c-ts-indent-offset)
+    ;; GNU-style "{" (and base classes) on their own line under "class Foo".  Emacs 31
+    ;; only does this for struct/union/enum, so it indents the whole class body.
+    ((parent-is "class_specifier") standalone-parent 0))
   "Indentation rules that take precedence over the built-in GNU style.")
 (defun my-c-ts-indent-setup ()
   (setq-local treesit-simple-indent-override-rules
